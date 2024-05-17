@@ -10,6 +10,7 @@ public class MainFrame implements Runnable {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        frame.setUndecorated(true);
 
         // create and add panel
         panel = new GraphicsPanel(name);
