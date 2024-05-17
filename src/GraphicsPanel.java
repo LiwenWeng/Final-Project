@@ -1,21 +1,52 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
+    private BufferedImage background;
+    private Player player;
+    private boolean[] pressedKeys;
 
+    public GraphicsPanel(String name) {
+        try {
+            background = ImageIO.read(new File("src/test1.png"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        player = new Player(name);
+        pressedKeys = new boolean[128];
 
-    public GraphicsPanel(String name) { }
+        addKeyListener(this);
+        addMouseListener(this);
+        setFocusable(true);
+        requestFocusInWindow();
+    }
 
     @Override
-    public void paintComponent(Graphics g) { }
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, null);
+        g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), player.getWidth(), player.getHeight(), null);
+    }
 
     // ----- KeyListener interface methods -----
     public void keyTyped(KeyEvent e) { }
 
-    public void keyPressed(KeyEvent e) { }
+    public void keyPressed(KeyEvent e) {
+        // see this for all keycodes: https://stackoverflow.com/questions/15313469/java-keyboard-keycodes-list
+        // A = 65, D = 68, S = 83, W = 87, left = 37, up = 38, right = 39, down = 40, space = 32, enter = 10
+        int key = e.getKeyCode();
+        pressedKeys[key] = true;
+    }
 
-    public void keyReleased(KeyEvent e) { }
+    public void keyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+        pressedKeys[key] = false;
+    }
 
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) { }
