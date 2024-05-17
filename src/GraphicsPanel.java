@@ -11,14 +11,15 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     private Player player;
     private boolean[] pressedKeys;
 
-    public GraphicsPanel(String name) {
+    public GraphicsPanel() {
         try {
             background = ImageIO.read(new File("src/test1.png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        player = new Player(name);
+        player = new Player();
         pressedKeys = new boolean[128];
+
 
         addKeyListener(this);
         addMouseListener(this);
@@ -31,6 +32,16 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
         g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), player.getWidth(), player.getHeight(), null);
+        if (pressedKeys[65]) {
+            player.faceLeft();
+            player.moveLeft();
+        }
+
+        // player moves right (D)
+        if (pressedKeys[68]) {
+            player.faceRight();
+            player.moveRight();
+        }
     }
 
     // ----- KeyListener interface methods -----

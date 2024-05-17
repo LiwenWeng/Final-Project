@@ -13,8 +13,8 @@ public class Player {
     private String name;
     private Animation run;
 
-    public Player(String name) {
-        this.name = name;
+    public Player() {
+        this.name = "joe";
         facingRight = true;
         xCoord = 50;
         yCoord = 435;

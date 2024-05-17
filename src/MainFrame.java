@@ -4,7 +4,7 @@ public class MainFrame implements Runnable {
 
     private GraphicsPanel panel;
 
-    public MainFrame(String name) {
+    public MainFrame() {
         JFrame frame = new JFrame("Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -13,7 +13,7 @@ public class MainFrame implements Runnable {
         frame.setUndecorated(true);
 
         // create and add panel
-        panel = new GraphicsPanel(name);
+        panel = new GraphicsPanel();
         frame.add(panel);
 
         // display the frame

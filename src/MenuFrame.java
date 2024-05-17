@@ -1,17 +1,30 @@
 import javax.swing.*;
 
-public class MenuFrame {
+public class MenuFrame implements Runnable {
     private MenuPanel panel;
 
     public MenuFrame() {
-        JFrame frame = new JFrame("Menu");
+        JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1920, 1080);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-
+        frame.setUndecorated(true);
         panel = new MenuPanel(frame);
         frame.add(panel);
 
+        // display the frame
         frame.setVisible(true);
+
+        // start thread, required for animation
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    public void run() {
+        while (true) {
+            panel.repaint();
+        }
+
     }
 }
