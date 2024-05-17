@@ -7,7 +7,8 @@ public class MainFrame implements Runnable {
     public MainFrame(String name) {
         JFrame frame = new JFrame("Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1920, 1080);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
         // create and add panel
@@ -24,7 +25,7 @@ public class MainFrame implements Runnable {
 
     public void run() {
         while (true) {
-            panel.repaint();  // we don't ever call "paintComponent" directly, but call this to refresh the panel
+            panel.repaint();
         }
     }
 }
