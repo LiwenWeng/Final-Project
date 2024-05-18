@@ -7,13 +7,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
-    private BufferedImage background;
+    private Image background;
     private Player player;
     private boolean[] pressedKeys;
 
     public GraphicsPanel() {
         try {
             background = ImageIO.read(new File("src/test1.png"));
+            background = background.getScaledInstance(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Image.SCALE_DEFAULT);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
