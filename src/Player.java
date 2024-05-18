@@ -7,11 +7,9 @@ import java.util.ArrayList;
 
 public class Player extends Entity {
     private final double MOVE_AMT = 0.6;
-    private BufferedImage right;
     private boolean facingRight;
     private double xCoord;
     private double yCoord;
-    private int score;
     private String name;
     private Animation run;
     
