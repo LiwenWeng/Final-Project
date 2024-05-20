@@ -6,19 +6,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player extends Entity {
-    private final double MOVE_AMT = 0.6;
+    private double moveAmount;
     private boolean facingRight;
     private double xCoord;
     private double yCoord;
     private String name;
     private Animation run;
+    private boolean isGrounded;
+    private double gravity;
     
 
     public Player() {
         super(100, 10, 50, 435, true);
         this.name = "joe";
-        xCoord = 5;
-        yCoord = 900;
+        xCoord = Constants.SCREEN_WIDTH * 0.5;
+        yCoord = Constants.SCREEN_HEIGHT * 0.7;
+        moveAmount = Constants.SCREEN_WIDTH * 0.002;
+        isGrounded = false;
 
         //The code below is used to programatically create an ArrayList of BufferedImages to use for an Animation object
         //By creating all the BufferedImages beforehand, we don't have to worry about lagging trying to read image files during gameplay
@@ -61,27 +65,20 @@ public class Player extends Entity {
    }
 
    public void moveRight() {
-       if (xCoord + MOVE_AMT <= 920) {
-           xCoord += MOVE_AMT;
+       if (xCoord + moveAmount <= Constants.SCREEN_WIDTH - getPlayerImage().getWidth()) {
+           xCoord += moveAmount;
        }
    }
 
    public void moveLeft() {
-       if (xCoord - MOVE_AMT >= 0) {
-           xCoord -= MOVE_AMT;
+       if (xCoord - moveAmount >= 0) {
+           xCoord -= moveAmount;
        }
    }
 
-   public void moveUp() {
-       if (yCoord - MOVE_AMT >= 0) {
-           yCoord -= MOVE_AMT;
-       }
-   }
+   public void simulateGravity(double gravity) {
+        if (isGrounded) return;
 
-   public void moveDown() {
-       if (yCoord + MOVE_AMT <= 435) {
-           yCoord += MOVE_AMT;
-       }
    }
 
    public void turn() {
