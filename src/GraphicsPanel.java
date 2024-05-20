@@ -7,19 +7,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
-    private BufferedImage background;
+    private Background background;
     private Player player;
     private boolean[] pressedKeys;
 
     public GraphicsPanel() {
-        try {
-            background = ImageIO.read(new File("src/test1.png"));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        player = new Player();
+        background = new Background("src/test", 0, 0);
+        player = new Player(background);
         pressedKeys = new boolean[128];
-
 
         addKeyListener(this);
         addMouseListener(this);
@@ -30,8 +25,12 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, null);
-        g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), player.getWidth(), player.getHeight(), null);
+        g.drawImage(background.getBackgroundImage(), background.getXCoord(), background.getYCoord(), null);
+        g.drawImage(player.getEntityImage(), player.getX(), player.getY(), player.getWidth(), player.getHeight(), null);
+
+        player.simulateGravity();
+
+        // player moves left (A)
         if (pressedKeys[65]) {
             player.faceLeft();
             player.moveLeft();
@@ -41,6 +40,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         if (pressedKeys[68]) {
             player.faceRight();
             player.moveRight();
+        }
+
+        if (pressedKeys[32]) {
+            player.jump();
         }
     }
 
