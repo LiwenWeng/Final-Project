@@ -17,7 +17,7 @@ public class Player extends Entity {
 
 
     public Player() {
-        super(100, 10, 50, 435, true);
+        super(100, 10, 5, 900, true);
         this.name = "joe";
         xCoord = Constants.SCREEN_WIDTH * 0.5;
         yCoord = Constants.SCREEN_HEIGHT * 0.75;
