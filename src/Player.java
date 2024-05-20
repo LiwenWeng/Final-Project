@@ -6,20 +6,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player extends Entity {
-    private double moveAmount;
+    private final double MOVE_AMT = Constants.SCREEN_HEIGHT / 1080.0;
     private boolean facingRight;
     private double xCoord;
     private double yCoord;
     private String name;
     private Animation run;
+    private Background background;
     private boolean isGrounded;
     private double gravity;
 
 
-    public Player() {
+    public Player(Background background) {
         super(100, 10, 5, 900, true);
         this.name = "joe";
         xCoord = Constants.SCREEN_WIDTH * 0.5;
+        yCoord = Constants.SCREEN_HEIGHT * 0.7;
+        isGrounded = false;
+        this.background = background;
         yCoord = Constants.SCREEN_HEIGHT * 0.75;
         moveAmount = Constants.SCREEN_WIDTH * 0.001;
         isGrounded = true;
@@ -68,14 +72,25 @@ public class Player extends Entity {
    public void setGrounded(boolean grounded) { isGrounded = grounded; }
 
    public void moveRight() {
-       if (xCoord + moveAmount <= Constants.SCREEN_WIDTH - getPlayerImage().getWidth()) {
-           xCoord += moveAmount;
+       if (xCoord > Constants.SCREEN_WIDTH / 2.0) {
+           background.moveRight();
+       }
+       background.moveRight();
+       if (background.isLeftLimit()) {
+           if (xCoord + MOVE_AMT <= Constants.SCREEN_WIDTH - getPlayerImage().getWidth()) {
+               xCoord += MOVE_AMT;
+           }
        }
    }
 
    public void moveLeft() {
-       if (xCoord - moveAmount >= 0) {
-           xCoord -= moveAmount;
+       if (xCoord < Constants.SCREEN_WIDTH / 2.0) {
+           background.moveLeft();
+       }
+       if (background.isRightLimit()) {
+           if (xCoord - MOVE_AMT >= 0) {
+               xCoord -= MOVE_AMT;
+           }
        }
    }
 
