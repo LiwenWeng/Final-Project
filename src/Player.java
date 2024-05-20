@@ -13,7 +13,7 @@ public class Player extends Entity {
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
         this.name = "joe";
-        moveAmount = Constants.SCREEN_WIDTH * 0.002;
+        moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
     }
 
@@ -22,30 +22,21 @@ public class Player extends Entity {
    }
 
    public void moveRight() {
-       if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
-           setX(getX() + moveAmount);
-       if (xCoord > Constants.SCREEN_WIDTH / 2.0) {
-           background.moveRight();
-       }
        background.moveRight();
-       if (background.isLeftLimit()) {
-           if (xCoord + MOVE_AMT <= Constants.SCREEN_WIDTH - getPlayerImage().getWidth()) {
-               xCoord += MOVE_AMT;
-           }
-       }
+    //    if (background.isLeftLimit()) {
+    //        if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
+    //             setX(getX() + moveAmount);
+    //        }
+    //    }
    }
 
-   public void moveLeft() {
-       if (getX() - moveAmount >= 0) {
-           setX(getX() - moveAmount);
-       if (xCoord < Constants.SCREEN_WIDTH / 2.0) {
-           background.moveLeft();
-       }
-       if (background.isRightLimit()) {
-           if (xCoord - MOVE_AMT >= 0) {
-               xCoord -= MOVE_AMT;
-           }
-       }
+    public void moveLeft() {
+        background.moveLeft();
+    //    if (background.isRightLimit()) {
+    //        if (getX() - moveAmount >= 0) {
+    //            setX((getX() - moveAmount));
+    //        }
+    //    }
    }
 
    public void jump() {
@@ -56,7 +47,7 @@ public class Player extends Entity {
 
    public void simulateGravity() {
         if (isGrounded()) return;
-        setGravity(getGravity() - 0.1);
+        setGravity(getGravity() - 0.05);
         setY(getY() - getGravity());
         if (getY() >= Constants.SCREEN_HEIGHT * 0.75) {
             setGrounded(true);

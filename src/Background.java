@@ -10,7 +10,7 @@ public class Background {
     private int yCoord;
     private boolean leftLimit;
     private boolean rightLimit;
-    private final double MOVE_AMT = Constants.SCREEN_HEIGHT / 1080.0;
+    private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
 
     public Background(String image, int x, int y) {
         this.xCoord = 0;
@@ -40,6 +40,7 @@ public class Background {
     public void moveRight() {
         if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
             xCoord -= MOVE_AMT;
+            System.out.println(Constants.SCREEN_HEIGHT);
             leftLimit = false;
         } else {
             leftLimit = true;
@@ -47,7 +48,6 @@ public class Background {
     }
 
     public void moveLeft() {
-
         if (xCoord + MOVE_AMT <= 0) {
             xCoord += MOVE_AMT;
             rightLimit = false;
