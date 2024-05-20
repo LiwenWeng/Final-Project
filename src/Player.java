@@ -14,15 +14,16 @@ public class Player extends Entity {
     private Animation run;
     private boolean isGrounded;
     private double gravity;
-    
+
 
     public Player() {
         super(100, 10, 50, 435, true);
         this.name = "joe";
         xCoord = Constants.SCREEN_WIDTH * 0.5;
-        yCoord = Constants.SCREEN_HEIGHT * 0.7;
-        moveAmount = Constants.SCREEN_WIDTH * 0.002;
-        isGrounded = false;
+        yCoord = Constants.SCREEN_HEIGHT * 0.75;
+        moveAmount = Constants.SCREEN_WIDTH * 0.001;
+        isGrounded = true;
+        gravity = 3.5;
 
         //The code below is used to programatically create an ArrayList of BufferedImages to use for an Animation object
         //By creating all the BufferedImages beforehand, we don't have to worry about lagging trying to read image files during gameplay
@@ -64,6 +65,8 @@ public class Player extends Entity {
        facingRight = false;
    }
 
+   public void setGrounded(boolean grounded) { isGrounded = grounded; }
+
    public void moveRight() {
        if (xCoord + moveAmount <= Constants.SCREEN_WIDTH - getPlayerImage().getWidth()) {
            xCoord += moveAmount;
@@ -76,9 +79,19 @@ public class Player extends Entity {
        }
    }
 
-   public void simulateGravity(double gravity) {
-        if (isGrounded) return;
+   public void jump() {
+        if (!isGrounded) return;
+        isGrounded = false;
+        gravity = 3.5;
+   }
 
+   public void simulateGravity() {
+        if (isGrounded) return;
+        gravity -= 0.1;
+        yCoord -= gravity;
+        if (yCoord >= Constants.SCREEN_HEIGHT * 0.75) {
+            isGrounded = true;
+        }
    }
 
    public void turn() {

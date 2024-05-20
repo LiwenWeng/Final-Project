@@ -21,7 +21,6 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         player = new Player();
         pressedKeys = new boolean[128];
 
-
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true);
@@ -33,6 +32,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
         g.drawImage(player.getPlayerImage(), player.getxCoord(), player.getyCoord(), player.getWidth(), player.getHeight(), null);
+
+        player.simulateGravity();
+
+        // player moves left (A)
         if (pressedKeys[65]) {
             player.faceLeft();
             player.moveLeft();
@@ -42,6 +45,10 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         if (pressedKeys[68]) {
             player.faceRight();
             player.moveRight();
+        }
+
+        if (pressedKeys[32]) {
+            player.jump();
         }
     }
 
