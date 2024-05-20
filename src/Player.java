@@ -15,7 +15,7 @@ public class Player extends Entity {
     
 
     public Player() {
-        super(100, 10, 50, 435, true);
+        super(100, 10, 5, 900, true);
         this.name = "joe";
         xCoord = 5;
         yCoord = 900;
