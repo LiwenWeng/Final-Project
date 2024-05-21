@@ -10,16 +10,21 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     private Background background;
     private Player player;
     private boolean[] pressedKeys;
+    private Timer timer;
 
     public GraphicsPanel() {
         background = new Background("src/test", 0, 0);
         player = new Player(background);
         pressedKeys = new boolean[128];
+        timer = new Timer(100, this);
 
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true);
         requestFocusInWindow();
+        timer.start();
+        timer.addActionListener(this);
+
     }
 
     @Override
@@ -29,22 +34,6 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         g.drawImage(player.getEntityImage(), player.getX(), player.getY(), player.getWidth(), player.getHeight(), null);
 
         player.simulateGravity();
-
-        // player moves left (A)
-        if (pressedKeys[65]) {
-            player.faceLeft();
-            player.moveLeft();
-        }
-
-        // player moves right (D)
-        if (pressedKeys[68]) {
-            player.faceRight();
-            player.moveRight();
-        }
-
-        if (pressedKeys[32]) {
-            player.jump();
-        }
     }
 
     // ----- KeyListener interface methods -----
@@ -73,5 +62,23 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
 
     public void mouseExited(MouseEvent e) { }
 
-    public void actionPerformed(ActionEvent e) { }
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof Timer) {
+            if (e.getSource() == timer) {
+                if (pressedKeys[68]) {
+                    player.faceRight();
+                    player.moveRight();
+                } else if (pressedKeys[65]) {
+                    player.faceLeft();
+                    player.moveLeft();
+                }
+        
+                if (pressedKeys[32]) {
+                    player.jump();
+                }
+            }
+            
+        }
+ 
+    }
 }

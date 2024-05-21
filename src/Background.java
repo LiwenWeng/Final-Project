@@ -40,7 +40,6 @@ public class Background {
     public void moveRight() {
         if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
             xCoord -= MOVE_AMT;
-            System.out.println(Constants.SCREEN_HEIGHT);
             leftLimit = false;
         } else {
             leftLimit = true;

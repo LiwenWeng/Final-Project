@@ -9,16 +9,12 @@ public class Player extends Entity {
     private double moveAmount;
     private String name;
     private Background background;
-    private boolean isLeftLimit;
-    private boolean isRightLimit;
 
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.0002;
         this.background = background;
-        isLeftLimit = false;
-        isRightLimit = false;
     }
 
     public String getName() {
@@ -26,20 +22,20 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (isLimit()) {
             if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
-        }
+            }
         } else {
             background.moveRight();
         }
     }
 
     public void moveLeft() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (isLimit()) {
             if (getX() - moveAmount >= 0) {
                 setX(getX() - moveAmount);
-        }
+            }
         } else {
             background.moveLeft();
         }
@@ -58,6 +54,16 @@ public class Player extends Entity {
         if (getY() >= Constants.SCREEN_HEIGHT * 0.75) {
             setGrounded(true);
         }
+    }
+
+    public boolean isLimit() {
+        if (getX() == Constants.SCREEN_WIDTH * 0.5) {
+            return false;
+        }
+        if (background.isLeftLimit() || background.isRightLimit()) {
+            return true;
+        }
+        return false;
     }
 
 
