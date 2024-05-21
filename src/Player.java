@@ -1,10 +1,3 @@
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class Player extends Entity {
     private double moveAmount;
     private String name;

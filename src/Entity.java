@@ -26,7 +26,7 @@ public class Entity {
 
         ArrayList<BufferedImage> run_animation = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
-            String filename = "src/" + img + "/" + img + i + ".png";
+            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
             try {
                 run_animation.add(ImageIO.read(new File(filename)));
             }
