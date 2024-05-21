@@ -22,7 +22,7 @@ public class Player extends Entity {
         if (background.isLeftLimit() || background.isRightLimit()) {
             if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
-        }
+            }
         } else {
             background.moveRight();
         }
@@ -32,7 +32,7 @@ public class Player extends Entity {
         if (background.isLeftLimit() || background.isRightLimit()) {
             if (getX() - moveAmount >= 0) {
                 setX(getX() - moveAmount);
-        }
+            }
         } else {
             background.moveLeft();
         }
