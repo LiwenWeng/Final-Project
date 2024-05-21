@@ -14,6 +14,7 @@ public class Entity {
     private Animation run;
     private boolean isGrounded;
     private double gravity;
+    private static Player player;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, String img) {
         this.health = health;
@@ -85,6 +86,10 @@ public class Entity {
         }
     }
 
+    public static Player getPlayer() {
+        return player;
+    }
+
     public void setHealth(int health) {
         this.health = health;
     }
@@ -129,5 +134,9 @@ public class Entity {
         int imageHeight = getEntityImage().getHeight();
         int imageWidth = getEntityImage().getWidth();
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
+    }
+
+    public void setPlayer(Player p) {
+        player = p;
     }
 }
