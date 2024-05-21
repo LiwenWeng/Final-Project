@@ -16,7 +16,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         background = new Background("src/test", 0, 0);
         player = new Player(background);
         pressedKeys = new boolean[128];
-        timer = new Timer(100, this);
+        timer = new Timer(10, this);
 
         addKeyListener(this);
         addMouseListener(this);
