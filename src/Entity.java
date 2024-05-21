@@ -14,6 +14,7 @@ public class Entity {
     private Animation run;
     private boolean isGrounded;
     private double gravity;
+    private static Player player;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, String img) {
         this.health = health;
@@ -26,7 +27,7 @@ public class Entity {
 
         ArrayList<BufferedImage> run_animation = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
-            String filename = "src/" + img + "/" + img + i + ".png";
+            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
             try {
                 run_animation.add(ImageIO.read(new File(filename)));
             }
@@ -45,16 +46,12 @@ public class Entity {
         return damage;
     }
 
-    public int getX() {
-        if (facingRight) {
-            return (int) x;
-        } else {
-            return (int) (x + (getEntityImage().getWidth()));
-        }
+    public double getX() {
+        return x;
     }
 
-    public int getY() {
-        return (int) y;
+    public double getY() {
+        return y;
     }
 
     public boolean isFacingRight() {
@@ -83,6 +80,10 @@ public class Entity {
         } else {
             return getEntityImage().getWidth() * -1;
         }
+    }
+
+    public static Player getPlayer() {
+        return player;
     }
 
     public void setHealth(int health) {
@@ -129,5 +130,9 @@ public class Entity {
         int imageHeight = getEntityImage().getHeight();
         int imageWidth = getEntityImage().getWidth();
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
+    }
+
+    public void setPlayer(Player p) {
+        player = p;
     }
 }

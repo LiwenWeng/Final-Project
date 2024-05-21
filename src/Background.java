@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Background {
     private Animation run;
-    private int xCoord;
-    private int yCoord;
+    private double xCoord;
+    private double yCoord;
     private boolean leftLimit;
     private boolean rightLimit;
     private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
@@ -26,18 +26,20 @@ public class Background {
             }
         }
         run = new Animation(run_animation,200);
+        leftLimit = false;
+        rightLimit = true;
     }
 
     public int getXCoord() {
-        return xCoord;
+        return (int) xCoord;
     }
 
 
     public int getYCoord() {
-        return yCoord;
+        return (int) yCoord;
     }
 
-    public void moveRight() {
+    public void moveLeft() {
         if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
             xCoord -= MOVE_AMT;
             leftLimit = false;
@@ -46,7 +48,7 @@ public class Background {
         }
     }
 
-    public void moveLeft() {
+    public void moveRight() {
         if (xCoord + MOVE_AMT <= 0) {
             xCoord += MOVE_AMT;
             rightLimit = false;

@@ -31,7 +31,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background.getBackgroundImage(), background.getXCoord(), background.getYCoord(), null);
-        g.drawImage(player.getEntityImage(), player.getX(), player.getY(), player.getWidth(), player.getHeight(), null);
+        g.drawImage(player.getEntityImage(), (int) player.getX() - (player.isFacingRight() ? player.getEntityImage().getWidth() : 0), (int) player.getY(), player.getWidth(), player.getHeight(), null);
 
         player.simulateGravity();
     }
