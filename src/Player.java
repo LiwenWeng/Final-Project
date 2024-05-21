@@ -8,7 +8,7 @@ public class Player extends Entity {
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
         this.name = "joe";
-        moveAmount = Constants.SCREEN_HEIGHT * 0.0002;
+        moveAmount = Constants.SCREEN_WIDTH * 0.001;
         this.background = background;
         isLeftLimit = false;
         isRightLimit = false;
@@ -19,25 +19,12 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (background.isLeftLimit()) {
-            System.out.println("adfahfawfaw");
-            if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
-                setX(getX() + moveAmount);
-            }
-        } else {
-            background.moveRight();
-        }
+        setX(getX() + moveAmount);
+        System.out.println(getX() + moveAmount);
     }
 
     public void moveLeft() {
-        if (background.isRightLimit()) {
-            System.out.println("dabdjab");
-            if (getX() - moveAmount >= 0) {
-                setX(getX() - moveAmount);
-            }
-        } else {
-            background.moveLeft();
-        }
+        setX(getX() - moveAmount);
     }
 
     public void jump() {

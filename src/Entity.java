@@ -45,16 +45,12 @@ public class Entity {
         return damage;
     }
 
-    public int getX() {
-        if (facingRight) {
-            return (int) x;
-        } else {
-            return (int) (x + (getEntityImage().getWidth()));
-        }
+    public double getX() {
+        return x;
     }
 
-    public int getY() {
-        return (int) y;
+    public double getY() {
+        return y;
     }
 
     public boolean isFacingRight() {

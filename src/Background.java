@@ -26,6 +26,8 @@ public class Background {
             }
         }
         run = new Animation(run_animation,200);
+        leftLimit = false;
+        rightLimit = true;
     }
 
     public int getXCoord() {
@@ -37,7 +39,7 @@ public class Background {
         return (int) yCoord;
     }
 
-    public void moveRight() {
+    public void moveLeft() {
         if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
             xCoord -= MOVE_AMT;
             leftLimit = false;
@@ -46,7 +48,7 @@ public class Background {
         }
     }
 
-    public void moveLeft() {
+    public void moveRight() {
         if (xCoord + MOVE_AMT <= 0) {
             xCoord += MOVE_AMT;
             rightLimit = false;
