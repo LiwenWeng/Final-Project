@@ -12,6 +12,7 @@ public class Player extends Entity {
         this.background = background;
         isLeftLimit = false;
         isRightLimit = false;
+        setPlayer(this);
     }
 
     public String getName() {
@@ -42,5 +43,15 @@ public class Player extends Entity {
         }
     }
 
+    public void swing() {
 
+    }
+
+    public void shoot() {
+
+    }
+
+    public void takeDamage(int damage) {
+        setHealth(getHealth() - damage);
+    }
 }
