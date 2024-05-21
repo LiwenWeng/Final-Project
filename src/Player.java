@@ -19,20 +19,22 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (background.isLeftLimit()) {
+            System.out.println("adfahfawfaw");
             if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
-        }
+            }
         } else {
             background.moveRight();
         }
     }
 
     public void moveLeft() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (background.isRightLimit()) {
+            System.out.println("dabdjab");
             if (getX() - moveAmount >= 0) {
                 setX(getX() - moveAmount);
-        }
+            }
         } else {
             background.moveLeft();
         }
