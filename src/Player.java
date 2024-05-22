@@ -22,6 +22,7 @@ public class Player extends Entity {
 
     public void moveRight() {
         isLimit();
+        System.out.println(isLeftLimit + " " + isRightLimit);
         if (isLeftLimit || isRightLimit) {
             if (getDrawX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
@@ -33,6 +34,7 @@ public class Player extends Entity {
 
     public void moveLeft() {
         isLimit();
+        System.out.println(isLeftLimit + " " + isRightLimit);
         if (isLeftLimit || isRightLimit) {
             if (getDrawX() - moveAmount >= 50) {
                 setX(getX() - moveAmount);
@@ -58,15 +60,15 @@ public class Player extends Entity {
     }
 
     public void isLimit() {
-        if (background.isLeftLimit()) {
-            isLeftLimit = true;
-        } else if (getDrawX() >= Constants.SCREEN_WIDTH / 2 - 20) {
+        if (getDrawX() >= Constants.SCREEN_WIDTH / 2.0 - 20) {
             isLeftLimit = false;
+        } else if (background.isLeftLimit()) {
+            isLeftLimit = true;
         }
-        if (background.isRightLimit()) {
-            isRightLimit = true;
-        } else if (getDrawX() <= Constants.SCREEN_WIDTH / 2 - 20) {
+        if (getDrawX() <= Constants.SCREEN_WIDTH / 2.0 - 20) {
             isRightLimit = false;
+        } else if (background.isRightLimit()) {
+            isRightLimit = true;
         }
     }
 
