@@ -21,8 +21,9 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
+        isLimit();
         if (isLeftLimit || isRightLimit) {
-            if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
+            if (getDrawX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
             }
         } else {
@@ -31,8 +32,9 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
+        isLimit();
         if (isLeftLimit || isRightLimit) {
-            if (getX() - moveAmount >= 0) {
+            if (getDrawX() - moveAmount >= 50) {
                 setX(getX() - moveAmount);
             }
         } else {
