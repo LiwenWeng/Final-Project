@@ -12,12 +12,12 @@ public class Background {
     private boolean rightLimit;
     private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
 
-    public Background(String image, int x, int y) {
+    public Background(String img, int x, int y) {
         this.xCoord = 0;
         this.yCoord = 0;
         ArrayList<BufferedImage> run_animation = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
-            String filename = image + i + ".png";
+            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
             try {
                 run_animation.add(ImageIO.read(new File(filename)));
             }

@@ -9,11 +9,11 @@ public class Button {
     private int yCoord;
     private BufferedImage image;
 
-    public Button(int x, int y) {
+    public Button(String img, int x, int y) {
         xCoord = x;
         yCoord = y;
         try {
-            image = ImageIO.read(new File("src/rectangle.png"));
+            this.image = ImageIO.read(new File("src/assets/" + img + ".png"));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

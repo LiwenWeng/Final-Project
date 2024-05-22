@@ -54,6 +54,10 @@ public class Entity {
         return y;
     }
 
+    public double getDrawX() {
+        return player.getX() - (player.isFacingRight() ? player.getEntityImage().getWidth() : 0);
+    }
+
     public boolean isFacingRight() {
         return facingRight;
     }

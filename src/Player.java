@@ -2,6 +2,8 @@ public class Player extends Entity {
     private double moveAmount;
     private String name;
     private Background background;
+    private boolean isLeftLimit;
+    private boolean isRightLimit;
 
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
@@ -9,6 +11,9 @@ public class Player extends Entity {
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
         setPlayer(this);
+        isLeftLimit = false;
+        isRightLimit = false;
+
     }
 
     public String getName() {
@@ -16,7 +21,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (isLeftLimit || isRightLimit) {
             if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
                 setX(getX() + moveAmount);
             }
@@ -26,7 +31,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (background.isLeftLimit() || background.isRightLimit()) {
+        if (isLeftLimit || isRightLimit) {
             if (getX() - moveAmount >= 0) {
                 setX(getX() - moveAmount);
             }
@@ -50,14 +55,17 @@ public class Player extends Entity {
         }
     }
 
-    public boolean isLimit() {
-        if (getX() == Constants.SCREEN_WIDTH * 0.5) {
-            return false;
+    public void isLimit() {
+        if (background.isLeftLimit()) {
+            isLeftLimit = true;
+        } else if (getDrawX() >= Constants.SCREEN_WIDTH / 2 - 20) {
+            isLeftLimit = false;
         }
-        if (background.isLeftLimit() || background.isRightLimit()) {
-            return true;
+        if (background.isRightLimit()) {
+            isRightLimit = true;
+        } else if (getDrawX() <= Constants.SCREEN_WIDTH / 2 - 20) {
+            isRightLimit = false;
         }
-        return false;
     }
 
     public void swing() {
