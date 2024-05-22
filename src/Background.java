@@ -42,18 +42,12 @@ public class Background {
     public void moveLeft() {
         if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
             xCoord -= MOVE_AMT;
-            leftLimit = false;
-        } else {
-            leftLimit = true;
         }
     }
 
     public void moveRight() {
         if (xCoord + MOVE_AMT <= 0) {
             xCoord += MOVE_AMT;
-            rightLimit = false;
-        } else {
-            rightLimit = true;
         }
     }
     public BufferedImage getBackgroundImage() {
@@ -61,10 +55,10 @@ public class Background {
     }
 
     public boolean isLeftLimit() {
-        return leftLimit;
+        return (xCoord >= 0);
     }
 
     public boolean isRightLimit() {
-        return rightLimit;
+        return (xCoord <= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth());
     }
 }
