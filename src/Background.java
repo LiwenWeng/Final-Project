@@ -8,8 +8,8 @@ public class Background {
     private Animation run;
     private double xCoord;
     private double yCoord;
-    private boolean leftLimit;
-    private boolean rightLimit;
+    private final double LEFT_LIMIT;
+    private final double RIGHT_LIMIT;
     private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
 
     public Background(String img, int x, int y) {
@@ -26,8 +26,8 @@ public class Background {
             }
         }
         run = new Animation(run_animation,200);
-        leftLimit = false;
-        rightLimit = true;
+        LEFT_LIMIT = 0;
+        RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
     }
 
     public int getXCoord() {
@@ -39,17 +39,22 @@ public class Background {
         return (int) yCoord;
     }
 
-    public void moveLeft() {
-        if (xCoord - MOVE_AMT >= Constants.SCREEN_WIDTH - getBackgroundImage().getWidth()) {
-            xCoord -= MOVE_AMT;
+    public boolean moveRight(boolean isWithinLeftLimit) {
+        if (xCoord + MOVE_AMT <= LEFT_LIMIT && !isWithinLeftLimit) {
+            xCoord += MOVE_AMT;
+            return true;
         }
+        return false;
     }
 
-    public void moveRight() {
-        if (xCoord + MOVE_AMT <= 0) {
-            xCoord += MOVE_AMT;
+    public boolean moveLeft(boolean isWithinRightLimit) {
+        if (xCoord - MOVE_AMT >= RIGHT_LIMIT && !isWithinRightLimit) {
+            xCoord -= MOVE_AMT;
+            return true;
         }
+        return false;
     }
+
     public BufferedImage getBackgroundImage() {
         return run.getActiveFrame();
     }
