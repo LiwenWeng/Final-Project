@@ -34,7 +34,7 @@ public class Player extends Entity {
 
     public void moveLeft() {
         if (!background.moveRight(isWithinScreenRight)) {
-            if (getX() - moveAmount > -getWidth()) {
+            if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
                 isWithinScreenLeft = true;
                 if (getX() - moveAmount < Constants.SCREEN_WIDTH * 0.5) {

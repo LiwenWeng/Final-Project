@@ -23,7 +23,7 @@ public class Entity {
         this.y = y;
         this.facingRight = facingRight;
         isGrounded = false;
-        gravity = 3.5;
+        gravity = 0;
 
         ArrayList<BufferedImage> run_animation = new ArrayList<>();
         for (int i = 1; i <= 8; i++) {
