@@ -130,6 +130,15 @@ public class Entity {
         }
     }
 
+    public boolean collided() {
+        for (Collidable collidable : GraphicsPanel.getCollidables()) {
+            if (entityRect().intersects(collidable.getX(), collidable.getY(), collidable.getWidth(), collidable.getHeight())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Rectangle entityRect() {
         int imageHeight = getEntityImage().getHeight();
         int imageWidth = getEntityImage().getWidth();
