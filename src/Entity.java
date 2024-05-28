@@ -55,7 +55,7 @@ public class Entity {
     }
 
     public double getDrawX() {
-        return player.getX() - (player.isFacingRight() ? player.getEntityImage().getWidth() : 0);
+        return player.getX() + (player.isFacingRight() ? 0 : player.getEntityImage().getWidth());
     }
 
     public boolean isFacingRight() {
@@ -128,6 +128,15 @@ public class Entity {
         } else {
             faceRight();
         }
+    }
+
+    public boolean collided() {
+        for (Collidable collidable : GraphicsPanel.getCollidables()) {
+            if (entityRect().intersects(collidable.getX(), collidable.getY(), collidable.getWidth(), collidable.getHeight())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Rectangle entityRect() {

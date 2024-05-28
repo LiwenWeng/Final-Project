@@ -55,6 +55,14 @@ public class Background {
         return false;
     }
 
+    public void setYCoord(double yCoord) {
+        this.yCoord = yCoord;
+    }
+
+    public double getDoubleYCoord() {
+        return yCoord;
+    }
+
     public BufferedImage getBackgroundImage() {
         return run.getActiveFrame();
     }
