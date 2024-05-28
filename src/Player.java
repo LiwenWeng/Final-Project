@@ -53,8 +53,9 @@ public class Player extends Entity {
     public void simulateGravity() {
         if (isGrounded()) return;
         setGravity(getGravity() - 0.05);
-        setY(getY() - getGravity());
-        if (getY() >= Constants.SCREEN_HEIGHT * 0.75) {
+//        setY(getY() - getGravity());
+        background.setYCoord(background.getDoubleYCoord() + getGravity());
+        if (background.getDoubleYCoord() <= 0) {
             setGrounded(true);
         }
     }
