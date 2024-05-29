@@ -16,7 +16,7 @@ public class Collidable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        GraphicsPanel.getCollidables().add(this);
+        //GraphicsPanel.getCollidables().add(this);
     }
 
     public double getX() {
@@ -33,5 +33,17 @@ public class Collidable {
 
     public int getHeight() {
         return image.getHeight();
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 }
