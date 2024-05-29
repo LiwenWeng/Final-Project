@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class Entity {
     private double gravity;
     private static Player player;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, String img) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight, String img, double scalex, double scaley) {
         this.health = health;
         this.damage = damage;
         this.x = x;
@@ -29,7 +31,15 @@ public class Entity {
         for (int i = 1; i <= 8; i++) {
             String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
             try {
-                run_animation.add(ImageIO.read(new File(filename)));
+                BufferedImage before = ImageIO.read(new File(filename));
+                int w = before.getWidth();
+                int h = before.getHeight();
+                BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                AffineTransform at = new AffineTransform();
+                at.scale((Constants.SCREEN_HEIGHT / 1080.0) * scalex, (Constants.SCREEN_HEIGHT / 1080.0) * scaley);
+                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                after = scaleOp.filter(before, after);
+                run_animation.add(after);
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());
