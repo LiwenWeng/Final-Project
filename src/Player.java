@@ -6,7 +6,7 @@ public class Player extends Entity {
     private boolean isWithinScreenLeft;
 
     public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, 0.4, 0.4);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
@@ -55,8 +55,7 @@ public class Player extends Entity {
     public void simulateGravity() {
         if (collided()) return;
         if (isGrounded()) return;
-        setGravity(getGravity() - 0.05);
-//        setY(getY() - getGravity());
+        setGravity(getGravity() - 0.085);
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         if (background.getDoubleYCoord() <= 0) {
             setGrounded(true);

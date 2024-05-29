@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +13,13 @@ public class Entity {
     private double x;
     private double y;
     private boolean facingRight;
-    private Animation run;
+    private Animation idle;
+    private Animation jump;
     private boolean isGrounded;
     private double gravity;
     private static Player player;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, String img) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
         this.damage = damage;
         this.x = x;
@@ -25,17 +28,9 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
 
-        ArrayList<BufferedImage> run_animation = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
-            try {
-                run_animation.add(ImageIO.read(new File(filename)));
-            }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        run = new Animation(run_animation,200);
+        idle = new Animation(loadAnimation("idle", scalex, scaley),200);
+        jump = new Animation(loadAnimation("jump", scalex, scaley), 200);
+        idle.start();
     }
 
     public int getHealth() {
@@ -71,7 +66,7 @@ public class Entity {
     }
 
     public BufferedImage getEntityImage() {
-        return run.getActiveFrame();
+        return idle.getActiveFrame();
     }
 
     public int getHeight() {
@@ -147,5 +142,29 @@ public class Entity {
 
     public void setPlayer(Player p) {
         player = p;
+    }
+
+    private ArrayList<BufferedImage> loadAnimation(String animationName, double scalex, double scaley) {
+        ArrayList<BufferedImage> result = new ArrayList<>();
+        for (int i = 1; i <= 8; i++) {
+            String filename = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
+            try {
+                BufferedImage before = ImageIO.read(new File(filename));
+                int w = before.getWidth();
+                int h = before.getHeight();
+                BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                AffineTransform at = new AffineTransform();
+                at.scale((Constants.SCREEN_HEIGHT / 1080.0) * scalex, (Constants.SCREEN_HEIGHT / 1080.0) * scaley);
+                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                after = scaleOp.filter(before, after);
+                result.add(after);
+                
+                
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return result;
     }
 }

@@ -26,7 +26,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         requestFocusInWindow();
         timer.start();
         timer.addActionListener(this);
-        collidables.add(new Collidable(400, 700, "src/assets/animations/jump/jump1.png"));
+        collidables.add(new Collidable(400, 700, "src/assets/animations/jump/jump1.png")); //test
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -38,6 +38,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         super.paintComponent(g);
         g.drawImage(background.getBackgroundImage(), background.getXCoord(), background.getYCoord(), null);
         g.drawImage(player.getEntityImage(), (int) player.getDrawX(), (int) player.getY(), player.getWidth(), player.getHeight(), null);
+        g.drawRect((int) player.getDrawX(), (int) player.getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());
 
         for (Collidable collidable : collidables) {
             g.drawImage(collidable.getImage(), (int) collidable.getX(), (int) collidable.getY(), collidable.getWidth(), collidable.getHeight(), null);
