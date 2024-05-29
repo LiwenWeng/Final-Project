@@ -26,6 +26,7 @@ public class Background {
             }
         }
         run = new Animation(run_animation,200);
+        run.start();
         LEFT_LIMIT = 0;
         RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
     }

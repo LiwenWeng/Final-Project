@@ -15,6 +15,7 @@ public class Entity {
     private boolean facingRight;
     private Animation idle;
     private Animation jump;
+    private Animation currentPlayingAnim;
     private boolean isGrounded;
     private double gravity;
     private static Player player;
@@ -29,7 +30,9 @@ public class Entity {
         gravity = 0;
 
         idle = new Animation(loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation(loadAnimation("jump", scalex, scaley), 200);
+        jump = new Animation(loadAnimation("jump", scalex, scaley), 500);
+        currentPlayingAnim = idle;
+
         idle.start();
     }
 
@@ -66,7 +69,7 @@ public class Entity {
     }
 
     public BufferedImage getEntityImage() {
-        return idle.getActiveFrame();
+        return currentPlayingAnim.getActiveFrame();
     }
 
     public int getHeight() {
@@ -75,14 +78,26 @@ public class Entity {
 
     public int getWidth() {
         if (facingRight) {
-            return getEntityImage().getWidth();
-        } else {
             return getEntityImage().getWidth() * -1;
+        } else {
+            return getEntityImage().getWidth();
         }
     }
 
-    public static Player getPlayer() {
-        return player;
+    public Animation getIdle() {
+        return idle;
+    }
+
+    public Animation getJump() {
+        return jump;
+    }
+
+    public Animation getCurrentPlayingAnim() {
+        return currentPlayingAnim;
+    }
+
+    public void setCurrentPlayingAnim(Animation anim) {
+        currentPlayingAnim = anim;
     }
 
     public void setHealth(int health) {
@@ -158,8 +173,6 @@ public class Entity {
                 AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
                 after = scaleOp.filter(before, after);
                 result.add(after);
-                
-                
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());

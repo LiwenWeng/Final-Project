@@ -13,7 +13,6 @@ public class Player extends Entity {
         setPlayer(this);
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
-
     }
 
     public String getName() {
@@ -45,9 +44,13 @@ public class Player extends Entity {
     }
 
     public void jump() {
+        getJump().start();
         if (!isGrounded()) return;
         setGrounded(false);
         setGravity(3.5);
+        getJump().start();
+        getCurrentPlayingAnim().stop();
+        setCurrentPlayingAnim(getJump());
     }
 
     public void simulateGravity() {
@@ -56,6 +59,9 @@ public class Player extends Entity {
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         if (background.getDoubleYCoord() <= 0) {
             setGrounded(true);
+            getIdle().start();
+            getCurrentPlayingAnim().stop();
+            setCurrentPlayingAnim(getIdle());
         }
     }
 

@@ -36,6 +36,7 @@ public class Animation implements ActionListener {
 
     public void stop() {
         active = false;
+        currentFrame = 0;
     }
 
     public void actionPerformed(ActionEvent e) {
