@@ -11,7 +11,7 @@ public class Entity {
     private double x;
     private double y;
     private boolean facingRight;
-    private Animation run;
+    private Animation idle;
     private Animation jump;
     private boolean isGrounded;
     private double gravity;
@@ -26,8 +26,10 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
 
-        run = new Animation(loadAnimation("run"),200);
+        idle = new Animation(loadAnimation("idle"),200);
         jump = new Animation(loadAnimation("jump"), 200);
+
+        idle.start();
     }
 
     public int getHealth() {
@@ -63,7 +65,7 @@ public class Entity {
     }
 
     public BufferedImage getEntityImage() {
-        return run.getActiveFrame();
+        return idle.getActiveFrame();
     }
 
     public int getHeight() {

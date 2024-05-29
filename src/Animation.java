@@ -8,12 +8,14 @@ public class Animation implements ActionListener {
     private ArrayList<BufferedImage> frames;
     private Timer timer;
     private int currentFrame;
+    private boolean active;
 
     public Animation(ArrayList<BufferedImage> frames, int delay) {
         this.frames = frames;
         currentFrame = 0;
         timer = new Timer(delay, this);
         timer.start();
+        active = false;
     }
 
     public int getCurrentFrame() {
@@ -28,11 +30,17 @@ public class Animation implements ActionListener {
         return frames.get(currentFrame);
     }
 
+    public void start() {
+        active = true;
+    }
+
+    public void stop() {
+        active = false;
+    }
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
-            //This advances the animation to the next frame
-            //It also uses modulus to reset the frame to the beginning after the last frame
-            //In other words, this allows our animation to loop
+            if (!active) return;
             currentFrame = (currentFrame + 1) % frames.size();
         }
     }
