@@ -2,17 +2,17 @@ public class Player extends Entity {
     private double moveAmount;
     private String name;
     private Background background;
-    private boolean isLeftLimit;
-    private boolean isRightLimit;
+    private boolean isWithinScreenRight;
+    private boolean isWithinScreenLeft;
 
     public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, "idle");
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
         setPlayer(this);
-        isLeftLimit = false;
-        isRightLimit = false;
+        isWithinScreenRight = false;
+        isWithinScreenLeft = false;
 
     }
 
@@ -21,26 +21,26 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        isLimit();
-        System.out.println(isLeftLimit + " " + isRightLimit);
-        if (isLeftLimit || isRightLimit) {
-            if (getDrawX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
+        if (!background.moveLeft(isWithinScreenLeft)) {
+            if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
+                isWithinScreenRight = true;
+                if (getX() + moveAmount > Constants.SCREEN_WIDTH * 0.5) {
+                    isWithinScreenLeft = false;
+                }
             }
-        } else {
-            background.moveLeft();
         }
     }
 
     public void moveLeft() {
-        isLimit();
-        System.out.println(isLeftLimit + " " + isRightLimit);
-        if (isLeftLimit || isRightLimit) {
-            if (getDrawX() - moveAmount >= 50) {
+        if (!background.moveRight(isWithinScreenRight)) {
+            if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
+                isWithinScreenLeft = true;
+                if (getX() - moveAmount < Constants.SCREEN_WIDTH * 0.5) {
+                    isWithinScreenRight = false;
+                }
             }
-        } else {
-            background.moveRight();
         }
     }
 
@@ -52,23 +52,10 @@ public class Player extends Entity {
 
     public void simulateGravity() {
         if (isGrounded()) return;
-        setGravity(getGravity() - 0.05);
-        setY(getY() - getGravity());
-        if (getY() >= Constants.SCREEN_HEIGHT * 0.75) {
+        setGravity(getGravity() - 0.085);
+        background.setYCoord(background.getDoubleYCoord() + getGravity());
+        if (background.getDoubleYCoord() <= 0) {
             setGrounded(true);
-        }
-    }
-
-    public void isLimit() {
-        if (getDrawX() >= Constants.SCREEN_WIDTH / 2.0 - 20) {
-            isLeftLimit = false;
-        } else if (background.isLeftLimit()) {
-            isLeftLimit = true;
-        }
-        if (getDrawX() <= Constants.SCREEN_WIDTH / 2.0 - 20) {
-            isRightLimit = false;
-        } else if (background.isRightLimit()) {
-            isRightLimit = true;
         }
     }
 

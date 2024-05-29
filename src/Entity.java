@@ -13,7 +13,8 @@ public class Entity {
     private double x;
     private double y;
     private boolean facingRight;
-    private Animation run;
+    private Animation idle;
+    private Animation jump;
     private boolean isGrounded;
     private double gravity;
     private static Player player;
@@ -25,27 +26,10 @@ public class Entity {
         this.y = y;
         this.facingRight = facingRight;
         isGrounded = false;
-        gravity = 3.5;
+        gravity = 0;
 
-        ArrayList<BufferedImage> run_animation = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
-            try {
-                BufferedImage before = ImageIO.read(new File(filename));
-                int w = before.getWidth();
-                int h = before.getHeight();
-                BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-                AffineTransform at = new AffineTransform();
-                at.scale((Constants.SCREEN_HEIGHT / 1080.0) * scalex, (Constants.SCREEN_HEIGHT / 1080.0) * scaley);
-                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-                after = scaleOp.filter(before, after);
-                run_animation.add(after);
-            }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        run = new Animation(run_animation,200);
+        idle = new Animation(loadAnimation("idle", 0.4, 0.4),200);
+        jump = new Animation(loadAnimation("jump", 0.4, 0.4), 200);
     }
 
     public int getHealth() {
@@ -65,7 +49,7 @@ public class Entity {
     }
 
     public double getDrawX() {
-        return player.getX() - (player.isFacingRight() ? player.getEntityImage().getWidth() : 0);
+        return player.getX() + (player.isFacingRight() ? 0 : player.getEntityImage().getWidth());
     }
 
     public boolean isFacingRight() {
@@ -140,6 +124,15 @@ public class Entity {
         }
     }
 
+    public boolean collided() {
+        for (Collidable collidable : GraphicsPanel.getCollidables()) {
+            if (entityRect().intersects(collidable.getX(), collidable.getY(), collidable.getWidth(), collidable.getHeight())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Rectangle entityRect() {
         int imageHeight = getEntityImage().getHeight();
         int imageWidth = getEntityImage().getWidth();
@@ -148,5 +141,27 @@ public class Entity {
 
     public void setPlayer(Player p) {
         player = p;
+    }
+
+    private ArrayList<BufferedImage> loadAnimation(String animationName, double scalex, double scaley) {
+        ArrayList<BufferedImage> result = new ArrayList<>();
+        for (int i = 1; i <= 8; i++) {
+            String filename = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
+            try {
+                BufferedImage before = ImageIO.read(new File(filename));
+                int w = before.getWidth();
+                int h = before.getHeight();
+                BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                AffineTransform at = new AffineTransform();
+                at.scale((Constants.SCREEN_HEIGHT / 1080.0) * scalex, (Constants.SCREEN_HEIGHT / 1080.0) * scaley);
+                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+                after = scaleOp.filter(before, after);
+                result.add(after);
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return result;
     }
 }
