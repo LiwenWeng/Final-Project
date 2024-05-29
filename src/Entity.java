@@ -12,11 +12,12 @@ public class Entity {
     private double y;
     private boolean facingRight;
     private Animation run;
+    private Animation jump;
     private boolean isGrounded;
     private double gravity;
     private static Player player;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, String img) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight) {
         this.health = health;
         this.damage = damage;
         this.x = x;
@@ -25,17 +26,8 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
 
-        ArrayList<BufferedImage> run_animation = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
-            try {
-                run_animation.add(ImageIO.read(new File(filename)));
-            }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        run = new Animation(run_animation,200);
+        run = new Animation(loadAnimation("run"),200);
+        jump = new Animation(loadAnimation("jump"), 200);
     }
 
     public int getHealth() {
@@ -147,5 +139,19 @@ public class Entity {
 
     public void setPlayer(Player p) {
         player = p;
+    }
+
+    private ArrayList<BufferedImage> loadAnimation(String animationName) {
+        ArrayList<BufferedImage> result = new ArrayList<>();
+        for (int i = 1; i <= 8; i++) {
+            String filePath = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
+            try {
+                result.add(ImageIO.read(new File(filePath)));
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return result;
     }
 }
