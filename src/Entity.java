@@ -14,7 +14,6 @@ public class Entity {
     private double y;
     private boolean facingRight;
     private Animation idle;
-    private Animation idle;
     private Animation jump;
     private boolean isGrounded;
     private double gravity;
