@@ -43,6 +43,9 @@ public class Background {
     public boolean moveRight(boolean isWithinLeftLimit) {
         if (xCoord + MOVE_AMT <= LEFT_LIMIT && !isWithinLeftLimit) {
             xCoord += MOVE_AMT;
+            for (Collidable collidable : GraphicsPanel.getCollidables()) {
+                collidable.setX(collidable.getX() + MOVE_AMT);
+            }
             return true;
         }
         return false;
@@ -51,6 +54,9 @@ public class Background {
     public boolean moveLeft(boolean isWithinRightLimit) {
         if (xCoord - MOVE_AMT >= RIGHT_LIMIT && !isWithinRightLimit) {
             xCoord -= MOVE_AMT;
+            for (Collidable collidable : GraphicsPanel.getCollidables()) {
+                collidable.setX(collidable.getX() - MOVE_AMT);
+            }
             return true;
         }
         return false;

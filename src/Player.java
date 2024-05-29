@@ -20,6 +20,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
+        if (collided()) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -32,6 +33,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
+        if (collided()) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -54,6 +56,7 @@ public class Player extends Entity {
     }
 
     public void simulateGravity() {
+        if (collided()) return;
         if (isGrounded()) return;
         setGravity(getGravity() - 0.085);
         background.setYCoord(background.getDoubleYCoord() + getGravity());
@@ -62,6 +65,10 @@ public class Player extends Entity {
             getIdle().start();
             getCurrentPlayingAnim().stop();
             setCurrentPlayingAnim(getIdle());
+        }
+
+        for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
+            collidable.setY(collidable.getY() + getGravity());
         }
     }
 
