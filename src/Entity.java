@@ -19,7 +19,7 @@ public class Entity {
     private double gravity;
     private static Player player;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, String img, double scalex, double scaley) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
         this.damage = damage;
         this.x = x;
@@ -28,8 +28,8 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
 
-        idle = new Animation(loadAnimation("idle", 0.4, 0.4),200);
-        jump = new Animation(loadAnimation("jump", 0.4, 0.4), 200);
+        idle = new Animation(loadAnimation("idle", scalex, scaley),200);
+        jump = new Animation(loadAnimation("jump", scalex, scaley), 200);
         idle.start();
     }
 
@@ -158,6 +158,8 @@ public class Entity {
                 AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
                 after = scaleOp.filter(before, after);
                 result.add(after);
+                
+                
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());

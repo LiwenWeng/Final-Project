@@ -6,7 +6,7 @@ public class Enemy extends Entity {
     private double moveAmount;
 
     public Enemy(int health, int damage, double x, double y, boolean facingRight) {
-        super(health, damage, x, y, facingRight);
+        super(health, damage, x, y, facingRight, 1, 1);
         lineOfSight = false;
         moveAmount = 0.0002;
     }
