@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Background {
-    private Animation run;
+    private Animation animation;
     private double xCoord;
     private double yCoord;
     private final double LEFT_LIMIT;
@@ -15,18 +15,9 @@ public class Background {
     public Background(String img, int x, int y) {
         this.xCoord = x;
         this.yCoord = y;
-//        ArrayList<BufferedImage> run_animation = new ArrayList<>();
-//        for (int i = 1; i <= 8; i++) {
-//            String filename = "src/assets/animations/" + img + "/" + img + i + ".png";
-//            try {
-//                run_animation.add(ImageIO.read(new File(filename)));
-//            }
-//            catch (IOException e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-        run = new Animation(Animation.loadAnimation(img, 1, 1),200);
-        run.start();
+
+        animation = new Animation(Animation.loadAnimation(img, 1, 1),200);
+        animation.start();
         LEFT_LIMIT = 0;
         RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
     }
@@ -71,7 +62,7 @@ public class Background {
     }
 
     public BufferedImage getBackgroundImage() {
-        return run.getActiveFrame();
+        return animation.getActiveFrame();
     }
 
     public boolean isLeftLimit() {

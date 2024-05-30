@@ -48,6 +48,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
 
         player.collided();
         player.simulateGravity();
+        //System.out.println(player.getIdle().isActive());
     }
 
     // ----- KeyListener interface methods -----

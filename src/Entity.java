@@ -137,15 +137,7 @@ public class Entity {
         facingRight = false;
     }
 
-    public void turn() {
-        if (facingRight) {
-            faceLeft();
-        } else {
-            faceRight();
-        }
-    }
-
-    public int collided() {
+    public boolean collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
             if (entityRect().intersects(collidable.collidableRect())) {
                 //if (airCollided) return ;
@@ -169,5 +161,20 @@ public class Entity {
         int imageWidth = getEntityImage().getWidth();
 
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
+    }
+
+    public void playAnimation(String animationName) {
+        switch (animationName) {
+            case "idle" -> {
+                idle.start();
+                currentPlayingAnim.stop();
+                currentPlayingAnim = idle;
+            }
+            case "jump" -> {
+                jump.start();
+                currentPlayingAnim.stop();
+                currentPlayingAnim = jump;
+            }
+        }
     }
 }
