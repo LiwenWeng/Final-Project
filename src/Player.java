@@ -13,6 +13,7 @@ public class Player extends Entity {
         setPlayer(this);
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
+
     }
 
     public String getName() {
@@ -49,9 +50,7 @@ public class Player extends Entity {
         if (!isGrounded()) return;
         setGrounded(false);
         setGravity(3.5);
-        getJump().start();
-        getCurrentPlayingAnim().stop();
-        setCurrentPlayingAnim(getJump());
+        playAnimation("jump");
     }
 
     public void simulateGravity() {
@@ -61,9 +60,7 @@ public class Player extends Entity {
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         if (background.getDoubleYCoord() <= 0) {
             setGrounded(true);
-            getIdle().start();
-            getCurrentPlayingAnim().stop();
-            setCurrentPlayingAnim(getIdle());
+            playAnimation("idle");
         }
 
         for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
