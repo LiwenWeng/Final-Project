@@ -29,8 +29,8 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
 
-        idle = new Animation(loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation(loadAnimation("jump", scalex, scaley), 500);
+        idle = new Animation(Animation.loadAnimation("idle", scalex, scaley),200);
+        jump = new Animation(Animation.loadAnimation("jump", scalex, scaley), 500);
         currentPlayingAnim = idle;
 
         idle.start();
@@ -53,7 +53,7 @@ public class Entity {
     }
 
     public double getDrawX() {
-        return player.getX() + (player.isFacingRight() ? 0 : player.getEntityImage().getWidth());
+        return getX() + (isFacingRight() ? 0 : getEntityImage().getWidth());
     }
 
     public boolean isFacingRight() {
@@ -158,31 +158,5 @@ public class Entity {
 
     public void setPlayer(Player p) {
         player = p;
-    }
-
-    private ArrayList<BufferedImage> loadAnimation(String animationName, double scalex, double scaley) {
-        ArrayList<BufferedImage> result = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
-            String filename = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
-            try {
-//                BufferedImage before = ImageIO.read(new File(filename));
-//                int w = before.getWidth();
-//                int h = before.getHeight();
-//                BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-//                AffineTransform at = new AffineTransform();
-//                at.scale((Constants.SCREEN_HEIGHT / 1080.0) * scalex, (Constants.SCREEN_HEIGHT / 1080.0) * scaley);
-//                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-//                after = scaleOp.filter(before, after);
-//                result.add(after);
-                Image image = ImageIO.read((new File(filename)));
-                BufferedImage originalImage = ImageIO.read((new File(filename)));
-                image = image.getScaledInstance((int) (originalImage.getWidth() * (Constants.SCREEN_HEIGHT / 1080.0) * scalex), (int) (originalImage.getHeight() * (Constants.SCREEN_HEIGHT / 1080.0) * scalex), Image.SCALE_DEFAULT);
-                result.add(Utils.toBufferedImage(image));
-            }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return result;
     }
 }

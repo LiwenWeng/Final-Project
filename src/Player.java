@@ -46,7 +46,6 @@ public class Player extends Entity {
     }
 
     public void jump() {
-        getJump().start();
         if (!isGrounded()) return;
         setGrounded(false);
         setGravity(3.5);
