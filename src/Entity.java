@@ -78,9 +78,9 @@ public class Entity {
 
     public int getWidth() {
         if (facingRight) {
-            return getEntityImage().getWidth() * -1;
-        } else {
             return getEntityImage().getWidth();
+        } else {
+            return getEntityImage().getWidth() * -1;
         }
     }
 
@@ -152,6 +152,7 @@ public class Entity {
     public Rectangle entityRect() {
         int imageHeight = getEntityImage().getHeight();
         int imageWidth = getEntityImage().getWidth();
+
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
     }
 
@@ -173,7 +174,10 @@ public class Entity {
 //                AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 //                after = scaleOp.filter(before, after);
 //                result.add(after);
-
+                Image image = ImageIO.read((new File(filename)));
+                BufferedImage originalImage = ImageIO.read((new File(filename)));
+                image = image.getScaledInstance((int) (originalImage.getWidth() * (Constants.SCREEN_HEIGHT / 1080.0) * scalex), (int) (originalImage.getHeight() * (Constants.SCREEN_HEIGHT / 1080.0) * scalex), Image.SCALE_DEFAULT);
+                result.add(Utils.toBufferedImage(image));
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());
