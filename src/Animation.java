@@ -1,7 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Animation implements ActionListener {
@@ -16,6 +20,10 @@ public class Animation implements ActionListener {
         timer = new Timer(delay, this);
         timer.start();
         active = false;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public int getCurrentFrame() {
@@ -44,5 +52,22 @@ public class Animation implements ActionListener {
             if (!active) return;
             currentFrame = (currentFrame + 1) % frames.size();
         }
+    }
+
+    public static ArrayList<BufferedImage> loadAnimation(String animationName, double scaleX, double scaleY) {
+        ArrayList<BufferedImage> result = new ArrayList<>();
+        for (int i = 1; i <= 8; i++) {
+            String filename = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
+            try {
+                Image image = ImageIO.read((new File(filename)));
+                BufferedImage originalImage = ImageIO.read((new File(filename)));
+                image = image.getScaledInstance((int) (originalImage.getWidth() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleX), (int) (originalImage.getHeight() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleY), Image.SCALE_DEFAULT);
+                result.add(Utils.toBufferedImage(image));
+            }
+            catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return result;
     }
 }
