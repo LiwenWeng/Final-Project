@@ -18,7 +18,7 @@ public class Entity {
     private Animation currentPlayingAnim;
     private boolean isGrounded;
     private double gravity;
-    private static Player player;
+    private boolean airCollided;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
@@ -28,6 +28,7 @@ public class Entity {
         this.facingRight = facingRight;
         isGrounded = false;
         gravity = 0;
+        airCollided = false;
 
         idle = new Animation(loadAnimation("idle", scalex, scaley),200);
         jump = new Animation(loadAnimation("jump", scalex, scaley), 500);
@@ -53,7 +54,7 @@ public class Entity {
     }
 
     public double getDrawX() {
-        return player.getX() + (player.isFacingRight() ? 0 : player.getEntityImage().getWidth());
+        return getX() + (isFacingRight() ? 0 : getEntityImage().getWidth());
     }
 
     public boolean isFacingRight() {
@@ -124,6 +125,10 @@ public class Entity {
         this.gravity = gravity;
     }
 
+    public void setAirCollided(boolean airCollided) {
+        this.airCollided = airCollided;
+    }
+
     public void faceRight() {
         facingRight = true;
     }
@@ -140,13 +145,23 @@ public class Entity {
         }
     }
 
-    public boolean collided() {
+    public int collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            if (entityRect().intersects(collidable.getX(), collidable.getY(), collidable.getWidth(), collidable.getHeight())) {
-                return true;
+            if (entityRect().intersects(collidable.collidableRect())) {
+                //if (airCollided) return ;
+                if (!airCollided) {
+                    gravity = 0;
+                    airCollided = true;
+
+                    System.out.println("faedfsaf");
+                }
+                if (entityRect().getY() <= collidable.getY() + collidable.getHeight() && entityRect().getX() - getWidth() <= collidable.getX() && entityRect().getX() >= collidable.getX() + collidable.getWidth()) {
+                    System.out.println(Collidable.DOWN);
+                    return Collidable.DOWN;
+                }
             }
         }
-        return false;
+        return 5;
     }
 
     public Rectangle entityRect() {
@@ -156,9 +171,6 @@ public class Entity {
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
     }
 
-    public void setPlayer(Player p) {
-        player = p;
-    }
 
     private ArrayList<BufferedImage> loadAnimation(String animationName, double scalex, double scaley) {
         ArrayList<BufferedImage> result = new ArrayList<>();

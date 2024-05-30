@@ -31,16 +31,16 @@ public class Enemy extends Entity {
         }
     }
 
-//    private void attack() {
-//        if (getPlayer().getX() < getX()) {
-//            moveLeft();
-//        }
-//        if (getPlayer().getX() > getX()) {
-//            moveRight();
-//        }
-//        if (entityRect().intersects(getPlayer().entityRect())) {
-//            getPlayer().takeDamage(getDamage());
-//            Utils.wait(1000);
-//        }
-//    }
+    private void attack(Player player) {
+        if (player.getX() < getX()) {
+            moveLeft();
+        }
+        if (player.getX() > getX()) {
+            moveRight();
+        }
+        if (entityRect().intersects(player.entityRect())) {
+            player.takeDamage(getDamage());
+            Utils.wait(1000);
+        }
+    }
 }

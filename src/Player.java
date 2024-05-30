@@ -10,7 +10,6 @@ public class Player extends Entity {
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
-        setPlayer(this);
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
     }
@@ -20,7 +19,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (collided()) return;
+        if (collided() == Collidable.RIGHT) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -33,7 +32,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (collided()) return;
+        if (collided() == Collidable.LEFT) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -47,7 +46,7 @@ public class Player extends Entity {
 
     public void jump() {
         getJump().start();
-        if (!isGrounded()) return;
+        //if (!isGrounded()) return;
         setGrounded(false);
         setGravity(3.5);
         getJump().start();
@@ -56,11 +55,11 @@ public class Player extends Entity {
     }
 
     public void simulateGravity() {
-        if (collided()) return;
         if (isGrounded()) return;
         setGravity(getGravity() - 0.085);
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         if (background.getDoubleYCoord() <= 0) {
+            setAirCollided(false);
             setGrounded(true);
             getIdle().start();
             getCurrentPlayingAnim().stop();
