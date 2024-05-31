@@ -20,6 +20,9 @@ public class Entity {
     private boolean isGrounded;
     private double gravity;
     private boolean airCollided;
+    private boolean hitboxActive;
+    private Rectangle hitbox;
+    private boolean attackDebounce;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
@@ -30,11 +33,15 @@ public class Entity {
         isGrounded = false;
         gravity = 0;
         airCollided = false;
+        hitboxActive = false;
+        attackDebounce = false;
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
         run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 50);
         currentPlayingAnim = idle;
+
+        hitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
     }
 
     public int getHealth() {
@@ -100,6 +107,14 @@ public class Entity {
         return currentPlayingAnim;
     }
 
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public boolean isHitboxActive() {
+        return hitboxActive;
+    }
+
     public void setCurrentPlayingAnim(Animation anim) {
         currentPlayingAnim = anim;
     }
@@ -130,6 +145,15 @@ public class Entity {
 
     public void setAirCollided(boolean airCollided) {
         this.airCollided = airCollided;
+    }
+
+    public void reconcileHitbox() {
+        if (facingRight) {
+            hitbox.setLocation((int) (x + entityRect().getWidth() * 0.75), (int) y);
+        } else {
+            hitbox.setLocation((int) (x - entityRect().getWidth() * 0.375), (int) y);
+        }
+
     }
 
     public void faceRight() {
@@ -193,5 +217,16 @@ public class Entity {
                 currentPlayingAnim = run;
             }
         }
+    }
+
+    public void attack() {
+        hitboxActive = true;
+        Utils.delay(1000, (t) -> {
+            hitboxActive = false;
+        }, 1);
+    }
+
+    public Rectangle toggleHitbox() {
+        return new Rectangle((int) x + getWidth(), (int) y, getWidth(), getHeight());
     }
 }
