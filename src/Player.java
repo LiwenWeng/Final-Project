@@ -68,10 +68,6 @@ public class Player extends Entity {
         }
     }
 
-    public void swing() {
-
-    }
-
     public void shoot() {
 
     }
