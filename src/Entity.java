@@ -30,11 +30,9 @@ public class Entity {
         gravity = 0;
         airCollided = false;
 
-        idle = new Animation(Animation.loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation(Animation.loadAnimation("jump", scalex, scaley), 500);
+        idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
+        jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 500);
         currentPlayingAnim = idle;
-
-        idle.start();
     }
 
     public int getHealth() {
@@ -137,7 +135,7 @@ public class Entity {
         facingRight = false;
     }
 
-    public boolean collided() {
+    public int collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
             if (entityRect().intersects(collidable.collidableRect())) {
                 //if (airCollided) return ;
@@ -164,6 +162,7 @@ public class Entity {
     }
 
     public void playAnimation(String animationName) {
+        if (currentPlayingAnim.toString().equals(animationName)) return;
         switch (animationName) {
             case "idle" -> {
                 idle.start();

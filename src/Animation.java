@@ -13,8 +13,10 @@ public class Animation implements ActionListener {
     private Timer timer;
     private int currentFrame;
     private boolean active;
+    private String name;
 
-    public Animation(ArrayList<BufferedImage> frames, int delay) {
+    public Animation(String name, ArrayList<BufferedImage> frames, int delay) {
+        this.name = name;
         this.frames = frames;
         currentFrame = 0;
         timer = new Timer(delay, this);
@@ -69,5 +71,9 @@ public class Animation implements ActionListener {
             }
         }
         return result;
+    }
+
+    public String toString() {
+        return name;
     }
 }
