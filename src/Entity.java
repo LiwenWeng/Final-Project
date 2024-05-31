@@ -15,6 +15,7 @@ public class Entity {
     private boolean facingRight;
     private Animation idle;
     private Animation jump;
+    private Animation run;
     private Animation currentPlayingAnim;
     private boolean isGrounded;
     private double gravity;
@@ -31,7 +32,8 @@ public class Entity {
         airCollided = false;
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 500);
+        jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
+        run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 50);
         currentPlayingAnim = idle;
     }
 
@@ -89,6 +91,9 @@ public class Entity {
 
     public Animation getJump() {
         return jump;
+    }
+    public Animation getRun() {
+        return run;
     }
 
     public Animation getCurrentPlayingAnim() {
@@ -173,6 +178,11 @@ public class Entity {
                 jump.start();
                 currentPlayingAnim.stop();
                 currentPlayingAnim = jump;
+            }
+            case "run" -> {
+                run.start();
+                currentPlayingAnim.stop();
+                currentPlayingAnim = run;
             }
         }
     }

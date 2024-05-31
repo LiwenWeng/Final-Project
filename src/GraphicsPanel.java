@@ -83,13 +83,21 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
                 if (pressedKeys[68]) {
                     player.faceRight();
                     player.moveRight();
-                } else if (pressedKeys[65]) {
+                }
+                if (pressedKeys[65]) {
                     player.faceLeft();
                     player.moveLeft();
                 }
-        
                 if (pressedKeys[32] || pressedKeys[87]) {
                     player.jump();
+                }
+
+                if (pressedKeys[32] || pressedKeys[87]) {
+                    player.playAnimation("jump");
+                } else if (pressedKeys[68] || pressedKeys[65]) {
+                    player.playAnimation("run");
+                } else {
+                    player.playAnimation("idle");
                 }
             }
             
