@@ -55,7 +55,7 @@ public class Player extends Entity {
 
     public void simulateGravity() {
         if (isGrounded()) return;
-        setGravity(getGravity() - 0.085);
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT / 12800.0 );
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         if (background.getDoubleYCoord() <= 0) {
             setAirCollided(false);
