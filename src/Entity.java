@@ -137,7 +137,7 @@ public class Entity {
         facingRight = false;
     }
 
-    public boolean collided() {
+    public int collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
             if (entityRect().intersects(collidable.collidableRect())) {
                 //if (airCollided) return ;
