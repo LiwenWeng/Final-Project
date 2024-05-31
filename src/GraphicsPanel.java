@@ -27,7 +27,8 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         timer.start();
         timer.addActionListener(this);
 
-        collidables.add(new Collidable(400, 700, "src/assets/animations/jump/jump1.png")); //test
+        collidables.add(new Collidable(400, 500, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(1400, 800, "src/assets/rect.png")); //test
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -45,9 +46,6 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
             g.drawImage(collidable.getImage(), (int) collidable.getX(), (int) collidable.getY(), collidable.getWidth(), collidable.getHeight(), null);
             g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
         }
-
-        player.collided();
-        player.simulateGravity();
         player.getCurrentPlayingAnim().start();
     }
 
@@ -80,6 +78,8 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
+                player.collided();
+                player.simulateGravity();
                 if (pressedKeys[68]) {
                     player.faceRight();
                     player.moveRight();

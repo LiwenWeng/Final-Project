@@ -144,15 +144,23 @@ public class Entity {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
             if (entityRect().intersects(collidable.collidableRect())) {
                 //if (airCollided) return ;
-                if (!airCollided) {
-                    gravity = 0;
-                    airCollided = true;
-
-                    System.out.println("faedfsaf");
-                }
-                if (entityRect().getY() <= collidable.getY() + collidable.getHeight() && entityRect().getX() - getWidth() <= collidable.getX() && entityRect().getX() >= collidable.getX() + collidable.getWidth()) {
-                    System.out.println(Collidable.DOWN);
+                if (entityRect().intersects(collidable.collidableRectBottom())) {
+                    if (!airCollided) {
+                        gravity = 0;
+                        airCollided = true;
+    
+                    }
                     return Collidable.DOWN;
+                }
+                if (entityRect().intersects(collidable.collidableRectTop())) {
+                    isGrounded = true;
+                    return Collidable.UP;
+                }
+                if (entityRect().intersects(collidable.collidableRectRight())) {
+                    return Collidable.RIGHT;
+                }
+                if (entityRect().intersects(collidable.collidableRectLeft())) {
+                    return Collidable.LEFT;
                 }
             }
         }

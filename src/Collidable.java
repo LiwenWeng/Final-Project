@@ -1,8 +1,12 @@
 import javax.imageio.ImageIO;
+
+import org.w3c.dom.css.Rect;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.module.ResolutionException;
 
 public class Collidable {
     private double x;
@@ -58,4 +62,17 @@ public class Collidable {
 
         return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
     }
+    public Rectangle collidableRectLeft() {
+        return new Rectangle((int) x - 5, (int) y, 5, image.getHeight());
+    }
+    public Rectangle collidableRectRight() {
+        return new Rectangle((int) x + image.getWidth(), (int) y, 5, image.getHeight());
+    }
+    public Rectangle collidableRectTop() {
+        return new Rectangle((int) x + 5, (int) y + 5, image.getWidth() - 10, 5);
+    }
+    public Rectangle collidableRectBottom() {
+        return new Rectangle((int) x + 5, (int) y + image.getHeight(), image.getWidth() - 10, 5);
+    }
+
 }

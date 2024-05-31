@@ -20,7 +20,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (collided() == Collidable.RIGHT) return;
+        if (collided() == Collidable.LEFT) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -33,7 +33,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (collided() == Collidable.LEFT) return;
+        if (collided() == Collidable.RIGHT) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -47,9 +47,9 @@ public class Player extends Entity {
 
     public void jump() {
         getJump().start();
-        //if (!isGrounded()) return;
+        if (!isGrounded()) return;
         setGrounded(false);
-        setGravity(3.5);
+        setGravity(5);
         playAnimation("jump");
     }
 
