@@ -257,7 +257,7 @@ public class Entity {
                 return false;
             }
         }
-        return 5;
+        return true;
     }
 
     public Rectangle entityRect() {
