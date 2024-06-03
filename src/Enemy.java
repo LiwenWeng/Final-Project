@@ -2,13 +2,21 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Enemy extends Entity {
+    private static int currentId = 0;
     private boolean lineOfSight;
     private double moveAmount;
+    private int id;
 
     public Enemy(int health, int damage, double x, double y, boolean facingRight) {
         super(health, damage, x, y, facingRight, 1, 1);
         lineOfSight = false;
         moveAmount = 0.0002;
+        id = currentId;
+        currentId++;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean hasLineOfSight() {

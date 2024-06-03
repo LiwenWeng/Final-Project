@@ -13,6 +13,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean[] pressedKeys;
     private Timer timer;
     private static ArrayList<Collidable> collidables = new ArrayList<>();
+    private static ArrayList<Enemy> enemies = new ArrayList<>();
 
     public GraphicsPanel() {
         background = new Background("tempbackground", -50, -50);
@@ -32,10 +33,18 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
 
         collidables.add(new Collidable(200, 1000, "src/assets/floor.png")); //test
         collidables.add(new Collidable(1400, 1000, "src/assets/floor.png")); //test
+        collidables.add(new Collidable(400, 500, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(1400, 1000, "src/assets/rect.png")); //test
+        enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, true));
+        enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, false));
     }
 
     public static ArrayList<Collidable> getCollidables() {
         return collidables;
+    }
+
+    public static ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 
     @Override
@@ -50,8 +59,16 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             g.drawImage(collidable.getImage(), (int) collidable.getX(), (int) collidable.getY(), collidable.getWidth(), collidable.getHeight(), null);
             g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
         }
+
+        for (Enemy enemy : enemies) {
+            if (enemy.isDead()) continue;
+            g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
+            g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
+        }
+
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
+        player.hitboxDetection();
     }
 
     // ----- KeyListener interface methods -----

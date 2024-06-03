@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Player extends Entity {
     private double moveAmount;
     private String name;
     private Background background;
     private boolean isWithinScreenRight;
     private boolean isWithinScreenLeft;
+    private ArrayList<Integer> attackedEnemyIds;
 
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 0.4, 0.4);
@@ -12,11 +16,15 @@ public class Player extends Entity {
         this.background = background;
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
-
+        attackedEnemyIds = new ArrayList<>();
     }
 
     public String getName() {
        return name;
+    }
+
+    public ArrayList<Integer> getAttackedEnemyIds() {
+        return attackedEnemyIds;
     }
 
     public void moveRight() {
@@ -69,11 +77,36 @@ public class Player extends Entity {
         }
     }
 
-    public void shoot() {
-
+    @Override
+    public void hitboxDetection() {
+        if (!isHitboxActive()) return;
+        for (Enemy enemy : GraphicsPanel.getEnemies()) {
+            if (getHitbox().intersects(enemy.entityRect()) && !attackedEnemyIds.contains(enemy.getId())) {
+                if (enemy.isDead()) continue;
+                enemy.takeDamage(getDamage());
+                if (enemy.isDead()) continue;
+                attackedEnemyIds.add(enemy.getId());
+            }
+        }
     }
 
-    public void takeDamage(int damage) {
-        setHealth(getHealth() - damage);
+    @Override
+    public void attack() {
+        if (!isAttackDebounce()) {
+            setAttackDebounce(true);
+            Utils.delay(getAttackCD(), (t) -> {
+                setAttackDebounce(false);
+            }, 1);
+
+            setHitboxActive(true);
+            Utils.delay(1000, (t) -> {
+                setHitboxActive(false);
+                attackedEnemyIds.clear();
+            }, 1);
+        }
+    }
+
+    public void shoot() {
+
     }
 }
