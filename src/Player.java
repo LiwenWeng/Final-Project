@@ -81,6 +81,9 @@ public class Player extends Entity {
         if (!isHitboxActive()) return;
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
             if (getHitbox().intersects(enemy.entityRect()) && !attackedEnemyIds.contains(enemy.getId())) {
+                if (enemy.isDead()) continue;
+                enemy.takeDamage(getDamage());
+                if (enemy.isDead()) continue;
                 attackedEnemyIds.add(enemy.getId());
             }
         }
@@ -104,9 +107,5 @@ public class Player extends Entity {
 
     public void shoot() {
 
-    }
-
-    public void takeDamage(int damage) {
-        setHealth(getHealth() - damage);
     }
 }

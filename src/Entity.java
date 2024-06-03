@@ -24,6 +24,7 @@ public class Entity {
     private Rectangle hitbox;
     private boolean attackDebounce;
     private int attackCD;
+    private boolean dead;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
@@ -37,6 +38,7 @@ public class Entity {
         hitboxActive = false;
         attackDebounce = false;
         attackCD = 700;
+        dead = false;
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
@@ -94,6 +96,10 @@ public class Entity {
         }
     }
 
+    public boolean isDead() {
+        return dead;
+    }
+
     public Animation getIdle() {
         return idle;
     }
@@ -129,8 +135,9 @@ public class Entity {
         currentPlayingAnim = anim;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) dead = true;
     }
 
     public void setDamage(int damage) {
