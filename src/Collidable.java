@@ -12,10 +12,7 @@ public class Collidable {
     private double x;
     private double y;
     private BufferedImage image;
-    public static final int RIGHT = 0;
-    public static final int LEFT = 180;
-    public static final int UP = 90;
-    public static final int DOWN = 270;
+    private static boolean[] sidesCollided;
 
     public Collidable(double x, double y, String img) {
         this.x = x;
@@ -25,8 +22,17 @@ public class Collidable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        //GraphicsPanel.getCollidables().add(this);
+        sidesCollided =  new boolean[4];
+        sidesCollided[0] = false;
+        sidesCollided[1] = false;
+        sidesCollided[2] = false;
+        sidesCollided[3] = false;
     }
+
+    public static boolean[] getSidesCollided() {
+        return sidesCollided;
+    }
+
 
     public double getX() {
         return x;

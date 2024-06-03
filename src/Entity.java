@@ -23,6 +23,10 @@ public class Entity {
     private boolean hitboxActive;
     private Rectangle hitbox;
     private boolean attackDebounce;
+    private boolean bottomCollided;
+    private boolean topCollided;
+    private boolean rightCollided;
+    private boolean leftCollided;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
@@ -42,6 +46,11 @@ public class Entity {
         currentPlayingAnim = idle;
 
         hitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
+        bottomCollided = false;
+        topCollided = false;
+        rightCollided = false;
+        leftCollided = false;
+
     }
 
     public int getHealth() {
@@ -164,31 +173,58 @@ public class Entity {
         facingRight = false;
     }
 
-    public int collided() {
+    public void collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            if (entityRect().intersects(collidable.collidableRect())) {
-                //if (airCollided) return ;
-                if (entityRect().intersects(collidable.collidableRectBottom())) {
-                    if (!airCollided) {
-                        gravity = 0;
-                        airCollided = true;
-    
-                    }
-                    return Collidable.DOWN;
+            if (entityRect().intersects(collidable.collidableRectBottom())) {
+                if (!airCollided) {
+                    gravity = 0;
+                    airCollided = true;
                 }
-                if (entityRect().intersects(collidable.collidableRectTop())) {
-                    isGrounded = true;
-                    return Collidable.UP;
-                }
-                if (entityRect().intersects(collidable.collidableRectRight())) {
-                    return Collidable.RIGHT;
-                }
-                if (entityRect().intersects(collidable.collidableRectLeft())) {
-                    return Collidable.LEFT;
-                }
+                bottomCollided = true;
+                Collidable.getSidesCollided()[0] = true;
+            }
+            if (entityRect().intersects(collidable.collidableRectTop())) {
+                topCollided = true;
+                Collidable.getSidesCollided()[1] = true;
+            }
+            if (entityRect().intersects(collidable.collidableRectRight())) {
+                rightCollided = true;
+                Collidable.getSidesCollided()[2] = true;
+            }
+            if (entityRect().intersects(collidable.collidableRectLeft())) {
+                leftCollided = true;
+                Collidable.getSidesCollided()[3] = true;
             }
         }
-        return 5;
+        if (bottomCollided) {
+            bottomCollided = false;
+        } else {
+            Collidable.getSidesCollided()[0] = false;
+        }
+        if (topCollided) {
+            topCollided = false;
+        } else {
+            Collidable.getSidesCollided()[1] = false;
+        }
+        if (rightCollided) {
+            rightCollided = false;
+        } else {
+            Collidable.getSidesCollided()[2] = false;
+        }
+        if (leftCollided) {
+            leftCollided = false;
+        } else {
+            Collidable.getSidesCollided()[3] = false;
+        }
+    }
+
+    public boolean isAirborne() {
+        for (Collidable collidable : GraphicsPanel.getCollidables()) {
+            if (entityRect().intersects(collidable.collidableRectTop())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Rectangle entityRect() {

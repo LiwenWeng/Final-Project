@@ -6,7 +6,7 @@ public class Player extends Entity {
     private boolean isWithinScreenLeft;
 
     public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, 0.4, 0.4);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 0.4, 0.4);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
@@ -20,7 +20,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (collided() == Collidable.LEFT) return;
+        if (Collidable.getSidesCollided()[3]) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -33,7 +33,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (collided() == Collidable.RIGHT) return;
+        if (Collidable.getSidesCollided()[2]) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -54,17 +54,18 @@ public class Player extends Entity {
     }
 
     public void simulateGravity() {
+        if (isAirborne()) {
+            setGrounded(false);
+        }
         if (isGrounded()) return;
         setGravity(getGravity() - Constants.SCREEN_HEIGHT / 12800.0 );
         background.setYCoord(background.getDoubleYCoord() + getGravity());
-        if (background.getDoubleYCoord() <= 0) {
-            setAirCollided(false);
-            setGrounded(true);
-            playAnimation("idle");
-        }
-
         for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
             collidable.setY(collidable.getY() + getGravity());
+            if (Collidable.getSidesCollided()[1]) {
+                setAirCollided(false);
+                setGrounded(true);
+            }
         }
     }
 

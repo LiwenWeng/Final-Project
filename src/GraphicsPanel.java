@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
+public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
     private Background background;
     private Player player;
     private boolean[] pressedKeys;
@@ -15,7 +15,7 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
     private static ArrayList<Collidable> collidables = new ArrayList<>();
 
     public GraphicsPanel() {
-        background = new Background("tempbackground", 0, 0);
+        background = new Background("tempbackground", -50, -50);
         player = new Player(background);
         pressedKeys = new boolean[128];
         timer = new Timer(10, this);
@@ -27,8 +27,11 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         timer.start();
         timer.addActionListener(this);
 
-        collidables.add(new Collidable(400, 500, "src/assets/rect.png")); //test
-        collidables.add(new Collidable(1400, 800, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(400, 600, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(1400, 900, "src/assets/rect.png")); //test
+
+        collidables.add(new Collidable(200, 1000, "src/assets/floor.png")); //test
+        collidables.add(new Collidable(1400, 1000, "src/assets/floor.png")); //test
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -49,7 +52,6 @@ public class GraphicsPanel extends JPanel implements KeyListener, MouseListener,
         }
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
-        System.out.println(player.isHitboxActive());
     }
 
     // ----- KeyListener interface methods -----
