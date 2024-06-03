@@ -23,6 +23,7 @@ public class Entity {
     private boolean hitboxActive;
     private Rectangle hitbox;
     private boolean attackDebounce;
+    private int attackCD;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
         this.health = health;
@@ -35,6 +36,7 @@ public class Entity {
         airCollided = false;
         hitboxActive = false;
         attackDebounce = false;
+        attackCD = 700;
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
@@ -115,6 +117,14 @@ public class Entity {
         return hitboxActive;
     }
 
+    public boolean isAttackDebounce() {
+        return attackDebounce;
+    }
+
+    public int getAttackCD() {
+        return attackCD;
+    }
+
     public void setCurrentPlayingAnim(Animation anim) {
         currentPlayingAnim = anim;
     }
@@ -147,13 +157,29 @@ public class Entity {
         this.airCollided = airCollided;
     }
 
+    public void setAttackDebounce(boolean attackDebounce) {
+        this.attackDebounce = attackDebounce;
+    }
+
+    public void setHitboxActive(boolean hitboxActive) {
+        this.hitboxActive = hitboxActive;
+    }
+
     public void reconcileHitbox() {
         if (facingRight) {
             hitbox.setLocation((int) (x + entityRect().getWidth() * 0.75), (int) y);
         } else {
             hitbox.setLocation((int) (x - entityRect().getWidth() * 0.375), (int) y);
         }
+    }
 
+    public void hitboxDetection() {
+        if (!hitboxActive) return;
+        for (Enemy enemy : GraphicsPanel.getEnemies()) {
+            if (hitbox.intersects(enemy.entityRect())) {
+                System.out.println(enemy.getHealth());
+            }
+        }
     }
 
     public void faceRight() {
@@ -220,10 +246,17 @@ public class Entity {
     }
 
     public void attack() {
-        hitboxActive = true;
-        Utils.delay(1000, (t) -> {
-            hitboxActive = false;
-        }, 1);
+        if (!attackDebounce) {
+            attackDebounce = true;
+            Utils.delay(1000, (t) -> {
+                hitboxActive = false;
+            }, 1);
+
+            hitboxActive = true;
+            Utils.delay(attackCD, (t) -> {
+                attackDebounce = false;
+            }, 1);
+        }
     }
 
     public Rectangle toggleHitbox() {
