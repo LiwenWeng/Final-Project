@@ -8,6 +8,8 @@ public class Player extends Entity {
     private boolean isWithinScreenRight;
     private boolean isWithinScreenLeft;
     private ArrayList<Integer> attackedEnemyIds;
+    private boolean canDoubleJump;
+    private boolean doubleJumped;
 
     public Player(Background background) {
         super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 0.4, 0.4);
@@ -17,6 +19,8 @@ public class Player extends Entity {
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
         attackedEnemyIds = new ArrayList<>();
+        canDoubleJump = false;
+        doubleJumped = false;
     }
 
     public String getName() {
@@ -54,10 +58,15 @@ public class Player extends Entity {
     }
 
     public void jump() {
-        getJump().start();
+        if (canDoubleJump) {
+            setGravity(Constants.SCREEN_HEIGHT * 0.006);
+            canDoubleJump = false;
+            doubleJumped = true;
+        }
         if (!isGrounded()) return;
         setGrounded(false);
-        setGravity(5);
+        setGravity(Constants.SCREEN_HEIGHT * 0.006);
+        canDoubleJump = false;
         playAnimation("jump");
     }
 
@@ -66,13 +75,15 @@ public class Player extends Entity {
             setGrounded(false);
         }
         if (isGrounded()) return;
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT / 12800.0 );
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
+        if (getGravity() <= 0 && !doubleJumped) canDoubleJump = true;
         background.setYCoord(background.getDoubleYCoord() + getGravity());
         for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
             collidable.setY(collidable.getY() + getGravity());
             if (Collidable.getSidesCollided()[1]) {
                 setAirCollided(false);
                 setGrounded(true);
+                doubleJumped = false;
             }
         }
     }
