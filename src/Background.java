@@ -37,6 +37,9 @@ public class Background {
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 collidable.setX(collidable.getX() + MOVE_AMT);
             }
+            for (Enemy enemy : GraphicsPanel.getEnemies()) {
+                enemy.setX(enemy.getX() + MOVE_AMT);
+            }
             return true;
         }
         return false;
@@ -47,6 +50,9 @@ public class Background {
             xCoord -= MOVE_AMT;
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 collidable.setX(collidable.getX() - MOVE_AMT);
+            }
+            for (Enemy enemy : GraphicsPanel.getEnemies()) {
+                enemy.setX(enemy.getX() - MOVE_AMT);
             }
             return true;
         }

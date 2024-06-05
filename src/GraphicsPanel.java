@@ -35,8 +35,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(1400, 1000, "src/assets/floor.png")); //test
         collidables.add(new Collidable(400, 500, "src/assets/rect.png")); //test
         collidables.add(new Collidable(1400, 1000, "src/assets/rect.png")); //test
-        enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, true));
-        enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, false));
+        enemies.add(new Enemy(100, 5, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.55, true));
+        enemies.add(new Enemy(150, 5, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.55, false));
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -64,11 +64,19 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             if (enemy.isDead()) continue;
             g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
+            g.drawRect((int) enemy.getHitbox().getX(), (int) enemy.getHitbox().getY(), (int) enemy.getHitbox().getWidth(), (int) enemy.getHitbox().getHeight());
+            enemy.reconcileHitbox();
+            enemy.targetPlayer(player);
+            enemy.attack(player);
         }
 
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
         player.hitboxDetection();
+
+        if (player.isDead()) {
+            System.out.println("dead");
+        }
     }
 
     // ----- KeyListener interface methods -----
