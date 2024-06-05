@@ -11,12 +11,16 @@ import java.lang.module.ResolutionException;
 public class Collidable {
     private double x;
     private double y;
+    private double originalX;
+    private double originalY;
     private BufferedImage image;
     private static boolean[] sidesCollided;
+    private Background background;
 
-    public Collidable(double x, double y, String img) {
-        this.x = x;
-        this.y = y;
+    public Collidable(double x, double y, String img, Background background) {
+        this.originalX = x;
+        this.originalY = y;
+        this.background = background;
         try {
             this.image = ImageIO.read(new File(img));
         } catch (IOException e) {
@@ -79,6 +83,11 @@ public class Collidable {
     }
     public Rectangle collidableRectBottom() {
         return new Rectangle((int) x + 5, (int) y + image.getHeight(), image.getWidth() - 10, 5);
+    }
+
+    public void updatePosition() {
+        this.x = originalX + background.getX();
+        this.y = originalY + background.getY();
     }
 
 }

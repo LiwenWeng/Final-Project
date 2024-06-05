@@ -233,6 +233,7 @@ public class Entity {
             bottomCollided = false;
         } else {
             Collidable.getSidesCollided()[0] = false;
+            airCollided = false;
         }
         if (topCollided) {
             topCollided = false;
@@ -251,14 +252,6 @@ public class Entity {
         }
     }
 
-    public boolean isAirborne() {
-        for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            if (entityRect().intersects(collidable.collidableRectTop())) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public Rectangle entityRect() {
         int imageHeight = getEntityImage().getHeight();

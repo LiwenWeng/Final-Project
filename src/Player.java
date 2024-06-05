@@ -71,15 +71,14 @@ public class Player extends Entity {
     }
 
     public void simulateGravity() {
-        if (isAirborne()) {
+        if (!Collidable.getSidesCollided()[1]) {
             setGrounded(false);
         }
         if (isGrounded()) return;
         setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
         if (getGravity() <= 0 && !doubleJumped) canDoubleJump = true;
-        background.setYCoord(background.getDoubleYCoord() + getGravity());
+        background.setY(background.getY() + getGravity());
         for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
-            collidable.setY(collidable.getY() + getGravity());
             if (Collidable.getSidesCollided()[1]) {
                 setAirCollided(false);
                 setGrounded(true);

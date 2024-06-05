@@ -28,13 +28,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         timer.start();
         timer.addActionListener(this);
 
-        collidables.add(new Collidable(400, 600, "src/assets/rect.png")); //test
-        collidables.add(new Collidable(1400, 900, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(400, 600, "src/assets/rect.png", background)); //test
+        collidables.add(new Collidable(1400, 900, "src/assets/rect.png", background)); //test
 
-        collidables.add(new Collidable(200, 1000, "src/assets/floor.png")); //test
-        collidables.add(new Collidable(1400, 1000, "src/assets/floor.png")); //test
-        collidables.add(new Collidable(400, 500, "src/assets/rect.png")); //test
-        collidables.add(new Collidable(1400, 1000, "src/assets/rect.png")); //test
+        collidables.add(new Collidable(200, 1000, "src/assets/floor.png", background)); //test
+        collidables.add(new Collidable(1400, 1000, "src/assets/floor.png", background)); //test
+        collidables.add(new Collidable(400, 500, "src/assets/rect.png", background)); //test
+        collidables.add(new Collidable(1400, 1000, "src/assets/rect.png", background)); //test
         enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, true));
         enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, false));
     }
@@ -50,12 +50,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background.getBackgroundImage(), background.getXCoord(), background.getYCoord(), null);
+        g.drawImage(background.getBackgroundImage(), (int) background.getX(), (int) background.getY(), null);
         g.drawImage(player.getEntityImage(), (int) player.getDrawX(), (int) player.getY(), player.getWidth(), player.getHeight(), null);
         g.drawRect((int) player.entityRect().getX(), (int) player.entityRect().getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());
         g.drawRect((int) player.getHitbox().getX(), (int) player.getHitbox().getY(), (int) player.getHitbox().getWidth(), (int) player.getHitbox().getHeight());
 
         for (Collidable collidable : collidables) {
+            collidable.updatePosition();
             g.drawImage(collidable.getImage(), (int) collidable.getX(), (int) collidable.getY(), collidable.getWidth(), collidable.getHeight(), null);
             g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
         }
@@ -69,6 +70,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
         player.hitboxDetection();
+        player.collided();
     }
 
     // ----- KeyListener interface methods -----
@@ -102,7 +104,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
-                player.collided();
                 player.simulateGravity();
                 if (pressedKeys[68]) {
                     player.faceRight();
