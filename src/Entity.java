@@ -21,8 +21,8 @@ public class Entity {
     private double gravity;
     private boolean airCollided;
     private boolean hitboxActive;
-    private Rectangle hitbox;
-    private boolean attackDebounce;
+    private Rectangle hitbox; // attack range
+    private boolean attackDebounce; // allows attack
     private boolean bottomCollided;
     private boolean topCollided;
     private boolean rightCollided;
@@ -181,7 +181,7 @@ public class Entity {
         this.hitboxActive = hitboxActive;
     }
 
-    public void reconcileHitbox() {
+    public void reconcileHitbox() { // hitbox moves with enemy
         if (facingRight) {
             hitbox.setLocation((int) (x + entityRect().getWidth() * 0.75), (int) y);
         } else {

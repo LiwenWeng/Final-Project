@@ -65,12 +65,20 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             if (enemy.isDead()) continue;
             g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
+            g.drawRect((int) enemy.getHitbox().getX(), (int) enemy.getHitbox().getY(), (int) enemy.getHitbox().getWidth(), (int) enemy.getHitbox().getHeight());
+            enemy.reconcileHitbox();
+            enemy.targetPlayer(player);
+            enemy.attack(player);
         }
 
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
         player.hitboxDetection();
         player.collided();
+
+        if (player.isDead()) {
+            System.out.println("dead");
+        }
     }
 
     // ----- KeyListener interface methods -----
@@ -104,6 +112,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
+                player.collided();
                 player.simulateGravity();
                 if (pressedKeys[68]) {
                     player.faceRight();

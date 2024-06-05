@@ -10,7 +10,7 @@ public class Enemy extends Entity {
     public Enemy(int health, int damage, double x, double y, boolean facingRight) {
         super(health, damage, x, y, facingRight, 1, 1);
         lineOfSight = false;
-        moveAmount = 0.0002;
+        moveAmount = 0.5;
         id = currentId;
         currentId++;
     }
@@ -39,16 +39,31 @@ public class Enemy extends Entity {
         }
     }
 
-    private void attack(Player player) {
+    public void targetPlayer(Player player) {
         if (player.getX() < getX()) {
             moveLeft();
         }
         if (player.getX() > getX()) {
             moveRight();
         }
-        if (entityRect().intersects(player.entityRect())) {
-            player.takeDamage(getDamage());
-            Utils.wait(1000);
+    }
+
+    public void attack(Player player) {
+        if (getHitbox().intersects(player.entityRect())) {
+            if (!isAttackDebounce()) {
+                player.takeDamage(getDamage());
+                System.out.println("player health: " + player.getHealth());
+                setAttackDebounce(true);
+                Utils.delay(getAttackCD(), (t) -> {
+                    setAttackDebounce(false);
+                }, 1);
+                System.out.println("enemy attack on cd");
+
+                setHitboxActive(true);
+                Utils.delay(1000, (t) -> {
+                    setHitboxActive(false);
+                }, 1);
+            }
         }
     }
 }

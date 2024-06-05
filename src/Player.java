@@ -85,6 +85,9 @@ public class Player extends Entity {
                 doubleJumped = false;
             }
         }
+        for (Enemy enemy : GraphicsPanel.getEnemies()) {
+            enemy.setY(enemy.getY() + getGravity());
+        }
     }
 
     @Override
@@ -114,9 +117,5 @@ public class Player extends Entity {
                 attackedEnemyIds.clear();
             }, 1);
         }
-    }
-
-    public void shoot() {
-
     }
 }
