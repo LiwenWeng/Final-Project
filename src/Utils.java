@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.function.Consumer;
 
 public class Utils {
     public static void wait(int ms) {
@@ -8,6 +9,18 @@ public class Utils {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void startThread(Runnable runnable) {
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public static <T> void delay(int ms, Consumer<T> callback, T value) {
+        startThread(() -> {
+            wait(ms);
+            callback.accept(value);
+        });
     }
 
     public static BufferedImage toBufferedImage(Image img)

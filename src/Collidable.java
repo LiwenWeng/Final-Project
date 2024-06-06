@@ -11,22 +11,32 @@ import java.lang.module.ResolutionException;
 public class Collidable {
     private double x;
     private double y;
+    private double originalX;
+    private double originalY;
     private BufferedImage image;
-    public static final int RIGHT = 1;
-    public static final int LEFT = -1;
-    public static final int UP = 2;
-    public static final int DOWN = -2;
+    private static boolean[] sidesCollided;
+    private Background background;
 
-    public Collidable(double x, double y, String img) {
-        this.x = x;
-        this.y = y;
+    public Collidable(double x, double y, String img, Background background) {
+        this.originalX = x;
+        this.originalY = y;
+        this.background = background;
         try {
             this.image = ImageIO.read(new File(img));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        //GraphicsPanel.getCollidables().add(this);
+        sidesCollided =  new boolean[4];
+        sidesCollided[0] = false;
+        sidesCollided[1] = false;
+        sidesCollided[2] = false;
+        sidesCollided[3] = false;
     }
+
+    public static boolean[] getSidesCollided() {
+        return sidesCollided;
+    }
+
 
     public double getX() {
         return x;
@@ -73,6 +83,11 @@ public class Collidable {
     }
     public Rectangle collidableRectBottom() {
         return new Rectangle((int) x + 5, (int) y + image.getHeight(), image.getWidth() - 10, 5);
+    }
+
+    public void updatePosition() {
+        this.x = originalX + background.getX();
+        this.y = originalY + background.getY();
     }
 
 }

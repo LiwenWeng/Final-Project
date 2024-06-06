@@ -1,26 +1,38 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Player extends Entity {
     private double moveAmount;
     private String name;
     private Background background;
     private boolean isWithinScreenRight;
     private boolean isWithinScreenLeft;
+    private ArrayList<Integer> attackedEnemyIds;
+    private boolean canDoubleJump;
+    private boolean doubleJumped;
 
     public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, 0.4, 0.4);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 0.4, 0.4);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
-
+        attackedEnemyIds = new ArrayList<>();
+        canDoubleJump = false;
+        doubleJumped = false;
     }
 
     public String getName() {
        return name;
     }
 
+    public ArrayList<Integer> getAttackedEnemyIds() {
+        return attackedEnemyIds;
+    }
+
     public void moveRight() {
-        if (collided() == Collidable.LEFT) return;
+        if (Collidable.getSidesCollided()[3]) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -33,7 +45,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (collided() == Collidable.RIGHT) return;
+        if (Collidable.getSidesCollided()[2]) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -46,37 +58,64 @@ public class Player extends Entity {
     }
 
     public void jump() {
-        getJump().start();
+        if (canDoubleJump) {
+            setGravity(Constants.SCREEN_HEIGHT * 0.006);
+            canDoubleJump = false;
+            doubleJumped = true;
+        }
         if (!isGrounded()) return;
         setGrounded(false);
-        setGravity(5);
+        setGravity(Constants.SCREEN_HEIGHT * 0.006);
+        canDoubleJump = false;
         playAnimation("jump");
     }
 
     public void simulateGravity() {
+        if (!Collidable.getSidesCollided()[1]) {
+            setGrounded(false);
+        }
         if (isGrounded()) return;
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT / 12800.0 );
-        background.setYCoord(background.getDoubleYCoord() + getGravity());
-        if (background.getDoubleYCoord() <= 0) {
-            setAirCollided(false);
-            setGrounded(true);
-            playAnimation("idle");
-        }
-
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
+        if (getGravity() <= 0 && !doubleJumped) canDoubleJump = true;
+        background.setY(background.getY() + getGravity());
         for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
-            collidable.setY(collidable.getY() + getGravity());
+            if (Collidable.getSidesCollided()[1]) {
+                setAirCollided(false);
+                setGrounded(true);
+                doubleJumped = false;
+            }
+        }
+        for (Enemy enemy : GraphicsPanel.getEnemies()) {
+            enemy.setY(enemy.getY() + getGravity());
         }
     }
 
-    public void swing() {
-
+    @Override
+    public void hitboxDetection() {
+        if (!isHitboxActive()) return;
+        for (Enemy enemy : GraphicsPanel.getEnemies()) {
+            if (getHitbox().intersects(enemy.entityRect()) && !attackedEnemyIds.contains(enemy.getId())) {
+                if (enemy.isDead()) continue;
+                enemy.takeDamage(getDamage());
+                if (enemy.isDead()) continue;
+                attackedEnemyIds.add(enemy.getId());
+            }
+        }
     }
 
-    public void shoot() {
+    @Override
+    public void attack() {
+        if (!isAttackDebounce()) {
+            setAttackDebounce(true);
+            Utils.delay(getAttackCD(), (t) -> {
+                setAttackDebounce(false);
+            }, 1);
 
-    }
-
-    public void takeDamage(int damage) {
-        setHealth(getHealth() - damage);
+            setHitboxActive(true);
+            Utils.delay(1000, (t) -> {
+                setHitboxActive(false);
+                attackedEnemyIds.clear();
+            }, 1);
+        }
     }
 }
