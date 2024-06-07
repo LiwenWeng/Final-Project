@@ -46,7 +46,7 @@ public class Entity {
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
-        run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 50);
+        run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 100);
         currentPlayingAnim = idle;
 
         hitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());

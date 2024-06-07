@@ -58,7 +58,7 @@ public class Animation implements ActionListener {
 
     public static ArrayList<BufferedImage> loadAnimation(String animationName, double scaleX, double scaleY) {
         ArrayList<BufferedImage> result = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 15; i++) {
             String filename = "src/assets/animations/" + animationName + "/" + animationName + i + ".png";
             try {
                 Image image = ImageIO.read((new File(filename)));

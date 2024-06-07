@@ -12,7 +12,7 @@ public class Player extends Entity {
     private boolean doubleJumped;
 
     public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 0.4, 0.4);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
