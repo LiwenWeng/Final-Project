@@ -20,7 +20,7 @@ public class Player extends Entity {
         isWithinScreenLeft = false;
         attackedEnemyIds = new ArrayList<>();
         canDoubleJump = false;
-        doubleJumped = false;
+        doubleJumped = true;
     }
 
     public String getName() {
@@ -89,12 +89,12 @@ public class Player extends Entity {
             setGrounded(true);
             doubleJumped = false;
 
-            // for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            //     if (collidable.collidableRectTop().intersects(entityRect())) {
-            //         background.setY(background.getY() + ((getY() + getHeight()) - collidable.getY()) + 5);
-            //         System.out.println("esnogeg");
-            //     }
-            // }
+
+            for (Collidable collidable : GraphicsPanel.getCollidables()) {
+                if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
+                    background.setY(background.getY() + -getGravity() + ((getY() + getHeight()) - collidable.getY()));
+                }
+            }
         }
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
             enemy.setY(enemy.getY() + getGravity());
