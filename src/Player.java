@@ -32,7 +32,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (Collidable.getSidesCollided()[3] || isHitboxActive()) return;
+        if (Collidable.getSidesCollided()[3] || (isHitboxActive() && isGrounded())) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -45,7 +45,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (Collidable.getSidesCollided()[2] || isHitboxActive()) return;
+        if (Collidable.getSidesCollided()[2] || (isHitboxActive() && isGrounded())) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -122,7 +122,7 @@ public class Player extends Entity {
             }, 1);
 
             setHitboxActive(true);
-            Utils.delay(1000, (t) -> {
+            Utils.delay(500, (t) -> {
                 setHitboxActive(false);
                 attackedEnemyIds.clear();
             }, 1);

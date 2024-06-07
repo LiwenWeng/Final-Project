@@ -16,6 +16,7 @@ public class Entity {
     private Animation idle;
     private Animation jump;
     private Animation run;
+    private Animation attack;
     private Animation currentPlayingAnim;
     private boolean isGrounded;
     private double gravity;
@@ -47,6 +48,7 @@ public class Entity {
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
         run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 100);
+        attack = new Animation("attack", Animation.loadAnimation("attack", scalex, scaley), 100);
         currentPlayingAnim = idle;
 
         hitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
@@ -277,6 +279,11 @@ public class Entity {
                 run.start();
                 currentPlayingAnim.stop();
                 currentPlayingAnim = run;
+            }
+            case "attack" -> {
+                attack.start();
+                currentPlayingAnim.stop();
+                currentPlayingAnim = attack;
             }
         }
     }
