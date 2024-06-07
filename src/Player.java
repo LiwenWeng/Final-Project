@@ -32,7 +32,7 @@ public class Player extends Entity {
     }
 
     public void moveRight() {
-        if (Collidable.getSidesCollided()[3]) return;
+        if (Collidable.getSidesCollided()[3] || isHitboxActive()) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - getWidth()) {
                 setX(getX() + moveAmount);
@@ -45,7 +45,7 @@ public class Player extends Entity {
     }
 
     public void moveLeft() {
-        if (Collidable.getSidesCollided()[2]) return;
+        if (Collidable.getSidesCollided()[2] || isHitboxActive()) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -77,11 +77,10 @@ public class Player extends Entity {
         if (isGrounded()) return;
         setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
         if (!doubleJumped) {
-            Utils.startThread(() -> {
-                Utils.wait(200);
+            Utils.delay(200,(t) -> {
                 canDoubleJump = true;
                 doubleJumped = true;
-            });
+            } , 1);
         }
         background.setY(background.getY() + getGravity());
         if (Collidable.getSidesCollided()[1]) {
