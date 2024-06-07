@@ -210,6 +210,7 @@ public class Entity {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
             if (entityRect().intersects(collidable.collidableRectBottom())) {
                 if (!airCollided) {
+                    System.out.println("ewngiohbguwebg");
                     gravity = 0;
                     airCollided = true;
                 }

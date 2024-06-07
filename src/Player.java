@@ -58,7 +58,7 @@ public class Player extends Entity {
     }
 
     public void jump() {
-        if (canDoubleJump) {
+        if (canDoubleJump && !Collidable.getSidesCollided()[0]) {
             setGravity(Constants.SCREEN_HEIGHT * 0.006);
             canDoubleJump = false;
             doubleJumped = true;
@@ -76,14 +76,25 @@ public class Player extends Entity {
         }
         if (isGrounded()) return;
         setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
-        if (getGravity() <= 0 && !doubleJumped) canDoubleJump = true;
+        if (!doubleJumped) {
+            Utils.startThread(() -> {
+                Utils.wait(200);
+                canDoubleJump = true;
+                doubleJumped = true;
+            });
+        }
         background.setY(background.getY() + getGravity());
-        for (Collidable collidable : GraphicsPanel.getCollidables()) { //move collidables with background
-            if (Collidable.getSidesCollided()[1]) {
-                setAirCollided(false);
-                setGrounded(true);
-                doubleJumped = false;
-            }
+        if (Collidable.getSidesCollided()[1]) {
+            setAirCollided(false);
+            setGrounded(true);
+            doubleJumped = false;
+
+            // for (Collidable collidable : GraphicsPanel.getCollidables()) {
+            //     if (collidable.collidableRectTop().intersects(entityRect())) {
+            //         background.setY(background.getY() + ((getY() + getHeight()) - collidable.getY()) + 5);
+            //         System.out.println("esnogeg");
+            //     }
+            // }
         }
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
             enemy.setY(enemy.getY() + getGravity());
