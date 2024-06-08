@@ -62,6 +62,7 @@ public class Player extends Entity {
             setGravity(Constants.SCREEN_HEIGHT * 0.006);
             canDoubleJump = false;
             doubleJumped = true;
+            System.out.println("wdwdwdw");
         }
         if (!isGrounded()) return;
         setGrounded(false);
@@ -77,9 +78,9 @@ public class Player extends Entity {
         if (isGrounded()) return;
         setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
         if (!doubleJumped) {
+            doubleJumped = true;
             Utils.delay(200,(t) -> {
                 canDoubleJump = true;
-                doubleJumped = true;
             } , 1);
         }
         background.setY(background.getY() + getGravity());
@@ -87,13 +88,12 @@ public class Player extends Entity {
             setAirCollided(false);
             setGrounded(true);
             doubleJumped = false;
-
-
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     background.setY(background.getY() + -getGravity() + ((getY() + getHeight()) - collidable.getY()));
                 }
             }
+            setGravity(0);
         }
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
             enemy.setY(enemy.getY() + getGravity());

@@ -22,7 +22,8 @@ public class Entity {
     private double gravity;
     private boolean airCollided;
     private boolean hitboxActive;
-    private Rectangle hitbox; // attack range
+    private Rectangle attackHitbox; // attack range
+    private Rectangle hitbox;
     private boolean attackDebounce; // allows attack
     private boolean bottomCollided;
     private boolean topCollided;
@@ -37,6 +38,7 @@ public class Entity {
         this.x = x;
         this.y = y;
         this.facingRight = facingRight;
+
         isGrounded = false;
         gravity = 0;
         airCollided = false;
@@ -44,6 +46,7 @@ public class Entity {
         attackDebounce = false;
         attackCD = 700;
         dead = false;
+        
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
@@ -51,7 +54,8 @@ public class Entity {
         attack = new Animation("attack", Animation.loadAnimation("attack", scalex, scaley), 100);
         currentPlayingAnim = idle;
 
-        hitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
+        hitbox = new Rectangle((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15), (int) (getWidth() * 0.55), (int) (getHeight() * 0.65));
+        attackHitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
         bottomCollided = false;
         topCollided = false;
         rightCollided = false;
@@ -127,7 +131,7 @@ public class Entity {
     }
 
     public Rectangle getHitbox() {
-        return hitbox;
+        return attackHitbox;
     }
 
     public boolean isHitboxActive() {
@@ -183,18 +187,20 @@ public class Entity {
         this.hitboxActive = hitboxActive;
     }
 
-    public void reconcileHitbox() { // hitbox moves with enemy
+    public void reconcileHitbox() { // attackHitbox moves with enemy
         if (facingRight) {
-            hitbox.setLocation((int) (x + entityRect().getWidth() * 0.75), (int) y);
+            attackHitbox.setLocation((int) (x + entityRect().getWidth() * 0.75), (int) y);
+            hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15)); 
         } else {
-            hitbox.setLocation((int) (x - entityRect().getWidth() * 0.375), (int) y);
+            attackHitbox.setLocation((int) (x - entityRect().getWidth() * 0.375), (int) y);
+            hitbox.setLocation((int) (x - getWidth() * 0.25), (int) (y + getHeight() * 0.15)); 
         }
     }
 
     public void hitboxDetection() {
         if (!hitboxActive) return;
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
-            if (hitbox.intersects(enemy.entityRect())) {
+            if (attackHitbox.intersects(enemy.entityRect())) {
                 System.out.println(enemy.getHealth());
             }
         }
@@ -256,10 +262,7 @@ public class Entity {
 
 
     public Rectangle entityRect() {
-        int imageHeight = getEntityImage().getHeight();
-        int imageWidth = getEntityImage().getWidth();
-
-        return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
+        return hitbox;
     }
 
     public void playAnimation(String animationName) {
