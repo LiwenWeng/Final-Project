@@ -62,7 +62,7 @@ public class Player extends Entity {
             setGravity(Constants.SCREEN_HEIGHT * 0.006);
             canDoubleJump = false;
             doubleJumped = true;
-            System.out.println("wdwdwdw");
+            getJump().reset();
         }
         if (!isGrounded()) return;
         setGrounded(false);

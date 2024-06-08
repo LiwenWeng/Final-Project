@@ -46,6 +46,10 @@ public class Animation implements ActionListener {
 
     public void stop() {
         active = false;
+        reset();
+    }
+
+    public void reset() {
         currentFrame = 0;
     }
 
