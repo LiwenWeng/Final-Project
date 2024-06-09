@@ -70,6 +70,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
 
         for (Enemy enemy : enemies) {
             if (enemy.isDead()) continue;
+            enemy.updatePosition();
             g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
             g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
