@@ -11,23 +11,21 @@ import java.lang.module.ResolutionException;
 public class Collidable {
     private double x;
     private double y;
+    private int width;
+    private int height;
     private double originalX;
     private double originalY;
-    private BufferedImage image;
     private static boolean[] sidesCollided;
     private Background background;
 
-    public Collidable(double x, double y, String img, Background background) {
+    public Collidable(double x, double y, int width, int height, Background background) {
         this.x = x;
         this.y = y;
         this.originalX = x;
         this.originalY = y;
         this.background = background;
-        try {
-            this.image = ImageIO.read(new File(img));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        this.width = width;
+        this.height = height;
         sidesCollided =  new boolean[4];
         sidesCollided[0] = false;
         sidesCollided[1] = false;
@@ -49,15 +47,11 @@ public class Collidable {
     }
 
     public int getWidth() {
-        return image.getWidth();
+        return width;
     }
 
     public int getHeight() {
-        return image.getHeight();
-    }
-
-    public BufferedImage getImage() {
-        return image;
+        return height;
     }
 
     public void setX(double x) {
@@ -69,22 +63,19 @@ public class Collidable {
     }
 
     public Rectangle collidableRect() {
-        int imageHeight = image.getHeight();
-        int imageWidth = image.getWidth();
-
-        return new Rectangle((int) x, (int) y, imageWidth, imageHeight);
+        return new Rectangle((int) x, (int) y, width, height);
     }
     public Rectangle collidableRectLeft() {
-        return new Rectangle((int) x - 5, (int) y + 5, 5, image.getHeight() - 10);
+        return new Rectangle((int) x - 5, (int) y + 5, 5, height - 10);
     }
     public Rectangle collidableRectRight() {
-        return new Rectangle((int) x + image.getWidth(), (int) y + 5, 5, image.getHeight() - 10);
+        return new Rectangle((int) x + width, (int) y + 5, 5, height - 10);
     }
     public Rectangle collidableRectTop() {
-        return new Rectangle((int) x + 5, (int) y - 5, image.getWidth() - 10, 5);
+        return new Rectangle((int) x + 5, (int) y - 5, width - 10, 5);
     }
     public Rectangle collidableRectBottom() {
-        return new Rectangle((int) x + 5, (int) y + image.getHeight(), image.getWidth() - 10, 5);
+        return new Rectangle((int) x + 5, (int) y + height, width - 10, 5);
     }
 
     public void updatePosition() {
