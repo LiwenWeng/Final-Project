@@ -16,6 +16,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private static ArrayList<Enemy> enemies = new ArrayList<>();
     private static ArrayList<DashImage> dashImages = new ArrayList<>();
     private boolean dashed;
+    private boolean tapRight;
+    private boolean tapRightAgain;
+    private boolean tapLeft;
+    private boolean tapLeftAgain;
 
     public GraphicsPanel() {
         background = new Background("tempbackground", -50, -50);
@@ -23,6 +27,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
         dashed = false;
+        tapRight = false;
+        tapLeft = false;
+        tapRightAgain = false;
+        tapLeftAgain = false;
 
         addKeyListener(this);
         addMouseListener(this);
@@ -99,11 +107,43 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // A = 65, D = 68, S = 83, W = 87, left = 37, up = 38, right = 39, down = 40, space = 32, enter = 10
         int key = e.getKeyCode();
         pressedKeys[key] = true;
+        if (tapRightAgain && key == 68) {
+            player.faceRight();
+            player.dashRight();
+        }
+        if (key == 68) {
+            tapRight = true;
+            Utils.delay(100, (t) -> {
+                tapRight = false;
+            }, 1);
+        }
+        if (tapLeftAgain && key == 65) {
+            player.faceLeft();
+            player.dashLeft();
+        }
+        if (key == 65) {
+            tapLeft = true;
+            Utils.delay(100, (t) -> {
+                tapLeft = false;
+            }, 1);
+        }
     }
 
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         pressedKeys[key] = false;
+        if (tapRight && key == 68) {
+            tapRightAgain = true;
+            Utils.delay(100, (t) -> {
+                tapRightAgain = false;
+            }, 1);
+        }
+        if (tapLeft && key == 65) {
+            tapLeftAgain = true;
+            Utils.delay(100, (t) -> {
+                tapLeftAgain = false;
+            }, 1);
+        }
     }
 
     // ----- MouseListener interface methods -----
@@ -125,32 +165,24 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 player.collided();
                 player.simulateGravity();
 
-                if (pressedKeys[32] && pressedKeys[68]) {
-                    player.faceRight();
-                    player.dashRight();
-                }
                 if (pressedKeys[68]) {
                     player.faceRight();
                     player.moveRight();
                 }
 
-                if (pressedKeys[32] && pressedKeys[65]) {
-                    player.faceLeft();
-                    player.dashLeft();
-                }
                 if (pressedKeys[65]) {
                     player.faceLeft();
                     player.moveLeft();
                 }
 
-                if (pressedKeys[87]) {
+                if (pressedKeys[87] || pressedKeys[32]) {
                     player.jump();
                 }
                 if (player.isDashing()) {
                     player.playAnimation("dash");
                 } else if (player.isHitboxActive()) {
                     player.playAnimation("attack");
-                } else if (pressedKeys[87] || !player.isGrounded()) {
+                } else if (pressedKeys[87] || !player.isGrounded() || pressedKeys[32]) {
                     player.playAnimation("jump");
                 } else if (pressedKeys[68] || pressedKeys[65]) {
                     player.playAnimation("run");
