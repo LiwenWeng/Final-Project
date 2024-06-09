@@ -85,11 +85,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
 
-        player.getCurrentPlayingAnim().start();
-        player.reconcileHitbox();
-        player.hitboxDetection();
-        player.collided();
-        player.takeDamage(1);
+        player.start();
     }
 
     // ----- KeyListener interface methods -----
