@@ -124,7 +124,7 @@ public class Player extends Entity implements ActionListener{
         setGrounded(false);
         setGravity(Constants.SCREEN_HEIGHT * 0.006);
         canDoubleJump = false;
-        playAnimation("jump");
+        playAnimation("jump", false);
     }
 
     public void simulateGravity() {
