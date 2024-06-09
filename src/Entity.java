@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Entity {
     private int health;
@@ -12,6 +14,8 @@ public class Entity {
     private Animation run;
     private Animation attack;
     private Animation dash;
+    private Animation deadAnim;
+    private Map<String, Animation> animations;
     private Animation currentPlayingAnim;
     private boolean isGrounded;
     private double gravity;
@@ -41,14 +45,22 @@ public class Entity {
         attackDebounce = false;
         attackCD = 700;
         dead = false;
-        
 
         idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
         jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
         run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 100);
         attack = new Animation("attack", Animation.loadAnimation("attack", scalex, scaley), 100);
         dash = new Animation("dash", Animation.loadAnimation("dash", scalex, scaley), 100);
+        deadAnim = new Animation("dead", Animation.loadAnimation("dead", scalex, scaley), 100);
         currentPlayingAnim = idle;
+
+        animations = new HashMap<>();
+        animations.put("idle", idle);
+        animations.put("jump", jump);
+        animations.put("run", run);
+        animations.put("attack", attack);
+        animations.put("dash", dash);
+        animations.put("dead", deadAnim);
 
         hitbox = new Rectangle((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15), (int) (getWidth() * 0.55), (int) (getHeight() * 0.65));
         attackHitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
@@ -148,7 +160,10 @@ public class Entity {
 
     public void takeDamage(int damage) {
         health -= damage;
-        if (health <= 0) dead = true;
+        if (health <= 0) {
+            dead = true;
+            playAnimation("dead", false);
+        };
     }
 
     public void setDamage(int damage) {
@@ -261,35 +276,15 @@ public class Entity {
         return hitbox;
     }
 
-    public void playAnimation(String animationName) {
-        if (currentPlayingAnim.toString().equals(animationName)) return;
-        switch (animationName) {
-            case "idle" -> {
-                idle.start();
-                currentPlayingAnim.stop();
-                currentPlayingAnim = idle;
+    public void playAnimation(String animationName, boolean loop) {
+        if (currentPlayingAnim.toString().equals(animationName)) {
+            if (!loop && currentPlayingAnim.isLooped() > 0) {
+                currentPlayingAnim.stop(!currentPlayingAnim.toString().equals("dead"));
             }
-            case "jump" -> {
-                jump.start();
-                currentPlayingAnim.stop();
-                currentPlayingAnim = jump;
-            }
-            case "run" -> {
-                run.start();
-                currentPlayingAnim.stop();
-                currentPlayingAnim = run;
-            }
-            case "attack" -> {
-                attack.start();
-                currentPlayingAnim.stop();
-                currentPlayingAnim = attack;
-            }
-            case "dash" -> {
-                dash.start();
-                currentPlayingAnim.stop();
-                currentPlayingAnim = dash;
-            }
-        }
+            return;
+        };
+        currentPlayingAnim.stop(true);
+        currentPlayingAnim = animations.get(animationName).start();
     }
 
     public void attack() {

@@ -13,6 +13,7 @@ public class Animation implements ActionListener {
     private Timer timer;
     private int currentFrame;
     private boolean active;
+    private int looped;
     private String name;
 
     public Animation(String name, ArrayList<BufferedImage> frames, int delay) {
@@ -22,6 +23,7 @@ public class Animation implements ActionListener {
         timer = new Timer(delay, this);
         timer.start();
         active = false;
+        looped = 0;
     }
 
     public boolean isActive() {
@@ -32,6 +34,10 @@ public class Animation implements ActionListener {
         return currentFrame;
     }
 
+    public int isLooped() {
+        return looped;
+    }
+
     public ArrayList<BufferedImage> getFrames() {
         return frames;
     }
@@ -40,13 +46,14 @@ public class Animation implements ActionListener {
         return frames.get(currentFrame);
     }
 
-    public void start() {
+    public Animation start() {
         active = true;
+        return this;
     }
 
-    public void stop() {
+    public void stop(boolean resetFrames) {
         active = false;
-        reset();
+        if (resetFrames) reset();
     }
 
     public void reset() {
@@ -57,6 +64,7 @@ public class Animation implements ActionListener {
         if (e.getSource() instanceof Timer) {
             if (!active) return;
             currentFrame = (currentFrame + 1) % frames.size();
+            looped += (currentFrame == frames.size() - 1) ? 1 : 0;
         }
     }
 

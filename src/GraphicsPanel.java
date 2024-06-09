@@ -91,7 +91,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         player.reconcileHitbox();
         player.hitboxDetection();
         player.collided();
-        
     }
 
     // ----- KeyListener interface methods -----
@@ -160,6 +159,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 player.collided();
                 player.simulateGravity();
 
+                if (player.isDead()) return;
                 if (pressedKeys[68]) {
                     player.faceRight();
                     player.moveRight();
@@ -174,15 +174,15 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                     player.jump();
                 }
                 if (player.isDashing()) {
-                    player.playAnimation("dash");
+                    player.playAnimation("dash", false);
                 } else if (player.isHitboxActive()) {
-                    player.playAnimation("attack");
+                    player.playAnimation("attack", true);
                 } else if (!player.isGrounded() || pressedKeys[32]) {
-                    player.playAnimation("jump");
+                    player.playAnimation("jump", true);
                 } else if (pressedKeys[68] || pressedKeys[65]) {
-                    player.playAnimation("run");
+                    player.playAnimation("run", true);
                 } else {
-                    player.playAnimation("idle");
+                    player.playAnimation("idle", true);
                 }
                 if (player.isDashing()) {
                     dashed = true;
