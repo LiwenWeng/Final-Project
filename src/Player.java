@@ -146,7 +146,7 @@ public class Player extends Entity implements ActionListener{
             doubleJumped = false;
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
-                    background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.getY()));
+                    background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.collidableRectTop().y));
                 }
             }
             setGravity(0);
