@@ -6,9 +6,15 @@ public class Enemy extends Entity {
     private boolean lineOfSight;
     private double moveAmount;
     private int id;
+    private double originalX;
+    private double originalY;
+    private Background background;
 
-    public Enemy(int health, int damage, double x, double y, boolean facingRight) {
+    public Enemy(int health, int damage, double x, double y, boolean facingRight, Background background) {
         super(health, damage, x, y, facingRight, 1, 1);
+        this.background = background;
+        this.originalX = x;
+        this.originalY = y;
         lineOfSight = false;
         moveAmount = 0.5;
         id = currentId;
@@ -49,7 +55,7 @@ public class Enemy extends Entity {
     }
 
     public void attack(Player player) {
-        if (getHitbox().intersects(player.entityRect())) {
+        if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
                 player.takeDamage(getDamage());
                 System.out.println("player health: " + player.getHealth());
@@ -65,5 +71,10 @@ public class Enemy extends Entity {
                 }, 1);
             }
         }
+    }
+
+    public void updatePosition() {
+        setX(originalX + background.getX());
+        setY(originalY + background.getY());
     }
 }

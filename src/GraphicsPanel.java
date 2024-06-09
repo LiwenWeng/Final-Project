@@ -14,12 +14,15 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private Timer timer;
     private static ArrayList<Collidable> collidables = new ArrayList<>();
     private static ArrayList<Enemy> enemies = new ArrayList<>();
+    private static ArrayList<DashImage> dashImages = new ArrayList<>();
+    private boolean dashed;
 
     public GraphicsPanel() {
         background = new Background("tempbackground", -50, -50);
         player = new Player(background);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
+        dashed = false;
 
         addKeyListener(this);
         addMouseListener(this);
@@ -35,8 +38,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(1400, 1000, "src/assets/floor.png", background)); //test
         collidables.add(new Collidable(400, 470, "src/assets/rect.png", background)); //test
         collidables.add(new Collidable(1400, 1000, "src/assets/rect.png", background)); //test
-        enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, true));
-        enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, false));
+        // enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, true));
+        // enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, false));
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -47,13 +50,17 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         return enemies;
     }
 
+    public static ArrayList<DashImage> getDashImages() {
+        return dashImages;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background.getBackgroundImage(), (int) background.getX(), (int) background.getY(), null);
         g.drawImage(player.getEntityImage(), (int) player.getDrawX(), (int) player.getY(), player.getWidth(), player.getHeight(), null);
         g.drawRect((int) player.entityRect().getX(), (int) player.entityRect().getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());
-        g.drawRect((int) player.getHitbox().getX(), (int) player.getHitbox().getY(), (int) player.getHitbox().getWidth(), (int) player.getHitbox().getHeight());
+        g.drawRect((int) player.getAttackHitbox().getX(), (int) player.getAttackHitbox().getY(), (int) player.getAttackHitbox().getWidth(), (int) player.getAttackHitbox().getHeight());
 
         for (Collidable collidable : collidables) {
             collidable.updatePosition();
@@ -65,20 +72,22 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             if (enemy.isDead()) continue;
             g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
-            g.drawRect((int) enemy.getHitbox().getX(), (int) enemy.getHitbox().getY(), (int) enemy.getHitbox().getWidth(), (int) enemy.getHitbox().getHeight());
+            g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
             enemy.reconcileHitbox();
             enemy.targetPlayer(player);
             enemy.attack(player);
+        }
+        for (DashImage dashImage : dashImages) {
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dashImage.getAlpha());
+            ((Graphics2D) g).setComposite(ac);
+            g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
 
         player.getCurrentPlayingAnim().start();
         player.reconcileHitbox();
         player.hitboxDetection();
         player.collided();
-
-        if (player.isDead()) {
-            System.out.println("dead");
-        }
+        
     }
 
     // ----- KeyListener interface methods -----
@@ -114,29 +123,49 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             if (e.getSource() == timer) {
                 player.collided();
                 player.simulateGravity();
+
+                if (pressedKeys[32] && pressedKeys[68]) {
+                    player.faceRight();
+                    player.dashRight();
+                }
                 if (pressedKeys[68]) {
                     player.faceRight();
                     player.moveRight();
+                }
+
+                if (pressedKeys[32] && pressedKeys[65]) {
+                    player.faceLeft();
+                    player.dashLeft();
                 }
                 if (pressedKeys[65]) {
                     player.faceLeft();
                     player.moveLeft();
                 }
-                if (pressedKeys[32] || pressedKeys[87]) {
+
+                if (pressedKeys[87]) {
                     player.jump();
                 }
-
-                if (player.isHitboxActive()) {
+                if (player.isDashing()) {
+                    player.playAnimation("dash");
+                } else if (player.isHitboxActive()) {
                     player.playAnimation("attack");
-                } else if (pressedKeys[32] || pressedKeys[87] || !player.isGrounded()) {
+                } else if (pressedKeys[87] || !player.isGrounded()) {
                     player.playAnimation("jump");
                 } else if (pressedKeys[68] || pressedKeys[65]) {
                     player.playAnimation("run");
                 } else {
                     player.playAnimation("idle");
                 }
+                if (player.isDashing()) {
+                    dashed = true;
+                }
+                if (dashed) {
+                    Utils.delay(1000, (t) -> {
+                        dashImages = new ArrayList<>();
+                    }, 1);
+                    dashed = false;
+                }
             }
-            
         }
  
     }

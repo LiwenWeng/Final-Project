@@ -18,6 +18,8 @@ public class Collidable {
     private Background background;
 
     public Collidable(double x, double y, String img, Background background) {
+        this.x = x;
+        this.y = y;
         this.originalX = x;
         this.originalY = y;
         this.background = background;
