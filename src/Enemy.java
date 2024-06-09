@@ -1,6 +1,3 @@
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class Enemy extends Entity {
     private static int currentId = 0;
     private boolean lineOfSight;

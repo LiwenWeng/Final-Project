@@ -1,10 +1,6 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
@@ -182,7 +178,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                     player.playAnimation("dash");
                 } else if (player.isHitboxActive()) {
                     player.playAnimation("attack");
-                } else if (pressedKeys[87] || !player.isGrounded() || pressedKeys[32]) {
+                } else if (!player.isGrounded() || pressedKeys[32]) {
                     player.playAnimation("jump");
                 } else if (pressedKeys[68] || pressedKeys[65]) {
                     player.playAnimation("run");

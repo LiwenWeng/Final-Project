@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class Player extends Entity implements ActionListener{
