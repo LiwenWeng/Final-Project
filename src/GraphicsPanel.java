@@ -92,6 +92,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         player.reconcileHitbox();
         player.hitboxDetection();
         player.collided();
+        player.takeDamage(1);
     }
 
     // ----- KeyListener interface methods -----

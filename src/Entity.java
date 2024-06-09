@@ -159,6 +159,8 @@ public class Entity {
     }
 
     public void takeDamage(int damage) {
+        if (dash.isActive()) return;
+
         health -= damage;
         if (health <= 0) {
             dead = true;
