@@ -201,12 +201,20 @@ public class Entity {
     }
 
     public void reconcileHitbox() { // attackHitbox moves with enemy
-        if (facingRight) {
-            hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15));
-            attackHitbox.setLocation((int) (x + hitbox.getWidth() * 1.375), (int) y);
+        if (isDead()) {
+            if (facingRight) {
+                hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y - getHeight() * 0.075));
+            } else {
+                hitbox.setLocation((int) (x - getWidth() * 0.25), (int) (y - getHeight() * 0.075));
+            }
         } else {
-            hitbox.setLocation((int) (x - getWidth() * 0.25), (int) (y + getHeight() * 0.15));
-            attackHitbox.setLocation((int) (x - hitbox.getWidth() * 0.375), (int) y);
+            if (facingRight) {
+                hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15));
+                attackHitbox.setLocation((int) (x + hitbox.getWidth() * 1.375), (int) y);
+            } else {
+                hitbox.setLocation((int) (x - getWidth() * 0.25), (int) (y + getHeight() * 0.15));
+                attackHitbox.setLocation((int) (x - hitbox.getWidth() * 0.375), (int) y);
+            }
         }
     }
 

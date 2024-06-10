@@ -1,12 +1,5 @@
-import javax.imageio.ImageIO;
-
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.lang.module.ResolutionException;
 
 public class Collidable {
     private double x;
