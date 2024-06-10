@@ -41,6 +41,8 @@ public class Enemy extends Entity {
     }
 
     public void checkForPlayer() {
+        attackRangeRect.setLocation(entityRect().getLocation());
+
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
             System.out.println("player in range");
@@ -91,5 +93,9 @@ public class Enemy extends Entity {
     public void updatePosition() {
         setX(originalX + background.getX());
         setY(originalY + background.getY());
+    }
+
+    public void start() {
+
     }
 }
