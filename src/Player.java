@@ -90,7 +90,7 @@ public class Player extends Entity implements ActionListener{
                 isDashing = false;
                 dashRight = false;
             }, 1);
-            Utils.delay(2000, (t) -> {
+            Utils.delay(4000, (t) -> {
                 canDash = true;
             }, 1);
         }
@@ -106,7 +106,7 @@ public class Player extends Entity implements ActionListener{
                 isDashing = false;
                 dashLeft = false;
             }, 1);
-            Utils.delay(2000, (t) -> {
+            Utils.delay(4000, (t) -> {
                 canDash = true;
             }, 1);
         }

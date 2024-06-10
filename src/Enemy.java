@@ -7,8 +7,8 @@ public class Enemy extends Entity {
     private double originalY;
     private Background background;
 
-    public Enemy(int health, int damage, double x, double y, boolean facingRight, Background background) {
-        super(health, damage, x, y, facingRight, 1, 1);
+    public Enemy(int health, int damage, double x, double y, Background background) {
+        super(health, damage, x, y, true, 1, 1);
         this.background = background;
         this.originalX = x;
         this.originalY = y;
