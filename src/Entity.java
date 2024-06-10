@@ -200,6 +200,13 @@ public class Entity {
         this.hitboxActive = hitboxActive;
     }
 
+    public void start() {
+        currentPlayingAnim.start();
+        reconcileHitbox();
+        hitboxDetection();
+        collided();
+    }
+
     public void reconcileHitbox() { // attackHitbox moves with enemy
         if (isDead()) {
             if (facingRight) {
