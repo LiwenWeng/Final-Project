@@ -1,9 +1,7 @@
 import java.awt.*;
 
 public class Enemy extends Entity {
-    private static int currentId = 0;
     private double moveAmount;
-    private int id;
     private double originalX;
     private double originalY;
     private Background background;
@@ -17,15 +15,9 @@ public class Enemy extends Entity {
         this.originalX = x;
         this.originalY = y;
         moveAmount = 0.5;
-        id = currentId;
-        currentId++;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
         playerInRange = false;
         this.player = player;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void moveLeft() {
@@ -52,7 +44,7 @@ public class Enemy extends Entity {
         }
     }
 
-    public void targetPlayer(Player player) {
+    public void targetPlayer() {
         if (!playerInRange) return;
 
         if (player.getX() < getX()) {
@@ -71,7 +63,11 @@ public class Enemy extends Entity {
 
     }
 
-    public void attack(Player player) {
+    public void defaultMovement() {
+
+    }
+
+    public void attack() {
         if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
                 player.takeDamage(getDamage());
@@ -96,6 +92,11 @@ public class Enemy extends Entity {
     }
 
     public void start() {
-
+        super.start();
+        checkForPlayer();
+        simulateGravity();
+        updatePosition();
+        targetPlayer();
+        defaultMovement();
     }
 }

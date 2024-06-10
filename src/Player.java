@@ -55,7 +55,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void moveRight() {
-        if (Collidable.getSidesCollided()[3] || (isHitboxActive() && isGrounded()) || isDashing) return;
+        if (Collidable.getSidesCollided().get("right").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
                 setX(getX() + moveAmount);
@@ -68,7 +68,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void moveLeft() {
-        if (Collidable.getSidesCollided()[2] || (isHitboxActive() && isGrounded()) || isDashing) return;
+        if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -114,7 +114,7 @@ public class Player extends Entity implements ActionListener{
 
     public void jump() {
         if (isDashing) return;
-        if (canDoubleJump && !Collidable.getSidesCollided()[0]) {
+        if (canDoubleJump && !Collidable.getSidesCollided().get("bottom").contains(getId())) {
             setGravity(Constants.SCREEN_HEIGHT * 0.006);
             canDoubleJump = false;
             doubleJumped = true;
@@ -128,7 +128,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void simulateGravity() {
-        if (!Collidable.getSidesCollided()[1]) {
+        if (!Collidable.getSidesCollided().get("top").contains(getId())) {
             setGrounded(false);
         }
         if (isGrounded() || isDashing) return;
@@ -140,7 +140,7 @@ public class Player extends Entity implements ActionListener{
             } , 1);
         }
         background.setY(background.getY() + getGravity());
-        if (Collidable.getSidesCollided()[1]) {
+        if (Collidable.getSidesCollided().get("top").contains(getId())) {
             setAirCollided(false);
             setGrounded(true);
             doubleJumped = false;
@@ -203,7 +203,7 @@ public class Player extends Entity implements ActionListener{
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == dashTimer) {
                 if (dashRight) {
-                    if (Collidable.getSidesCollided()[3] || isHitboxActive()) return;
+                    if (Collidable.getSidesCollided().get("right").contains(getId()) || isHitboxActive()) return;
                     if (!background.dashLeft(isWithinScreenLeft)) {
                         if (getX() + moveAmount * 5.0 < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
                             setX(getX() + moveAmount * 5.0);
@@ -215,7 +215,7 @@ public class Player extends Entity implements ActionListener{
                     }
                 }
                 else if (dashLeft) {
-                    if (Collidable.getSidesCollided()[2] || isHitboxActive()) return;
+                    if (Collidable.getSidesCollided().get("left").contains(getId()) || isHitboxActive()) return;
                     if (!background.dashRight(isWithinScreenRight)) {
                         if (getX() - moveAmount * 5.0 > 0) {
                             setX(getX() - moveAmount * 5.0);
@@ -237,5 +237,11 @@ public class Player extends Entity implements ActionListener{
                 }
             }
         }
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        simulateGravity();
     }
 }
