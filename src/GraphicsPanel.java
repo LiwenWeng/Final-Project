@@ -18,7 +18,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeftAgain;
 
     public GraphicsPanel() {
-        background = new Background("tempbackground", -50, -50, 1, 1);
+        background = new Background("menu", -50, -50, 6, 6);
         player = new Player(background);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -36,12 +36,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         timer.addActionListener(this);
 
         collidables.add(new Collidable(400, 500, 400, 300, background)); //test
+        collidables.add(new Collidable(800, 650, 400, 100, background)); //test
         collidables.add(new Collidable(1400, 900, 400, 300, background)); //test
         collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 400, 300, background)); //test
-        enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, background));
-        enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, background));
+        // enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, background));
+        // enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, background));
     }
 
     public static ArrayList<Collidable> getCollidables() {
