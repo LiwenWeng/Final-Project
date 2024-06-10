@@ -1,5 +1,8 @@
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Collidable {
     private double x;
@@ -8,7 +11,7 @@ public class Collidable {
     private int height;
     private double originalX;
     private double originalY;
-    private static boolean[] sidesCollided;
+    private static Map<String, ArrayList<Integer>> sidesCollided;
     private Background background;
 
     public Collidable(double x, double y, int width, int height, Background background) {
@@ -19,14 +22,14 @@ public class Collidable {
         this.background = background;
         this.width = width;
         this.height = height;
-        sidesCollided =  new boolean[4];
-        sidesCollided[0] = false;
-        sidesCollided[1] = false;
-        sidesCollided[2] = false;
-        sidesCollided[3] = false;
+        sidesCollided =  new HashMap<>();
+        sidesCollided.put("top", new ArrayList<>());
+        sidesCollided.put("bottom", new ArrayList<>());
+        sidesCollided.put("left", new ArrayList<>());
+        sidesCollided.put("right", new ArrayList<>());
     }
 
-    public static boolean[] getSidesCollided() {
+    public static Map<String, ArrayList<Integer>> getSidesCollided() {
         return sidesCollided;
     }
 

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Entity {
+    private static int currentId = 0;
+    private int id;
     private int health;
     private int damage;
     private double x;
@@ -32,6 +34,9 @@ public class Entity {
     private boolean dead;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
+        id = currentId;
+        currentId++;
+
         this.health = health;
         this.damage = damage;
         this.x = x;
@@ -69,6 +74,9 @@ public class Entity {
         rightCollided = false;
         leftCollided = false;
 
+    }
+    public int getId() {
+        return id;
     }
 
     public int getHealth() {
@@ -250,41 +258,41 @@ public class Entity {
                     airCollided = true;
                 }
                 bottomCollided = true;
-                Collidable.getSidesCollided()[0] = true;
+                Collidable.getSidesCollided().get("bottom").add(id);
             }
             if (entityRect().intersects(collidable.collidableRectTop())) {
                 topCollided = true;
-                Collidable.getSidesCollided()[1] = true;
+                Collidable.getSidesCollided().get("top").add(id);
             }
             if (entityRect().intersects(collidable.collidableRectRight())) {
                 rightCollided = true;
-                Collidable.getSidesCollided()[2] = true;
+                Collidable.getSidesCollided().get("right").add(id);
             }
             if (entityRect().intersects(collidable.collidableRectLeft())) {
                 leftCollided = true;
-                Collidable.getSidesCollided()[3] = true;
+                Collidable.getSidesCollided().get("left").add(id);
             }
         }
         if (bottomCollided) {
             bottomCollided = false;
         } else {
-            Collidable.getSidesCollided()[0] = false;
+            Collidable.getSidesCollided().get("bottom").remove((Integer) id);
             airCollided = false;
         }
         if (topCollided) {
             topCollided = false;
         } else {
-            Collidable.getSidesCollided()[1] = false;
+            Collidable.getSidesCollided().get("top").remove((Integer) id);
         }
         if (rightCollided) {
             rightCollided = false;
         } else {
-            Collidable.getSidesCollided()[2] = false;
+            Collidable.getSidesCollided().get("right").remove((Integer) id);
         }
         if (leftCollided) {
             leftCollided = false;
         } else {
-            Collidable.getSidesCollided()[3] = false;
+            Collidable.getSidesCollided().get("left").remove((Integer) id);
         }
     }
 

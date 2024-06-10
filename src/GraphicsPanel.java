@@ -40,8 +40,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 400, 300, background)); //test
-        enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, background));
-        enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, background));
+        //enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, background));
+        //enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, background));
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -79,6 +79,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             enemy.targetPlayer();
             enemy.attack();
         }
+
         for (DashImage dashImage : dashImages) {
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dashImage.getAlpha());
             ((Graphics2D) g).setComposite(ac);

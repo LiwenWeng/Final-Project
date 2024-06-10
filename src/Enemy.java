@@ -1,9 +1,7 @@
 import java.awt.*;
 
 public class Enemy extends Entity {
-    private static int currentId = 0;
     private double moveAmount;
-    private int id;
     private double originalX;
     private double originalY;
     private Background background;
@@ -17,15 +15,9 @@ public class Enemy extends Entity {
         this.originalX = x;
         this.originalY = y;
         moveAmount = 0.5;
-        id = currentId;
-        currentId++;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
         playerInRange = false;
         this.player = player;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void moveLeft() {
