@@ -154,10 +154,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             if (e.getSource() == timer) {
                 player.collided();
                 player.simulateGravity();
-                for (Boolean boolean1 : Collidable.getSidesCollided()) {
-                    System.out.print(boolean1);
-                }
-                System.out.println();
+
                 if (player.isDead()) return;
                 if (pressedKeys[68]) {
                     player.faceRight();
