@@ -76,8 +76,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
             g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
             enemy.reconcileHitbox();
-            enemy.targetPlayer(player);
-            enemy.attack(player);
+            enemy.targetPlayer();
+            enemy.attack();
         }
         for (DashImage dashImage : dashImages) {
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dashImage.getAlpha());

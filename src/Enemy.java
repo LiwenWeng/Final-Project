@@ -52,7 +52,7 @@ public class Enemy extends Entity {
         }
     }
 
-    public void targetPlayer(Player player) {
+    public void targetPlayer() {
         if (!playerInRange) return;
 
         if (player.getX() < getX()) {
@@ -71,7 +71,11 @@ public class Enemy extends Entity {
 
     }
 
-    public void attack(Player player) {
+    public void defaultMovement() {
+
+    }
+
+    public void attack() {
         if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
                 player.takeDamage(getDamage());
@@ -96,6 +100,9 @@ public class Enemy extends Entity {
     }
 
     public void start() {
-
+        super.start();
+        updatePosition();
+        targetPlayer();
+        defaultMovement();
     }
 }
