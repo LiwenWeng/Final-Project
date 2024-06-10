@@ -18,7 +18,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeftAgain;
 
     public GraphicsPanel() {
-        background = new Background("tempbackground", -50, -50);
+        background = new Background("tempbackground", -50, -50, 1, 1);
         player = new Player(background);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);

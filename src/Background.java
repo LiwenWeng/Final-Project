@@ -10,12 +10,12 @@ public class Background {
     private final double RIGHT_LIMIT;
     private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
 
-    public Background(String img, int x, int y) {
+    public Background(String img, int x, int y, double scalex, double scaley) {
         this.x = x;
         this.y = y;
         this.originalX = x;
         this.originalY = y;
-        animation = new Animation("background", Animation.loadAnimation(img, Constants.SCREEN_HEIGHT / 1080.0, Constants.SCREEN_HEIGHT / 1080.0),200);
+        animation = new Animation("background", Animation.loadAnimation(img, scalex, scaley),200);
         animation.start();
         LEFT_LIMIT = 0;
         RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
