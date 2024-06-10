@@ -238,4 +238,10 @@ public class Player extends Entity implements ActionListener{
             }
         }
     }
+
+    @Override
+    public void start() {
+        super.start();
+        simulateGravity();
+    }
 }

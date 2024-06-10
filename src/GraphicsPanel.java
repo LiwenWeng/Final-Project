@@ -85,8 +85,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             ((Graphics2D) g).setComposite(ac);
             g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
-
-        player.start();
     }
 
     // ----- KeyListener interface methods -----
@@ -153,8 +151,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
-                player.collided();
-                player.simulateGravity();
+                player.start();
 
                 if (player.isDead()) return;
                 if (pressedKeys[68]) {

@@ -93,6 +93,8 @@ public class Enemy extends Entity {
 
     public void start() {
         super.start();
+        checkForPlayer();
+        simulateGravity();
         updatePosition();
         targetPlayer();
         defaultMovement();
