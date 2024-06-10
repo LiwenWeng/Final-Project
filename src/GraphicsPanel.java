@@ -35,7 +35,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         timer.start();
         timer.addActionListener(this);
 
-        collidables.add(new Collidable(400, 470, 400, 300, background)); //test
+        collidables.add(new Collidable(400, 500, 400, 300, background)); //test
         collidables.add(new Collidable(1400, 900, 400, 300, background)); //test
         collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
