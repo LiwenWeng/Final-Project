@@ -55,7 +55,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void moveRight() {
-        if (Collidable.getSidesCollided().get("right").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
+        if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
         if (!background.moveLeft(isWithinScreenLeft)) {
             if (getX() + moveAmount < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
                 setX(getX() + moveAmount);
@@ -68,7 +68,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void moveLeft() {
-        if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
+        if (Collidable.getSidesCollided().get("right").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
         if (!background.moveRight(isWithinScreenRight)) {
             if (getX() - moveAmount > 0) {
                 setX(getX() - moveAmount);
@@ -128,6 +128,7 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void simulateGravity() {
+        collided();
         if (!Collidable.getSidesCollided().get("top").contains(getId())) {
             setGrounded(false);
         }
@@ -203,7 +204,7 @@ public class Player extends Entity implements ActionListener{
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == dashTimer) {
                 if (dashRight) {
-                    if (Collidable.getSidesCollided().get("right").contains(getId()) || isHitboxActive()) return;
+                    if (Collidable.getSidesCollided().get("left").contains(getId()) || isHitboxActive()) return;
                     if (!background.dashLeft(isWithinScreenLeft)) {
                         if (getX() + moveAmount * 5.0 < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
                             setX(getX() + moveAmount * 5.0);
@@ -215,7 +216,7 @@ public class Player extends Entity implements ActionListener{
                     }
                 }
                 else if (dashLeft) {
-                    if (Collidable.getSidesCollided().get("left").contains(getId()) || isHitboxActive()) return;
+                    if (Collidable.getSidesCollided().get("right").contains(getId()) || isHitboxActive()) return;
                     if (!background.dashRight(isWithinScreenRight)) {
                         if (getX() - moveAmount * 5.0 > 0) {
                             setX(getX() - moveAmount * 5.0);

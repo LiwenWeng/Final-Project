@@ -258,19 +258,27 @@ public class Entity {
                     airCollided = true;
                 }
                 bottomCollided = true;
-                Collidable.getSidesCollided().get("bottom").add(id);
+                if (!Collidable.getSidesCollided().get("bottom").contains(id)) {
+                    Collidable.getSidesCollided().get("bottom").add(id);
+                }
             }
             if (entityRect().intersects(collidable.collidableRectTop())) {
                 topCollided = true;
-                Collidable.getSidesCollided().get("top").add(id);
+                if (!Collidable.getSidesCollided().get("top").contains(id)) {
+                    Collidable.getSidesCollided().get("top").add(id);                    
+                }
             }
             if (entityRect().intersects(collidable.collidableRectRight())) {
                 rightCollided = true;
-                Collidable.getSidesCollided().get("right").add(id);
+                if (!Collidable.getSidesCollided().get("right").contains(id)) {
+                    Collidable.getSidesCollided().get("right").add(id);                    
+                }
             }
             if (entityRect().intersects(collidable.collidableRectLeft())) {
                 leftCollided = true;
-                Collidable.getSidesCollided().get("left").add(id);
+                if (!Collidable.getSidesCollided().get("left").contains(id)) {
+                    Collidable.getSidesCollided().get("left").add(id);
+                }
             }
         }
         if (bottomCollided) {
