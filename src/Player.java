@@ -20,7 +20,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background) {
-        super(10000, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2);
         this.name = "joe";
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
@@ -90,7 +90,7 @@ public class Player extends Entity implements ActionListener{
                 isDashing = false;
                 dashRight = false;
             }, 1);
-            Utils.delay(2000, (t) -> {
+            Utils.delay(4000, (t) -> {
                 canDash = true;
             }, 1);
         }
@@ -106,7 +106,7 @@ public class Player extends Entity implements ActionListener{
                 isDashing = false;
                 dashLeft = false;
             }, 1);
-            Utils.delay(2000, (t) -> {
+            Utils.delay(4000, (t) -> {
                 canDash = true;
             }, 1);
         }
