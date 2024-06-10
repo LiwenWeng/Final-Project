@@ -1,33 +1,31 @@
+import java.awt.*;
+
 public class Enemy extends Entity {
     private static int currentId = 0;
-    private boolean lineOfSight;
     private double moveAmount;
     private int id;
     private double originalX;
     private double originalY;
     private Background background;
+    private Rectangle attackRangeRect;
+    private boolean playerInRange;
+    private Player player;
 
-    public Enemy(int health, int damage, double x, double y, Background background) {
+    public Enemy(int health, int damage, double x, double y, int rangeWidth, int rangeHeight, Player player, Background background) {
         super(health, damage, x, y, true, 1, 1);
         this.background = background;
         this.originalX = x;
         this.originalY = y;
-        lineOfSight = false;
         moveAmount = 0.5;
         id = currentId;
         currentId++;
+        attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
+        playerInRange = false;
+        this.player = player;
     }
 
     public int getId() {
         return id;
-    }
-
-    public boolean hasLineOfSight() {
-        return lineOfSight;
-    }
-
-    public void setLineOfSight(boolean lineOfSight) {
-        this.lineOfSight = lineOfSight;
     }
 
     public void moveLeft() {
@@ -42,13 +40,33 @@ public class Enemy extends Entity {
         }
     }
 
+    public void checkForPlayer() {
+        if (attackRangeRect.intersects(player.entityRect())) {
+            playerInRange = true;
+            System.out.println("player in range");
+        } else {
+            playerInRange = false;
+            System.out.println("player not in range");
+        }
+    }
+
     public void targetPlayer(Player player) {
+        if (!playerInRange) return;
+
         if (player.getX() < getX()) {
             moveLeft();
         }
         if (player.getX() > getX()) {
             moveRight();
         }
+    }
+
+    public void jump() {
+
+    }
+
+    public void simulateGravity() {
+
     }
 
     public void attack(Player player) {
