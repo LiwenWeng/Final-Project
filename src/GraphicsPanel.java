@@ -122,20 +122,20 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         super.paintComponent(g);
         g.drawImage(background.getBackgroundImage(), (int) background.getX(), (int) background.getY(), null);
         g.drawImage(player.getEntityImage(), (int) player.getDrawX(), (int) player.getY(), player.getWidth(), player.getHeight(), null);
-        g.drawRect((int) player.entityRect().getX(), (int) player.entityRect().getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());
-        g.drawRect((int) player.getAttackHitbox().getX(), (int) player.getAttackHitbox().getY(), (int) player.getAttackHitbox().getWidth(), (int) player.getAttackHitbox().getHeight());
+        // g.drawRect((int) player.entityRect().getX(), (int) player.entityRect().getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());
+        // g.drawRect((int) player.getAttackHitbox().getX(), (int) player.getAttackHitbox().getY(), (int) player.getAttackHitbox().getWidth(), (int) player.getAttackHitbox().getHeight());
 
         for (Collidable collidable : collidables) {
             collidable.updatePosition();
-            g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
+            // g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
         }
 
         for (Enemy enemy : enemies) {
             if (enemy.isDead()) enemies.remove(enemy);
             g.drawImage(enemy.getEntityImage(), (int) enemy.getDrawX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
-            g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
-            g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
-            g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
+            // g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
+            // g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
+            // g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
             enemy.start();
         }
         for (UI ui : UIList) {
@@ -224,8 +224,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) {
         player.attack();
-        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - (background.getY() + 2280)));
-        player.takeDamage(20);
     }
 
     public void mousePressed(MouseEvent e) { }
