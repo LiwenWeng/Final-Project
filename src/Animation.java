@@ -67,14 +67,13 @@ public class Animation implements ActionListener {
         return this;
     }
 
-    public void stop(boolean resetFrames, boolean resetLoop) {
+    public void stop(boolean resetFrames) {
         active = false;
-        if (resetFrames) reset(resetLoop);
+        if (resetFrames) reset();
     }
 
-    public void reset(boolean resetLoop) {
+    public void reset() {
         currentFrame = reverse ? frames.size() - 1 : 0;
-        if (resetLoop) looped = 0;
     }
 
     public void actionPerformed(ActionEvent e) {
