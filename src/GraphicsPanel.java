@@ -98,7 +98,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        enemies.add(new Snail(2540, -780, player, background, Snail.loadAnimations()));
+        //enemies.add(new Snail(2540, -780, player, background, Snail.loadAnimations()));
         enemies.add(new Snail(1100, 2300, player, background, Snail.loadAnimations()));
 //        for (int i = 0; i < 1; i++) {
 //            enemies.add(new Snail(500 + i * 400, -1000, player, background, Snail.loadAnimations()));
@@ -157,16 +157,18 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 dead = true;
             }, 1);
         }
-        if (dead) {
-            MenuFrame f = new MenuFrame("defeat");
-            enclosingFrame.setVisible(false);
-            enclosingFrame.removeAll();
-        }
 
         if (enemies.isEmpty()) {
             MenuFrame f = new MenuFrame("victory");
             enclosingFrame.setVisible(false);
             enclosingFrame.removeAll();
+        }
+
+        if (dead) {
+            MenuFrame f = new MenuFrame("defeat");
+            enclosingFrame.setVisible(false);
+            enclosingFrame.removeAll();
+            enemies.clear();
         }
     }
 
