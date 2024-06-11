@@ -42,10 +42,8 @@ public class Enemy extends Entity {
 
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
-            System.out.println("player in range");
         } else {
             playerInRange = false;
-            System.out.println("player not in range");
         }
     }
 
@@ -58,10 +56,15 @@ public class Enemy extends Entity {
         if (player.getX() > getX()) {
             moveRight();
         }
+        if (player.getY() + player.getHeight() < getAttackHitbox().y + getAttackHitbox().getHeight()/2) {
+            jump();
+        }
     }
 
     public void jump() {
-
+        if (!isGrounded()) return;
+        setGrounded(false);
+        setGravity(Constants.SCREEN_HEIGHT * 0.006);
     }
 
     public void simulateGravity() {
