@@ -13,7 +13,7 @@ public class MainFrame implements Runnable {
         frame.setUndecorated(true);
 
         // create and add panel
-        panel = new GraphicsPanel(frame);
+        panel = new GraphicsPanel();
         frame.add(panel);
 
         // display the frame
