@@ -188,7 +188,7 @@ public class Entity {
         collided();
     }
 
-    public void reconcileHitbox() { // attackHitbox moves with enemy
+    public void reconcileHitbox() {
         if (isDead()) {
             if (facingRight) {
                 hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y - getHeight() * 0.075));
