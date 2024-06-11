@@ -22,7 +22,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, 1100, 750, true, animations);
+        super(100, 10, 1100, 740, true, animations);
         this.name = "joe";
 
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
@@ -154,6 +154,7 @@ public class Player extends Entity implements ActionListener{
             setAirCollided(false);
             setGrounded(true);
             doubleJumped = false;
+            canDoubleJump = false;
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     if (isDead()) {

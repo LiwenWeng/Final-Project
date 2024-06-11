@@ -57,28 +57,30 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(1230, 700 - background.getOriginalY(), 210, 30, background));
         collidables.add(new Collidable(1070, 640 - background.getOriginalY(), 145, 30, background));
         collidables.add(new Collidable(735, 540 - background.getOriginalY(), 240, 40, background));
+        collidables.add(new Collidable(1060, 310 - background.getOriginalY(), 250, 30, background));
+        collidables.add(new Collidable(1310, 410 - background.getOriginalY(), 610, 310, background));
 
-        Map<String, Animation> boarAnimations = new HashMap<>();
-        boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
-        boarAnimations.put("attack", new Animation("attack", Animation.loadAnimation("boar/", "attack", 2, 2),200));
-        boarAnimations.put("run", new Animation("run", Animation.loadAnimation("boar/", "run", 2, 2),200));
-        boarAnimations.put("hit", new Animation("hit", Animation.loadAnimation("boar/", "hit", 2, 2),200));
-        enemies.add(new Boar(400, 700, player, background, boarAnimations));
+        // Map<String, Animation> boarAnimations = new HashMap<>();
+        // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
+        // boarAnimations.put("attack", new Animation("attack", Animation.loadAnimation("boar/", "attack", 2, 2),200));
+        // boarAnimations.put("run", new Animation("run", Animation.loadAnimation("boar/", "run", 2, 2),200));
+        // boarAnimations.put("hit", new Animation("hit", Animation.loadAnimation("boar/", "hit", 2, 2),200));
+        // enemies.add(new Boar(400, 700, player, background, boarAnimations));
 
-        Map<String, Animation> beeAnimations = new HashMap<>();
-        beeAnimations.put("idle", new Animation("idle", Animation.loadAnimation("bee/", "idle", 2, 2),200));
-        beeAnimations.put("attack", new Animation("attack", Animation.loadAnimation("bee/", "attack", 2, 2),200));
-        beeAnimations.put("run", new Animation("run", Animation.loadAnimation("bee/", "run", 2, 2),200));
-        beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
-        enemies.add(new Bee(800, 800, player, background, beeAnimations));
+        // Map<String, Animation> beeAnimations = new HashMap<>();
+        // beeAnimations.put("idle", new Animation("idle", Animation.loadAnimation("bee/", "idle", 2, 2),200));
+        // beeAnimations.put("attack", new Animation("attack", Animation.loadAnimation("bee/", "attack", 2, 2),200));
+        // beeAnimations.put("run", new Animation("run", Animation.loadAnimation("bee/", "run", 2, 2),200));
+        // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
+        // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        Map<String, Animation> snailAnimations = new HashMap<>();
-        snailAnimations.put("idle", new Animation("idle", Animation.loadAnimation("snail/", "idle", 2, 2),200));
-        snailAnimations.put("attack", new Animation("attack", Animation.loadAnimation("snail/", "attack", 2, 2),200));
-        snailAnimations.put("run", new Animation("run", Animation.loadAnimation("snail/", "run", 2, 2),200));
-        snailAnimations.put("hit", new Animation("hit", Animation.loadAnimation("snail/", "hit", 2, 2),200));
-        snailAnimations.put("hide", new Animation("hide", Animation.loadAnimation("snail/", "hide", 2, 2),200));
-        enemies.add(new Snail(1400, 800, player, background, snailAnimations));
+        // Map<String, Animation> snailAnimations = new HashMap<>();
+        // snailAnimations.put("idle", new Animation("idle", Animation.loadAnimation("snail/", "idle", 2, 2),200));
+        // snailAnimations.put("attack", new Animation("attack", Animation.loadAnimation("snail/", "attack", 2, 2),200));
+        // snailAnimations.put("run", new Animation("run", Animation.loadAnimation("snail/", "run", 2, 2),200));
+        // snailAnimations.put("hit", new Animation("hit", Animation.loadAnimation("snail/", "hit", 2, 2),200));
+        // snailAnimations.put("hide", new Animation("hide", Animation.loadAnimation("snail/", "hide", 2, 2),200));
+        // enemies.add(new Snail(1400, 800, player, background, snailAnimations));
     }
 
     public static ArrayList<Collidable> getCollidables() {
