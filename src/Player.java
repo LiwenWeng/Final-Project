@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends Entity implements ActionListener{
     private double moveAmount;
@@ -19,16 +21,21 @@ public class Player extends Entity implements ActionListener{
     private boolean dashLeft;
     private double dashPosition;
 
-    public Player(Background background) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2);
+    public Player(Background background, Map<String, Animation> animations) {
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2, animations);
         this.name = "joe";
+
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
         this.background = background;
+
         isWithinScreenRight = false;
         isWithinScreenLeft = false;
+
         attackedEnemyIds = new ArrayList<>();
+
         canDoubleJump = false;
         doubleJumped = true;
+
         isDashing = false;
         canDash = true;
         dashTimer = new Timer(20, this);
@@ -118,7 +125,7 @@ public class Player extends Entity implements ActionListener{
             setGravity(Constants.SCREEN_HEIGHT * 0.006);
             canDoubleJump = false;
             doubleJumped = true;
-            getJump().reset();
+            getAnimations().get("jump").reset();
         }
         if (!isGrounded()) return;
         setGrounded(false);

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.HashMap;
 
 public class Enemy extends Entity {
     private double moveAmount;
@@ -10,7 +11,7 @@ public class Enemy extends Entity {
     private Player player;
 
     public Enemy(int health, int damage, double x, double y, int rangeWidth, int rangeHeight, Player player, Background background) {
-        super(health, damage, x, y, true, 1, 1);
+        super(health, damage, x, y, true, 1, 1, new HashMap<>());
         this.background = background;
         this.originalX = x;
         this.originalY = y;

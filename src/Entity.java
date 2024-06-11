@@ -11,12 +11,6 @@ public class Entity {
     private double x;
     private double y;
     private boolean facingRight;
-    private Animation idle;
-    private Animation jump;
-    private Animation run;
-    private Animation attack;
-    private Animation dash;
-    private Animation deadAnim;
     private Map<String, Animation> animations;
     private Animation currentPlayingAnim;
     private boolean isGrounded;
@@ -33,7 +27,7 @@ public class Entity {
     private int attackCD;
     private boolean dead;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley, Map<String, Animation> animations) {
         id = currentId;
         currentId++;
 
@@ -51,21 +45,8 @@ public class Entity {
         attackCD = 700;
         dead = false;
 
-        idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
-        run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 100);
-        attack = new Animation("attack", Animation.loadAnimation("attack", scalex, scaley), 100);
-        dash = new Animation("dash", Animation.loadAnimation("dash", scalex, scaley), 100);
-        deadAnim = new Animation("dead", Animation.loadAnimation("dead", scalex, scaley), 100);
-        currentPlayingAnim = idle;
-
-        animations = new HashMap<>();
-        animations.put("idle", idle);
-        animations.put("jump", jump);
-        animations.put("run", run);
-        animations.put("attack", attack);
-        animations.put("dash", dash);
-        animations.put("dead", deadAnim);
+        this.animations = animations;
+        currentPlayingAnim = animations.get("idle");
 
         hitbox = new Rectangle((int) (x + getWidth() * 0.25), (int) (y + getHeight() * 0.15), (int) (getWidth() * 0.55), (int) (getHeight() * 0.65));
         attackHitbox = new Rectangle((int) (x + getWidth() * 0.75), (int) y, (int) (getWidth() * 0.67), getHeight());
@@ -131,15 +112,8 @@ public class Entity {
         return dead;
     }
 
-    public Animation getIdle() {
-        return idle;
-    }
-
-    public Animation getJump() {
-        return jump;
-    }
-    public Animation getRun() {
-        return run;
+    public Map<String, Animation> getAnimations() {
+        return animations;
     }
 
     public Animation getCurrentPlayingAnim() {
@@ -167,7 +141,7 @@ public class Entity {
     }
 
     public void takeDamage(int damage) {
-        if (dash.isActive()) return;
+        if (animations.get("dash").isActive()) return;
 
         health -= damage;
         if (health <= 0) {
