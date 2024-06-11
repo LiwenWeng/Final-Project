@@ -26,13 +26,13 @@ public class Enemy extends Entity {
 
     public void moveLeft() {
         if (getX() - moveAmount >= 0) {
-            setX(getX() - moveAmount);
+            originalX -= moveAmount;
         }
     }
 
     public void moveRight() {
         if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
-            setX(getX() + moveAmount);
+            originalX += moveAmount;
         }
     }
 
