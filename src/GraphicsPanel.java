@@ -30,7 +30,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
-        background = new Background("levelbackground", 0, -1080, 1, 1);
+        background = new Background("levelbackground", 0, (int) (-1080 * (Constants.SCREEN_HEIGHT/1920.0)), 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
