@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Entity implements ActionListener{
@@ -22,14 +21,14 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, 1100, 740, true, animations);
+        super(100, 10, 250, 800, true, animations);
         this.name = "joe";
 
-        moveAmount = Constants.SCREEN_HEIGHT * 0.002;
+        moveAmount = Constants.SCREEN_HEIGHT * 0.004;
         this.background = background;
 
         isWithinScreenRight = false;
-        isWithinScreenLeft = false;
+        isWithinScreenLeft = true;
 
         attackedEnemyIds = new ArrayList<>();
 
@@ -50,13 +49,13 @@ public class Player extends Entity implements ActionListener{
     }
 
     public String getName() {
-       return name;
+        return name;
     }
 
     public ArrayList<Integer> getAttackedEnemyIds() {
         return attackedEnemyIds;
     }
-    
+
     public boolean isDashing() {
         return isDashing;
     }
@@ -93,7 +92,7 @@ public class Player extends Entity implements ActionListener{
             dashRight = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(400, (t) -> {
+            Utils.delay(300, (t) -> {
                 isDashing = false;
                 dashRight = false;
             }, 1);
@@ -109,7 +108,7 @@ public class Player extends Entity implements ActionListener{
             dashLeft = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(400, (t) -> {
+            Utils.delay(300, (t) -> {
                 isDashing = false;
                 dashLeft = false;
             }, 1);
@@ -125,7 +124,7 @@ public class Player extends Entity implements ActionListener{
             setGravity(Constants.SCREEN_HEIGHT * 0.009);
             canDoubleJump = false;
             doubleJumped = true;
-            getAnimations().get("jump").reset();
+            getAnimations().get("jump").reset(true);
         }
         if (!isGrounded()) return;
         setGrounded(false);
@@ -242,7 +241,7 @@ public class Player extends Entity implements ActionListener{
                     if (background.canDashLeft() && background.canDashRight()) {
                         GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) (getDrawX() + (background.getX() - dashPosition)), (int) (getY()), (int) getWidth(), (int) getHeight(), true));
                     } else {
-                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(), (int) getY(), (int) getWidth(), (int) getHeight(), false));   
+                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(), (int) getY(), (int) getWidth(), (int) getHeight(), false));
                     }
                 }
             }
