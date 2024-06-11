@@ -16,10 +16,22 @@ public class Enemy extends Entity {
         this.background = background;
         this.originalX = x;
         this.originalY = y;
-        moveAmount = 0.5;
+        moveAmount = 0.05;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
         playerInRange = false;
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public boolean isPlayerInRange() {
+        return playerInRange;
+    }
+
+    public void setPlayerInRange(boolean playerInRange) {
+        this.playerInRange = playerInRange;
     }
 
     public Rectangle getAttackRangeRect() {
@@ -54,11 +66,11 @@ public class Enemy extends Entity {
 
         if (player.entityRect().getX() + player.entityRect().getWidth() < Utils.getCenterPos(getAttackHitbox(), "x")) {
             moveLeft();
-            faceLeft();
+            faceRight();
         }
         if (player.entityRect().getX() > Utils.getCenterPos(getAttackHitbox(), "x")) {
             moveRight();
-            faceRight();
+            faceLeft();
         }
         if (player.getY() + player.getHeight() < getAttackHitbox().y + getAttackHitbox().getHeight()/2) {
             jump();
@@ -75,7 +87,7 @@ public class Enemy extends Entity {
         if (!Collidable.getSidesCollided().get("top").contains(getId())) setGrounded(false);
         if (isGrounded()) return;
 
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002);
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0000005);
         originalY -= getGravity();
         if (Collidable.getSidesCollided().get("top").contains(getId())) {
             setAirCollided(false);
@@ -94,7 +106,7 @@ public class Enemy extends Entity {
     }
 
     public void defaultMovement() {
-        
+
     }
 
     public void attack() {

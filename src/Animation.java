@@ -48,6 +48,10 @@ public class Animation implements ActionListener {
         return frames.get(currentFrame);
     }
 
+    public boolean isReverse() {
+        return reverse;
+    }
+
     public void reverse() {
         reverse = !reverse;
         if (reverse) {
@@ -69,7 +73,7 @@ public class Animation implements ActionListener {
     }
 
     public void reset() {
-        currentFrame = 0;
+        currentFrame = reverse ? frames.size() - 1 : 0;
     }
 
     public void actionPerformed(ActionEvent e) {
