@@ -21,7 +21,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, 250, 800, true, animations);
+        super(100, 10, 1100, 750, true, animations);
         this.name = "joe";
 
         moveAmount = Constants.SCREEN_HEIGHT * 0.004;
