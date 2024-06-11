@@ -20,6 +20,10 @@ public class Enemy extends Entity {
         this.player = player;
     }
 
+    public Rectangle getAttackRangeRect() {
+        return attackRangeRect;
+    }
+
     public void moveLeft() {
         if (getX() - moveAmount >= 0) {
             setX(getX() - moveAmount);
@@ -33,14 +37,15 @@ public class Enemy extends Entity {
     }
 
     public void checkForPlayer() {
-        attackRangeRect.setLocation(entityRect().getLocation());
+        Point center = Utils.getCenterPos(entityRect());
+        attackRangeRect.setLocation((int) (center.x - attackRangeRect.getWidth()/2), (int) (center.y - attackRangeRect.getHeight()/2));
 
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
-           // System.out.println("player in range");
+            System.out.println("player in range");
         } else {
             playerInRange = false;
-           // System.out.println("player not in range");
+            System.out.println("player not in range");
         }
     }
 

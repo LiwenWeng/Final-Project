@@ -41,4 +41,10 @@ public class Utils {
         // Return the buffered image
         return bimage;
     }
+
+    public static Point getCenterPos(Rectangle rectangle) {
+        double x = rectangle.x + rectangle.getWidth()/2.0;
+        double y = rectangle.y + rectangle.getHeight()/2.0;
+        return new Point((int) x, (int) y);
+    }
 }
