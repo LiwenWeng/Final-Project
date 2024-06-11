@@ -64,21 +64,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(1060, 310 - background.getOriginalY(), 250, 30, background));
         collidables.add(new Collidable(1310, 410 - background.getOriginalY(), 610, 310, background));
         collidables.add(new Collidable(1900, 685 - background.getOriginalY(), 1450, 50, background));
-        collidables.add(new Collidable(2550, 650 - background.getOriginalY(), 300, 50, background));
-        collidables.add(new Collidable(2620, 610 - background.getOriginalY(), 160, 50, background));
-        collidables.add(new Collidable(2840, 400 - background.getOriginalY(), 430, 30, background));
-        collidables.add(new Collidable(3260, 150 - background.getOriginalY(), 110, 640, background));
-        collidables.add(new Collidable(2480, 80 - background.getOriginalY(), 370, 30, background));
-        collidables.add(new Collidable(3270, -540 - background.getOriginalY(), 110, 440, background));
-        collidables.add(new Collidable(3585, 0 - background.getOriginalY(), 145, 30, background));
-        collidables.add(new Collidable(3375, -230 - background.getOriginalY(), 140, 30, background));
-        collidables.add(new Collidable(3530, -500 - background.getOriginalY(), 200, 30, background));
-        collidables.add(new Collidable(3730, -1080 - background.getOriginalY(), 100, 940, background));
-        collidables.add(new Collidable(2190, -660 - background.getOriginalY(), 1190, 110, background));
-        collidables.add(new Collidable(3265, -1480 - background.getOriginalY(), 110, 630, background));
-        collidables.add(new Collidable(2790, -780 - background.getOriginalY(), 150, 120, background));
-        collidables.add(new Collidable(3075, -920 - background.getOriginalY(), 190, 30, background));
-        collidables.add(new Collidable(2965, 285 - background.getOriginalY(), 175, 15, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
