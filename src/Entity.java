@@ -51,12 +51,12 @@ public class Entity {
         attackCD = 700;
         dead = false;
 
-        idle = new Animation("idle", Animation.loadAnimation("idle", scalex, scaley),200);
-        jump = new Animation("jump", Animation.loadAnimation("jump", scalex, scaley), 100);
-        run = new Animation("run", Animation.loadAnimation("run", scalex, scaley), 100);
-        attack = new Animation("attack", Animation.loadAnimation("attack", scalex, scaley), 100);
-        dash = new Animation("dash", Animation.loadAnimation("dash", scalex, scaley), 100);
-        deadAnim = new Animation("dead", Animation.loadAnimation("dead", scalex, scaley), 100);
+        idle = new Animation("idle", Animation.loadAnimation("player/", "idle", scalex, scaley),200);
+        jump = new Animation("jump", Animation.loadAnimation("player/", "jump", scalex, scaley), 100);
+        run = new Animation("run", Animation.loadAnimation("player/", "run", scalex, scaley), 100);
+        attack = new Animation("attack", Animation.loadAnimation("player/", "attack", scalex, scaley), 100);
+        dash = new Animation("dash", Animation.loadAnimation("player/", "dash", scalex, scaley), 100);
+        deadAnim = new Animation("dead", Animation.loadAnimation("player/", "dead", scalex, scaley), 100);
         currentPlayingAnim = idle;
 
         animations = new HashMap<>();

@@ -15,7 +15,7 @@ public class Background {
         this.y = y;
         this.originalX = x;
         this.originalY = y;
-        animation = new Animation("background", Animation.loadAnimation(img, scalex, scaley),200);
+        animation = new Animation("background", Animation.loadAnimation("", img, scalex, scaley),200);
         animation.start();
         LEFT_LIMIT = 0;
         RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
