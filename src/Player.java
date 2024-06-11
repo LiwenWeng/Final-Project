@@ -25,7 +25,7 @@ public class Player extends Entity implements ActionListener{
         super(100, 10, 1100, 750, true, animations);
         this.name = "joe";
 
-        moveAmount = Constants.SCREEN_HEIGHT * 0.002;
+        moveAmount = Constants.SCREEN_HEIGHT * 0.004;
         this.background = background;
 
         isWithinScreenRight = false;

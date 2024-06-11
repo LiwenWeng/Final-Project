@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Background {
     private Animation animation;
@@ -8,7 +11,7 @@ public class Background {
     private double originalY;
     private final double LEFT_LIMIT;
     private final double RIGHT_LIMIT;
-    private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.002;
+    private final double MOVE_AMT = Constants.SCREEN_HEIGHT * 0.004;
 
     public Background(String img, int x, int y, double scalex, double scaley) {
         this.x = x;
