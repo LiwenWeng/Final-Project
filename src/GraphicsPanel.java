@@ -227,7 +227,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) {
         player.attack();
-        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - (background.getY() + 2280)));
+        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - (background.getY() + 1680)));
         player.takeDamage(20);
     }
 
