@@ -50,11 +50,13 @@ public class Enemy extends Entity {
     public void targetPlayer() {
         if (!playerInRange) return;
 
-        if (player.getX() < getX()) {
+        if (player.entityRect().getX() + player.entityRect().getWidth() < Utils.getCenterPos(getAttackHitbox(), "x")) {
             moveLeft();
+            faceLeft();
         }
-        if (player.getX() > getX()) {
+        if (player.entityRect().getX() > Utils.getCenterPos(getAttackHitbox(), "x")) {
             moveRight();
+            faceRight();
         }
         if (player.getY() + player.getHeight() < getAttackHitbox().y + getAttackHitbox().getHeight()/2) {
             jump();
