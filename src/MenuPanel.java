@@ -13,6 +13,7 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
     BufferedImage img1;
     BufferedImage img2;
     BufferedImage title;
+    BufferedImage result;
     double moveAmount;
     public MenuPanel(JFrame frame) {
         enclosingFrame = frame;
@@ -32,6 +33,24 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
         }
     }
 
+    public MenuPanel(JFrame frame, String result) {
+        enclosingFrame = frame;
+        startButton = new Button("buttons/play", Constants.SCREEN_WIDTH / 2 - 165, Constants.SCREEN_HEIGHT / 2 + 200);
+        background = new Background("menu", 0, 0, 1, 1);
+        addMouseListener(this);
+        setFocusable(true); // this line of code + one below makes this panel active for keylistener events
+        requestFocusInWindow(); // see comment above
+        moveAmount = 0;
+
+        try {
+            img1 = ImageIO.read(new File("src/assets/animations/menu/menu1.png"));
+            img2 = ImageIO.read(new File("src/assets/animations/menu/menu2.png"));
+            this.result = ImageIO.read(new File("src/assets/" + result + ".png"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(img1, (int) moveAmount, 0, this);
@@ -41,7 +60,11 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
         if (moveAmount <= -1920 * 2) {
             moveAmount = 0;
         }
-        g.drawImage(title, Constants.SCREEN_WIDTH / 2 - 720, Constants.SCREEN_HEIGHT / 2 - 360, null);
+        if (title != null) {
+            g.drawImage(title, Constants.SCREEN_WIDTH / 2 - title.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 360, null);
+        } else {
+            g.drawImage(result, Constants.SCREEN_WIDTH / 2 - result.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 240, null);
+        }
         g.drawImage(startButton.getImage(), startButton.getx(), startButton.gety(), null);
     }
 

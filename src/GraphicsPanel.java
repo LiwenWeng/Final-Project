@@ -158,19 +158,15 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             }, 1);
         }
         if (dead) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 10000, 10000);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Courier New", Font.BOLD, 50));
-            g.drawString("Game Over", 100, 100);
+            MenuFrame f = new MenuFrame("defeat");
+            enclosingFrame.setVisible(false);
+            enclosingFrame.removeAll();
         }
 
         if (enemies.isEmpty()) {
-            g.setColor(Color.WHITE);
-            g.fillRect(0, 0, 10000, 10000);
-            g.setColor(Color.BLUE);
-            g.setFont(new Font("Courier New", Font.BOLD, 50));
-            g.drawString("VICTORY", 100, 100);
+            MenuFrame f = new MenuFrame("victory");
+            enclosingFrame.setVisible(false);
+            enclosingFrame.removeAll();
         }
     }
 
