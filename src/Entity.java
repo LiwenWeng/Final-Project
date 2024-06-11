@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Entity {
@@ -144,12 +143,14 @@ public class Entity {
         if (animations.get("dash") != null && animations.get("dash").isActive()) return;
 
         health -= damage;
+        if (animations.get("hit") != null) playAnimation("hit", false);
         if (health <= 0) {
             if (animations.get("dead") != null) {
                 playAnimation("dead", false);
             };
             dead = true;
         };
+        System.out.println(id);
     }
 
     public void setDamage(int damage) {
@@ -185,7 +186,6 @@ public class Entity {
     }
 
     public void start() {
-        currentPlayingAnim.start();
         reconcileHitbox();
         collided();
     }
@@ -231,13 +231,13 @@ public class Entity {
             if (entityRect().intersects(collidable.collidableRectTop())) {
                 topCollided = true;
                 if (!Collidable.getSidesCollided().get("top").contains(id)) {
-                    Collidable.getSidesCollided().get("top").add(id);                    
+                    Collidable.getSidesCollided().get("top").add(id);
                 }
             }
             if (entityRect().intersects(collidable.collidableRectRight())) {
                 rightCollided = true;
                 if (!Collidable.getSidesCollided().get("right").contains(id)) {
-                    Collidable.getSidesCollided().get("right").add(id);                    
+                    Collidable.getSidesCollided().get("right").add(id);
                 }
             }
             if (entityRect().intersects(collidable.collidableRectLeft())) {
@@ -275,26 +275,32 @@ public class Entity {
         return hitbox;
     }
 
-    public void playAnimation(String animationName, boolean loop) {
-        if (currentPlayingAnim.toString().equals(animationName)) {
-            if (!loop && currentPlayingAnim.isLooped() > 0) {
-                currentPlayingAnim.stop(true);
-            }
-            return;
-        };
-        currentPlayingAnim.stop(true);
-        currentPlayingAnim = animations.get(animationName).start();
-    }
-
     public void playAnimation(String animationName, String nextAnimationName) {
         if (currentPlayingAnim.toString().equals(animationName)) {
             if (currentPlayingAnim.isLooped() > 0) {
-                currentPlayingAnim.stop(true);
+                currentPlayingAnim.stop(true, false);
                 animations.get(nextAnimationName).start();
             }
             return;
         };
-        currentPlayingAnim.stop(true);
+        currentPlayingAnim.stop(true, false);
+        currentPlayingAnim = animations.get(animationName).start();
+    }
+
+    public void playAnimation(String animationName, boolean loop) {
+        if (dead) return;
+        if (currentPlayingAnim.toString().equals("hit")) {
+            if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
+            else return;
+        };
+        if (currentPlayingAnim.toString().equals(animationName)) {
+            if (!loop && currentPlayingAnim.isLooped() > 0) {
+                currentPlayingAnim.stop(!currentPlayingAnim.toString().equals("dead"), false);
+            }
+            return;
+        }
+
+        currentPlayingAnim.stop(true, false);
         currentPlayingAnim = animations.get(animationName).start();
     }
 

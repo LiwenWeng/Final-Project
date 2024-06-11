@@ -26,16 +26,12 @@ public class Enemy extends Entity {
         return player;
     }
 
-    public boolean isPlayerInRange() {
-        return playerInRange;
+    public Rectangle getAttackRangeRect() {
+        return attackRangeRect;
     }
 
     public void setPlayerInRange(boolean playerInRange) {
         this.playerInRange = playerInRange;
-    }
-
-    public Rectangle getAttackRangeRect() {
-        return attackRangeRect;
     }
 
     public void moveLeft() {
@@ -106,7 +102,7 @@ public class Enemy extends Entity {
     }
 
     public void defaultMovement() {
-
+        
     }
 
     public void attack() {

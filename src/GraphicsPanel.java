@@ -63,7 +63,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(735, 540 - background.getOriginalY(), 240, 40, background));
         collidables.add(new Collidable(1060, 310 - background.getOriginalY(), 250, 30, background));
         collidables.add(new Collidable(1310, 410 - background.getOriginalY(), 610, 310, background));
-        collidables.add(new Collidable(1900, 685 - background.getOriginalY(), 1450, 50, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
@@ -161,8 +160,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         try {
-           pressedKeys[key] = true; 
-        }        
+           pressedKeys[key] = true;
+        }
         catch (ArrayIndexOutOfBoundsException f) {
 
         }
@@ -192,10 +191,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         try {
-            pressedKeys[key] = false; 
-         }        
+            pressedKeys[key] = false;
+         }
          catch (ArrayIndexOutOfBoundsException f) {
- 
+
          }
         if (tapRight && key == 68) {
             tapRightAgain = true;
