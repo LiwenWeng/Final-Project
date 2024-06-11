@@ -30,7 +30,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
-        background = new Background("menu", -50, -50, 6, 6);
+        background = new Background("levelbackground", 0, -1080, 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -52,14 +52,12 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         timer.start();
         timer.addActionListener(this);
 
-        collidables.add(new Collidable(400, 500, 400, 300, background)); //test
-        collidables.add(new Collidable(800, 650, 400, 100, background)); //test
-        collidables.add(new Collidable(1400, 900, 400, 300, background)); //test
-        collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
-        collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
-        collidables.add(new Collidable(1400, 1000, 400, 300, background)); //test
-        //enemies.add(new Boar(400, 700, player, background));
-        //enemies.add(new Bee(800, 800, player, background));
+        collidables.add(new Collidable(0, 875 - background.getOriginalY(), 1400, 200, background));
+        collidables.add(new Collidable(1380, 730 - background.getOriginalY(), 50, 200, background));
+        collidables.add(new Collidable(1230, 700 - background.getOriginalY(), 210, 30, background));
+        collidables.add(new Collidable(1070, 640 - background.getOriginalY(), 145, 30, background));
+        collidables.add(new Collidable(735, 540 - background.getOriginalY(), 240, 40, background));
+
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -95,13 +93,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
             enemy.start();
         }
-
-        for (DashImage dashImage : dashImages) {
-            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dashImage.getAlpha());
-            ((Graphics2D) g).setComposite(ac);
-            g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
-        }
-
         for (UI ui : UIList) {
             if (ui.getName().equals("healthbar")) {
                 g.drawImage(ui.getImage(), ui.getx(), ui.gety(), player.getHealth() >= 0 ? (int) (ui.getWidth() - ((orginalHealth - player.getHealth()) * (ui.getWidth() / (double) orginalHealth))) : 0, ui.getHeight(), this);
@@ -109,6 +100,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 g.drawImage(ui.getImage(), ui.getx(), ui.gety(), ui.getWidth(), ui.getHeight(), this);
             }
         }
+
+        for (DashImage dashImage : dashImages) {
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dashImage.getAlpha());
+            ((Graphics2D) g).setComposite(ac);
+            g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
+        }
+
     }
 
     // ----- KeyListener interface methods -----

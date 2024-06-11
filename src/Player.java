@@ -22,7 +22,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, 2, 2, animations);
+        super(100, 10, 1100, 750, true, 2, 2, animations);
         this.name = "joe";
 
         moveAmount = Constants.SCREEN_HEIGHT * 0.002;
@@ -122,14 +122,14 @@ public class Player extends Entity implements ActionListener{
     public void jump() {
         if (isDashing) return;
         if (canDoubleJump && !Collidable.getSidesCollided().get("bottom").contains(getId())) {
-            setGravity(Constants.SCREEN_HEIGHT * 0.006);
+            setGravity(Constants.SCREEN_HEIGHT * 0.009);
             canDoubleJump = false;
             doubleJumped = true;
             getAnimations().get("jump").reset();
         }
         if (!isGrounded()) return;
         setGrounded(false);
-        setGravity(Constants.SCREEN_HEIGHT * 0.006);
+        setGravity(Constants.SCREEN_HEIGHT * 0.009);
         canDoubleJump = false;
         playAnimation("jump", false);
     }
@@ -141,7 +141,7 @@ public class Player extends Entity implements ActionListener{
 
         if (isGrounded() || isDashing) return;
 
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0003 );
         if (!doubleJumped) {
             doubleJumped = true;
             Utils.delay(200,(t) -> {
