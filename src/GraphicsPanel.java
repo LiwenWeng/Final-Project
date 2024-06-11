@@ -20,8 +20,12 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeftAgain;
     private ArrayList<UI> UIList;
     private int orginalHealth;
+    private Frame enclosingFrame;
+    private boolean dead;
+    private boolean deadGravity;
 
-    public GraphicsPanel() {
+    public GraphicsPanel(Frame frame) {
+        enclosingFrame = frame;
         Map<String, Animation> playerAnimations = new HashMap<>();
         playerAnimations.put("idle", new Animation("idle", Animation.loadAnimation("player/", "idle", 2, 2),200));
         playerAnimations.put("jump", new Animation("jump", Animation.loadAnimation("player/", "jump", 2, 2),100));
@@ -39,6 +43,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         tapLeft = false;
         tapRightAgain = false;
         tapLeftAgain = false;
+        dead = false;
+        deadGravity = false;
         UIList = new ArrayList<>();
         UIList.add(new UI("yellowrhombus", 50, 50, 4, 4));
         UIList.add(new UI("healthbar", 155, 90, 4, 4));
@@ -145,7 +151,18 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             ((Graphics2D) g).setComposite(ac);
             g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
-
+        if (player.isDead()) {
+            Utils.delay(3000, (t) -> {
+                dead = true;
+            }, 1);
+        }
+        if (dead) {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, 10000, 10000);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Courier New", Font.BOLD, 50));
+            g.drawString("Game Over", 100, 100);
+        }
     }
 
     // ----- KeyListener interface methods -----
@@ -222,9 +239,15 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
+                if (player.isDead()) {
+                    Utils.delay(1000, (t) -> {
+                        deadGravity = true;
+                    }, 1);;
+                }
+                if (deadGravity) return;
                 player.start();
                 if (background.getY() <= background.getOriginalY() - 10) {
-                    player.takeDamage(1);
+                    player.takeDamage(100);
                 }
 
                 if (player.isDead()) return;

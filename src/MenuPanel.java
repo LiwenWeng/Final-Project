@@ -53,6 +53,7 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
             if (startButton.buttonRect().contains(e.getPoint())) {
                 MainFrame f = new MainFrame();
                 enclosingFrame.setVisible(false);
+                enclosingFrame.removeAll();
             }
         }
     }
