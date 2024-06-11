@@ -74,7 +74,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(3265, -1480 - background.getOriginalY(), 110, 630, background));
         collidables.add(new Collidable(2790, -780 - background.getOriginalY(), 150, 120, background));
         collidables.add(new Collidable(3075, -920 - background.getOriginalY(), 190, 30, background));
-        collidables.add(new Collidable(2965, 285 - background.getOriginalY(), 175, 15, background));
+        collidables.add(new Collidable(2965, 285 - background.getOriginalY(), 175, 20, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
@@ -223,6 +223,9 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
                 player.start();
+                if (background.getY() <= -1700) {
+                    player.takeDamage(1);
+                }
 
                 if (player.isDead()) return;
                 if (pressedKeys[68]) {
