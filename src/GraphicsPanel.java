@@ -20,6 +20,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeftAgain;
     private ArrayList<UI> UIList;
     private int orginalHealth;
+    private boolean dead;
+    private boolean deadGravity;
 
     public GraphicsPanel() {
         Map<String, Animation> playerAnimations = new HashMap<>();
@@ -30,7 +32,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
-        background = new Background("levelbackground", 0, -2280, 1, 1);
+        background = new Background("levelbackground", 0, -1080, 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -76,7 +78,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(3265, -1480 - background.getOriginalY(), 110, 630, background));
         collidables.add(new Collidable(2790, -780 - background.getOriginalY(), 150, 120, background));
         collidables.add(new Collidable(3075, -920 - background.getOriginalY(), 190, 30, background));
-        collidables.add(new Collidable(2965, 285 - background.getOriginalY(), 175, 20, background));
+        collidables.add(new Collidable(2965, 285 - background.getOriginalY(), 175, 15, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
