@@ -93,7 +93,7 @@ public class Player extends Entity implements ActionListener{
             dashRight = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(400, (t) -> {
+            Utils.delay(300, (t) -> {
                 isDashing = false;
                 dashRight = false;
             }, 1);
@@ -109,7 +109,7 @@ public class Player extends Entity implements ActionListener{
             dashLeft = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(400, (t) -> {
+            Utils.delay(300, (t) -> {
                 isDashing = false;
                 dashLeft = false;
             }, 1);

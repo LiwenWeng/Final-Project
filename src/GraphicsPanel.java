@@ -60,6 +60,21 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(1060, 310 - background.getOriginalY(), 250, 30, background));
         collidables.add(new Collidable(1310, 410 - background.getOriginalY(), 610, 310, background));
         collidables.add(new Collidable(1900, 685 - background.getOriginalY(), 1450, 50, background));
+        collidables.add(new Collidable(2550, 650 - background.getOriginalY(), 300, 50, background));
+        collidables.add(new Collidable(2620, 610 - background.getOriginalY(), 160, 50, background));
+        collidables.add(new Collidable(2840, 400 - background.getOriginalY(), 430, 30, background));
+        collidables.add(new Collidable(3260, 210 - background.getOriginalY(), 110, 580, background));
+        collidables.add(new Collidable(2480, 80 - background.getOriginalY(), 370, 30, background));
+        collidables.add(new Collidable(3260, 150 - background.getOriginalY(), 580, 60, background));
+        collidables.add(new Collidable(3270, -540 - background.getOriginalY(), 110, 440, background));
+        collidables.add(new Collidable(3585, 0 - background.getOriginalY(), 145, 30, background));
+        collidables.add(new Collidable(3375, -230 - background.getOriginalY(), 140, 30, background));
+        collidables.add(new Collidable(3530, -500 - background.getOriginalY(), 200, 30, background));
+        collidables.add(new Collidable(3730, -1080 - background.getOriginalY(), 100, 940, background));
+        collidables.add(new Collidable(2190, -660 - background.getOriginalY(), 1190, 110, background));
+        collidables.add(new Collidable(3265, -1080 - background.getOriginalY(), 110, 230, background));
+        collidables.add(new Collidable(2790, -780 - background.getOriginalY(), 150, 120, background));
+        collidables.add(new Collidable(3075, -920 - background.getOriginalY(), 190, 30, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
@@ -137,10 +152,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void keyTyped(KeyEvent e) { }
 
     public void keyPressed(KeyEvent e) {
-        // see this for all keycodes: https://stackoverflow.com/questions/15313469/java-keyboard-keycodes-list
-        // A = 65, D = 68, S = 83, W = 87, left = 37, up = 38, right = 39, down = 40, space = 32, enter = 10
         int key = e.getKeyCode();
-        pressedKeys[key] = true;
+        try {
+           pressedKeys[key] = true; 
+        }        
+        catch (ArrayIndexOutOfBoundsException f) {
+
+        }
         if (player.isDead()) return;
         if (tapRightAgain && key == 68) {
             player.faceRight();
@@ -166,7 +184,12 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
 
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
-        pressedKeys[key] = false;
+        try {
+            pressedKeys[key] = false; 
+         }        
+         catch (ArrayIndexOutOfBoundsException f) {
+ 
+         }
         if (tapRight && key == 68) {
             tapRightAgain = true;
             Utils.delay(100, (t) -> {
@@ -184,7 +207,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) {
         player.attack();
-        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - background.getY() - 1920));
+        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - (background.getY() + 1080)));
+        player.takeDamage(20);
     }
 
     public void mousePressed(MouseEvent e) { }
