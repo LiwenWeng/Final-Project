@@ -15,6 +15,7 @@ public class Animation implements ActionListener {
     private boolean active;
     private int looped;
     private String name;
+    private boolean reverse;
 
     public Animation(String name, ArrayList<BufferedImage> frames, int delay) {
         this.name = name;
@@ -24,6 +25,7 @@ public class Animation implements ActionListener {
         timer.start();
         active = false;
         looped = 0;
+        reverse = false;
     }
 
     public boolean isActive() {
@@ -46,6 +48,16 @@ public class Animation implements ActionListener {
         return frames.get(currentFrame);
     }
 
+    public void reverse() {
+        reverse = !reverse;
+        if (reverse) {
+            currentFrame = frames.size() - 1;
+        } else {
+            currentFrame = 0;
+        }
+
+    }
+
     public Animation start() {
         active = true;
         return this;
@@ -63,8 +75,15 @@ public class Animation implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
             if (!active) return;
-            currentFrame = (currentFrame + 1) % frames.size();
-            looped += (currentFrame == frames.size() - 1) ? 1 : 0;
+            if (!reverse) {
+                currentFrame = (currentFrame + 1) % frames.size();
+                looped += (currentFrame == frames.size() - 1) ? 1 : 0;
+            } else {
+                currentFrame--;
+                if (currentFrame < 0) currentFrame = frames.size() - 1;
+                looped += (currentFrame == 0) ? 1 : 0;
+            }
+
         }
     }
 
