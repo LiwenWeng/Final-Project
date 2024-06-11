@@ -47,4 +47,12 @@ public class Utils {
         double y = rectangle.y + rectangle.getHeight()/2.0;
         return new Point((int) x, (int) y);
     }
+
+    public static double getCenterPos(Rectangle rectangle, String xOrY) {
+        if (xOrY.equalsIgnoreCase("x")) {
+            return getCenterPos(rectangle).x;
+        } else {
+            return getCenterPos(rectangle).y;
+        }
+    }
 }
