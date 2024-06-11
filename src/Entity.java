@@ -145,9 +145,9 @@ public class Entity {
 
         health -= damage;
         if (health <= 0) {
-            dead = true;
             if (animations.get("dead") == null) return;
             playAnimation("dead", false);
+            dead = true;
         };
     }
 

@@ -16,7 +16,7 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
     double moveAmount;
     public MenuPanel(JFrame frame) {
         enclosingFrame = frame;
-        startButton = new Button("buttons/play", Constants.SCREEN_WIDTH / 2 - 150, Constants.SCREEN_HEIGHT / 2);
+        startButton = new Button("buttons/play", Constants.SCREEN_WIDTH / 2 - 165, Constants.SCREEN_HEIGHT / 2);
         background = new Background("menu", 0, 0, 1, 1);
         addMouseListener(this);
         setFocusable(true); // this line of code + one below makes this panel active for keylistener events
