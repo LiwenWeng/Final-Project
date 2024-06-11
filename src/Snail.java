@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Map;
 
 public class Snail extends Enemy {
@@ -19,5 +20,20 @@ public class Snail extends Enemy {
     @Override
     public void defaultMovement() {
 
+    }
+
+    public void checkForPlayer() {
+        Point center = Utils.getCenterPos(entityRect());
+        getAttackRangeRect().setLocation((int) (center.x - getAttackRangeRect().getWidth()/2), (int) (center.y - getAttackRangeRect().getHeight()/2));
+
+        if (getAttackRangeRect().intersects(getPlayer().entityRect())) {
+            setPlayerInRange(true);
+            if (!getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
+            playAnimation("hide", false);
+        } else {
+            setPlayerInRange(false);
+            if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
+            playAnimation("hide", "idle");
+        }
     }
 }
