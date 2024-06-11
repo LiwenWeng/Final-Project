@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
     private Background background;
@@ -18,8 +20,16 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeftAgain;
 
     public GraphicsPanel() {
+        Map<String, Animation> playerAnimations = new HashMap<>();
+        playerAnimations.put("idle", new Animation("idle", Animation.loadAnimation("player/", "idle", 2, 2),200));
+        playerAnimations.put("jump", new Animation("jump", Animation.loadAnimation("player/", "jump", 2, 2),100));
+        playerAnimations.put("run", new Animation("run", Animation.loadAnimation("player/", "run", 2, 2),100));
+        playerAnimations.put("attack", new Animation("attack", Animation.loadAnimation("player/", "attack", 2, 2),100));
+        playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
+        playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
+
         background = new Background("menu", -50, -50, 6, 6);
-        player = new Player(background);
+        player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
         dashed = false;
@@ -41,8 +51,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 400, 300, background)); //test
-        enemies.add(new Boar(400, 700, player, background));
-        enemies.add(new Bee(800, 800, player, background));
+        //enemies.add(new Boar(400, 700, player, background));
+        //enemies.add(new Bee(800, 800, player, background));
     }
 
     public static ArrayList<Collidable> getCollidables() {
