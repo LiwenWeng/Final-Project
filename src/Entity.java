@@ -27,7 +27,7 @@ public class Entity {
     private int attackCD;
     private boolean dead;
 
-    public Entity(int health, int damage, double x, double y, boolean facingRight, double scalex, double scaley, Map<String, Animation> animations) {
+    public Entity(int health, int damage, double x, double y, boolean facingRight, Map<String, Animation> animations) {
         id = currentId;
         currentId++;
 
@@ -141,7 +141,7 @@ public class Entity {
     }
 
     public void takeDamage(int damage) {
-        if (animations.get("dash").isActive()) return;
+        if (animations.get("dash") != null && animations.get("dash").isActive()) return;
 
         health -= damage;
         if (health <= 0) {
