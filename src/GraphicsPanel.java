@@ -30,7 +30,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
-        background = new Background("levelbackground", 0, (int) (-1080 * (Constants.SCREEN_HEIGHT/1920.0)), 1, 1);
+        background = new Background("levelbackground", 0, -1080, 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -59,6 +59,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(735, 540 - background.getOriginalY(), 240, 40, background));
         collidables.add(new Collidable(1060, 310 - background.getOriginalY(), 250, 30, background));
         collidables.add(new Collidable(1310, 410 - background.getOriginalY(), 610, 310, background));
+        collidables.add(new Collidable(1900, 685 - background.getOriginalY(), 1450, 50, background));
 
         // Map<String, Animation> boarAnimations = new HashMap<>();
         // boarAnimations.put("idle", new Animation("idle", Animation.loadAnimation("boar/", "idle", 2, 2),200));
@@ -183,7 +184,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) {
         player.attack();
-        System.out.println(e.getPoint());
+        System.out.println((e.getPoint().getX() - background.getX()) + " " + (e.getPoint().getY() - background.getY() - 1920));
     }
 
     public void mousePressed(MouseEvent e) { }
