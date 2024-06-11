@@ -31,7 +31,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
         background = new Background("levelbackground", 0, -2280, 1, 1);
-        background = new Background("levelbackground", 0, -1680, 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -224,7 +223,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == timer) {
                 player.start();
-                if (background.getY() <= -1700) {
+                if (background.getY() <= background.getOriginalY() - 10) {
                     player.takeDamage(1);
                 }
 
