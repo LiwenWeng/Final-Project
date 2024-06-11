@@ -41,8 +41,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         collidables.add(new Collidable(200, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 1000, 200, background)); //test
         collidables.add(new Collidable(1400, 1000, 400, 300, background)); //test
-        // enemies.add(new Enemy(100, 10, Constants.SCREEN_WIDTH * 0.7, Constants.SCREEN_HEIGHT * 0.75, background));
-        // enemies.add(new Enemy(150, 10, Constants.SCREEN_WIDTH * 0.6, Constants.SCREEN_HEIGHT * 0.75, background));
+        enemies.add(new Boar(400, 700, player, background));
+        enemies.add(new Bee(800, 800, player, background));
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -72,13 +72,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
 
         for (Enemy enemy : enemies) {
             if (enemy.isDead()) continue;
-            enemy.updatePosition();
+            enemy.start();
             g.drawImage(enemy.getEntityImage(), (int) enemy.getX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
             g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
             g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
-            enemy.reconcileHitbox();
-            enemy.targetPlayer();
-            enemy.attack();
         }
 
         for (DashImage dashImage : dashImages) {

@@ -37,10 +37,10 @@ public class Enemy extends Entity {
 
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
-            System.out.println("player in range");
+           // System.out.println("player in range");
         } else {
             playerInRange = false;
-            System.out.println("player not in range");
+           // System.out.println("player not in range");
         }
     }
 
@@ -60,7 +60,25 @@ public class Enemy extends Entity {
     }
 
     public void simulateGravity() {
+        if (!Collidable.getSidesCollided().get("top").contains(getId())) setGrounded(false);
+        if (isGrounded()) return;
 
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002);
+        originalY -= getGravity();
+        if (Collidable.getSidesCollided().get("top").contains(getId())) {
+            setAirCollided(false);
+            setGrounded(true);
+            for (Collidable collidable : GraphicsPanel.getCollidables()) {
+                if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
+                    if (isDead()) {
+
+                    } else {
+                        originalY = originalY + getGravity() - ((entityRect().getY() + entityRect().getHeight()) - collidable.collidableRect().y);
+                    }
+                }
+            }
+            setGravity(0);
+        }
     }
 
     public void defaultMovement() {
@@ -93,9 +111,9 @@ public class Enemy extends Entity {
 
     public void start() {
         super.start();
-        checkForPlayer();
         simulateGravity();
         updatePosition();
+        checkForPlayer();
         targetPlayer();
         defaultMovement();
     }

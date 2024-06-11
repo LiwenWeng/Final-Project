@@ -33,7 +33,6 @@ public class Collidable {
         return sidesCollided;
     }
 
-
     public double getX() {
         return x;
     }

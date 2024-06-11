@@ -128,11 +128,12 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void simulateGravity() {
-        collided();
         if (!Collidable.getSidesCollided().get("top").contains(getId())) {
             setGrounded(false);
         }
+
         if (isGrounded() || isDashing) return;
+
         setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0002 );
         if (!doubleJumped) {
             doubleJumped = true;
@@ -140,6 +141,7 @@ public class Player extends Entity implements ActionListener{
                 canDoubleJump = true;
             } , 1);
         }
+
         background.setY(background.getY() + getGravity());
         if (Collidable.getSidesCollided().get("top").contains(getId())) {
             setAirCollided(false);
