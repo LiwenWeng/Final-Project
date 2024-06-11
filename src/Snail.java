@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Snail extends Enemy {
     public Snail(double x, double y, Player player, Background background, Map<String, Animation> animations) {
-        super(100, 5, x, y, 300, 300, player, background, animations);
+        super(100, 10, x, y, 300, 300, player, background, animations);
     }
 
     @Override
@@ -36,7 +36,6 @@ public class Snail extends Enemy {
             setPlayerInRange(true);
             if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
             playAnimation("hide", false);
-            attack();
         } else {
             setPlayerInRange(false);
             if (!getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
