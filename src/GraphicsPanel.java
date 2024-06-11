@@ -104,7 +104,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
          snailAnimations.put("run", new Animation("run", Animation.loadAnimation("snail/", "run", 2, 2),200));
          snailAnimations.put("hit", new Animation("hit", Animation.loadAnimation("snail/", "hit", 2, 2),200));
          snailAnimations.put("hide", new Animation("hide", Animation.loadAnimation("snail/", "hide", 2, 2),200));
-         enemies.add(new Snail(1100, 800, player, background, snailAnimations));
+         enemies.add(new Snail(1100, 2300, player, background, snailAnimations));
+        enemies.add(new Snail(1250, 3000, player, background, snailAnimations));
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -165,6 +166,14 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             g.setColor(Color.WHITE);
             g.setFont(new Font("Courier New", Font.BOLD, 50));
             g.drawString("Game Over", 100, 100);
+        }
+
+        if (enemies.isEmpty()) {
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, 10000, 10000);
+            g.setColor(Color.BLUE);
+            g.setFont(new Font("Courier New", Font.BOLD, 50));
+            g.drawString("VICTORY", 100, 100);
         }
     }
 
