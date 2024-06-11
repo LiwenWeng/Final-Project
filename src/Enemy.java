@@ -16,7 +16,7 @@ public class Enemy extends Entity {
         this.background = background;
         this.originalX = x;
         this.originalY = y;
-        moveAmount = 0.05;
+        moveAmount = 1;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
         playerInRange = false;
         this.player = player;
@@ -87,7 +87,7 @@ public class Enemy extends Entity {
         if (!Collidable.getSidesCollided().get("top").contains(getId())) setGrounded(false);
         if (isGrounded()) return;
 
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0000005);
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0005);
         originalY -= getGravity();
         if (Collidable.getSidesCollided().get("top").contains(getId())) {
             setAirCollided(false);

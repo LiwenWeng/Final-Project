@@ -146,10 +146,10 @@ public class Entity {
         health -= damage;
         if (animations.get("hit") != null) playAnimation("hit", false);
         if (health <= 0) {
-            if (animations.get("dead") == null) return;
-            playAnimation("dead", false);
+            if (animations.get("dead") != null) {
+                playAnimation("dead", false);
+            };
             dead = true;
-            System.out.println("dead");
         };
         System.out.println(id);
     }

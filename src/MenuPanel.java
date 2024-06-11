@@ -37,7 +37,7 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
         g.drawImage(img1, (int) moveAmount, 0, this);
         g.drawImage(img2, (int) moveAmount + 1920, 0, this);
         g.drawImage(img1, (int) moveAmount + 1920 * 2, 0, this);
-        moveAmount -= 0.02;
+        moveAmount -= 1;
         if (moveAmount <= -1920 * 2) {
             moveAmount = 0;
         }

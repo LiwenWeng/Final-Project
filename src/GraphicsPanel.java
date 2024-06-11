@@ -98,14 +98,11 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-         Map<String, Animation> snailAnimations = new HashMap<>();
-         snailAnimations.put("idle", new Animation("idle", Animation.loadAnimation("snail/", "idle", 2, 2),200));
-         snailAnimations.put("attack", new Animation("attack", Animation.loadAnimation("snail/", "attack", 2, 2),200));
-         snailAnimations.put("run", new Animation("run", Animation.loadAnimation("snail/", "run", 2, 2),200));
-         snailAnimations.put("hit", new Animation("hit", Animation.loadAnimation("snail/", "hit", 2, 2),200));
-         snailAnimations.put("hide", new Animation("hide", Animation.loadAnimation("snail/", "hide", 2, 2),200));
-         enemies.add(new Snail(1100, 2300, player, background, snailAnimations));
-        enemies.add(new Snail(1250, 3000, player, background, snailAnimations));
+        enemies.add(new Snail(2540, -780, player, background, Snail.loadAnimations()));
+        enemies.add(new Snail(1100, 2300, player, background, Snail.loadAnimations()));
+//        for (int i = 0; i < 1; i++) {
+//            enemies.add(new Snail(500 + i * 400, -1000, player, background, Snail.loadAnimations()));
+//        }
     }
 
     public static ArrayList<Collidable> getCollidables() {
