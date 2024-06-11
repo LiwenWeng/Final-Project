@@ -18,7 +18,7 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(background.getBackgroundImage(), 0, 0, this);
-        g.drawImage(startButton.getImage(), startButton.getxCoord(), startButton.getyCoord(), null);
+        g.drawImage(startButton.getImage(), startButton.getx(), startButton.gety(), null);
     }
 
     public void actionPerformed(ActionEvent e) { }

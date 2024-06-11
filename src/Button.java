@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class Button {
-    private int xCoord;
-    private int yCoord;
+    private int x;
+    private int y;
     private BufferedImage image;
 
     public Button(String img, int x, int y) {
-        xCoord = x;
-        yCoord = y;
+        this.x = x;
+        this.y = y;
         try {
             this.image = ImageIO.read(new File("src/assets/" + img + ".png"));
         } catch (IOException e) {
@@ -19,12 +19,12 @@ public class Button {
         }
     }
 
-    public int getxCoord() {
-        return xCoord;
+    public int getx() {
+        return x;
     }
 
-    public int getyCoord() {
-        return yCoord;
+    public int gety() {
+        return y;
     }
 
     public BufferedImage getImage() {
@@ -35,7 +35,7 @@ public class Button {
     public Rectangle buttonRect() {
         int imageHeight = getImage().getHeight();
         int imageWidth = getImage().getWidth();
-        Rectangle rect = new Rectangle(xCoord, yCoord, imageWidth, imageHeight);
+        Rectangle rect = new Rectangle(x, y, imageWidth, imageHeight);
         return rect;
     }
 }

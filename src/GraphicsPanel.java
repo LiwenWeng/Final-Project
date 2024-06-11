@@ -16,6 +16,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapRightAgain;
     private boolean tapLeft;
     private boolean tapLeftAgain;
+    private ArrayList<UI> UIList;
+    private int orginalHealth;
 
     public GraphicsPanel() {
         background = new Background("menu", -50, -50, 6, 6);
@@ -27,6 +29,11 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         tapLeft = false;
         tapRightAgain = false;
         tapLeftAgain = false;
+        UIList = new ArrayList<>();
+        UIList.add(new UI("yellowrhombus", 50, 50, 4, 4));
+        UIList.add(new UI("healthbar", 155, 90, 4, 4));
+        UIList.add(new UI("healthbaroutline", 151, 86, 4, 4));
+        orginalHealth = player.getHealth();
 
         addKeyListener(this);
         addMouseListener(this);
@@ -84,6 +91,14 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             ((Graphics2D) g).setComposite(ac);
             g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
+
+        for (UI ui : UIList) {
+            if (ui.getName().equals("healthbar")) {
+                g.drawImage(ui.getImage(), ui.getx(), ui.gety(), player.getHealth() >= 0 ? (int) (ui.getWidth() - ((orginalHealth - player.getHealth()) * (ui.getWidth() / (double) orginalHealth))) : 0, ui.getHeight(), this);
+            } else {
+                g.drawImage(ui.getImage(), ui.getx(), ui.gety(), ui.getWidth(), ui.getHeight(), this);
+            }
+        }
     }
 
     // ----- KeyListener interface methods -----
@@ -137,6 +152,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     // ----- MouseListener interface methods -----
     public void mouseClicked(MouseEvent e) {
         player.attack();
+        System.out.println(e.getPoint());
     }
 
     public void mousePressed(MouseEvent e) { }
