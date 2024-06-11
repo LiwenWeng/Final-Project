@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener, ActionListener {
     private Background background;
+    private Background invertedBackground;
     private Player player;
     private boolean[] pressedKeys;
     private Timer timer;
@@ -35,6 +36,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         playerAnimations.put("dead", new Animation("dead", Animation.loadAnimation("player/", "dead", 2, 2),100));
 
         background = new Background("levelbackground", 0, -2280, 1, 1);
+        invertedBackground = new Background("levelbackground", 0, 3680, 1, 1);
         player = new Player(background, playerAnimations);
         pressedKeys = new boolean[128];
         timer = new Timer(20, this);
@@ -120,6 +122,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(invertedBackground.getBackgroundImage(), (int) invertedBackground.getX(), (int) invertedBackground.getY(), invertedBackground.getWidth(), invertedBackground.getHeight() * -1, null);
         g.drawImage(background.getBackgroundImage(), (int) background.getX(), (int) background.getY(), null);
         g.drawImage(player.getEntityImage(), (int) player.getDrawX(), (int) player.getY(), player.getWidth(), player.getHeight(), null);
         // g.drawRect((int) player.entityRect().getX(), (int) player.entityRect().getY(), (int) player.entityRect().getWidth(), (int) player.entityRect().getHeight());

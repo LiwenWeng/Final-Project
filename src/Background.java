@@ -100,4 +100,12 @@ public class Background {
         return false;
     }
 
+    public int getWidth() {
+        return getBackgroundImage().getWidth();
+    }
+
+    public int getHeight() {
+        return getBackgroundImage().getHeight();
+    }
+
 }
