@@ -102,7 +102,7 @@ public class Enemy extends Entity {
     }
 
     public void defaultMovement() {
-        
+
     }
 
     public void attack() {
