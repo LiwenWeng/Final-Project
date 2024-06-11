@@ -277,7 +277,7 @@ public class Entity {
     public void playAnimation(String animationName, boolean loop) {
         if (currentPlayingAnim.toString().equals(animationName)) {
             if (!loop && currentPlayingAnim.isLooped() > 0) {
-                currentPlayingAnim.stop(true);
+                if (getAnimations().get("dead") != null) getAnimations().get("dead").stop(false);
             }
             return;
         };

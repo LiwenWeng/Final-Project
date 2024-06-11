@@ -29,7 +29,7 @@ public class Player extends Entity implements ActionListener{
         this.background = background;
 
         isWithinScreenRight = false;
-        isWithinScreenLeft = false;
+        isWithinScreenLeft = true;
 
         attackedEnemyIds = new ArrayList<>();
 
