@@ -211,7 +211,6 @@ public class Entity {
     public void start() {
         currentPlayingAnim.start();
         reconcileHitbox();
-        hitboxDetection();
         collided();
     }
 
@@ -229,15 +228,6 @@ public class Entity {
             } else {
                 hitbox.setLocation((int) (x - getWidth() * 0.25), (int) (y + getHeight() * 0.15));
                 attackHitbox.setLocation((int) (x - hitbox.getWidth() * 0.375), (int) y);
-            }
-        }
-    }
-
-    public void hitboxDetection() {
-        if (!hitboxActive) return;
-        for (Enemy enemy : GraphicsPanel.getEnemies()) {
-            if (attackHitbox.intersects(enemy.entityRect())) {
-                System.out.println(enemy.getHealth());
             }
         }
     }

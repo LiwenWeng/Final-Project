@@ -163,7 +163,6 @@ public class Player extends Entity implements ActionListener{
         }
     }
 
-    @Override
     public void hitboxDetection() {
         if (!isHitboxActive()) return;
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
@@ -246,5 +245,6 @@ public class Player extends Entity implements ActionListener{
     public void start() {
         super.start();
         simulateGravity();
+        hitboxDetection();
     }
 }
