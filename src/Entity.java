@@ -1,5 +1,7 @@
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Entity {
@@ -190,7 +192,7 @@ public class Entity {
         collided();
     }
 
-    public void reconcileHitbox() { // attackHitbox moves with enemy
+    public void reconcileHitbox() {
         if (isDead()) {
             if (facingRight) {
                 hitbox.setLocation((int) (x + getWidth() * 0.25), (int) (y - getHeight() * 0.075));
@@ -270,7 +272,6 @@ public class Entity {
         }
     }
 
-
     public Rectangle entityRect() {
         return hitbox;
     }
@@ -288,14 +289,21 @@ public class Entity {
     }
 
     public void playAnimation(String animationName, boolean loop) {
-        if (dead) return;
         if (currentPlayingAnim.toString().equals("hit")) {
             if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
             else return;
         };
+
+        if (dead && currentPlayingAnim.toString().equals("dead")) {
+            if (currentPlayingAnim.isLooped() > 0) {
+                currentPlayingAnim.stop(false, false);
+            }
+            return;
+        }
+
         if (currentPlayingAnim.toString().equals(animationName)) {
             if (!loop && currentPlayingAnim.isLooped() > 0) {
-                currentPlayingAnim.stop(!currentPlayingAnim.toString().equals("dead"), false);
+                currentPlayingAnim.stop(true, false);
             }
             return;
         }

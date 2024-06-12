@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,5 +76,4 @@ public class Collidable {
         this.x = originalX + background.getX();
         this.y = originalY + background.getY();
     }
-
 }

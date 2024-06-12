@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,12 +27,16 @@ public class Enemy extends Entity {
         return player;
     }
 
-    public Rectangle getAttackRangeRect() {
-        return attackRangeRect;
+    public boolean isPlayerInRange() {
+        return playerInRange;
     }
 
     public void setPlayerInRange(boolean playerInRange) {
         this.playerInRange = playerInRange;
+    }
+
+    public Rectangle getAttackRangeRect() {
+        return attackRangeRect;
     }
 
     public void moveLeft() {

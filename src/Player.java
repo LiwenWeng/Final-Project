@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Entity implements ActionListener{
@@ -21,7 +22,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.5, true, animations);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, animations);
         this.name = "joe";
 
         moveAmount = Constants.SCREEN_HEIGHT * 0.004;
@@ -197,11 +198,13 @@ public class Player extends Entity implements ActionListener{
             }, 1);
         }
     }
+
     @Override
     public void faceRight() {
         if (isDashing) return;
         super.faceRight();
     }
+
     @Override
     public void faceLeft() {
         if (isDashing) return;
