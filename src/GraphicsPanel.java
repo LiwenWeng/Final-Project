@@ -94,7 +94,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        enemies.add(new Boar(650, 500, player, background, Boar.loadAnimations()));
+        enemies.add(new Boar(700, 500, player, background, Boar.loadAnimations()));
         enemies.add(new Snail(200, 600, player, background, Snail.loadAnimations()));
 //        for (int i = 0; i < 5; i++) {
 //            enemies.add(new Snail(200 + i * 250, -1000, player, background, Snail.loadAnimations()));
