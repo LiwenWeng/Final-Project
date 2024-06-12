@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Snail extends Enemy {
     public Snail(double x, double y, Player player, Background background, Map<String, Animation> animations) {
-        super(40, 10, x, y, 300, 300, player, background, animations);
+        super(60, 10, x, y, 300, 300, player, background, animations);
     }
 
     @Override

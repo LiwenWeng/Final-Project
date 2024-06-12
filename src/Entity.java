@@ -313,8 +313,9 @@ public class Entity {
         }
 
         if (currentPlayingAnim.toString().equals("attack")) {
-            if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
-            else return;
+//            if (id == 0) return;
+//            if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
+//            else return;
         };
 
         if (dead && currentPlayingAnim.toString().equals("dead")) {
