@@ -28,9 +28,11 @@ public class Snail extends Enemy {
         getAttackRangeRect().setLocation((int) (center.x - getAttackRangeRect().getWidth() / 2), (int) (center.y - getAttackRangeRect().getHeight() / 2));
 
         if (getAttackRangeRect().intersects(getPlayer().entityRect())) {
-            setPlayerInRange(true);
-            if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
-            playAnimation("hide", false);
+            if (!isPlayerInRange()) {
+                setPlayerInRange(true);
+                if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
+                playAnimation("hide", false);
+            }
             attack();
         } else {
             setPlayerInRange(false);
