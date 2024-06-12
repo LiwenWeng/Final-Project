@@ -1,23 +1,28 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class Utils {
+    private static Map<String, Thread> threadMap = new HashMap<>();
+
     public static void wait(int ms) {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            //System.out.println(e.getMessage());
         }
     }
 
-    public static void startThread(Runnable runnable) {
+    public static Thread startThread(Runnable runnable) {
         Thread thread = new Thread(runnable);
         thread.start();
+        return thread;
     }
 
-    public static <T> void delay(int ms, Consumer<T> callback, T value) {
-        startThread(() -> {
+    public static <T> Thread delay(int ms, Consumer<T> callback, T value) {
+        return startThread(() -> {
             wait(ms);
             callback.accept(value);
         });

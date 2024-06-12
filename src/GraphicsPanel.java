@@ -19,7 +19,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     private boolean tapLeft;
     private boolean tapLeftAgain;
     private ArrayList<UI> UIList;
-    private int orginalHealth;
+    private double orginalHealth;
     private boolean dead;
     private boolean deadGravity;
 

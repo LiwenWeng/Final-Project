@@ -7,7 +7,8 @@ import java.util.Map;
 public class Entity {
     private static int currentId = 0;
     private int id;
-    private int health;
+    private double health;
+    private double maxHealth;
     private int damage;
     private double x;
     private double y;
@@ -27,12 +28,15 @@ public class Entity {
     private boolean leftCollided;
     private int attackCD;
     private boolean dead;
+    private boolean canHeal;
+    private Thread canHealThread;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, Map<String, Animation> animations) {
         id = currentId;
         currentId++;
 
         this.health = health;
+        maxHealth = health;
         this.damage = damage;
         this.x = x;
         this.y = y;
@@ -55,13 +59,13 @@ public class Entity {
         topCollided = false;
         rightCollided = false;
         leftCollided = false;
-
+        canHeal = true;
     }
     public int getId() {
         return id;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -137,14 +141,34 @@ public class Entity {
         return attackCD;
     }
 
+    public boolean canHeal() {
+        return canHeal;
+    }
+
+    public void setCanHeal(boolean canHeal) {
+        this.canHeal = canHeal;
+    }
+
     public void setCurrentPlayingAnim(Animation anim) {
         currentPlayingAnim = anim;
+    }
+
+    public void incrementHealth() {
+        health += 0.1;
+        if (health > maxHealth) health = maxHealth;
     }
 
     public void takeDamage(int damage) {
         if (animations.get("dash") != null && animations.get("dash").isActive()) return;
 
         health -= damage;
+        canHeal = false;
+        if (canHealThread == null || !canHealThread.isAlive()) {
+            canHealThread = Utils.delay(3000, (t) -> {
+                canHeal = true;
+            }, 1);
+        }
+
         if (animations.get("hit") != null) playAnimation("hit", false);
         if (health <= 0) {
             if (animations.get("dead") != null) {

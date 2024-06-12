@@ -134,6 +134,10 @@ public class Player extends Entity implements ActionListener{
         playAnimation("jump", false);
     }
 
+    public void heal() {
+        if (canHeal()) incrementHealth();
+    }
+
     public void simulateGravity() {
         if (!Collidable.getSidesCollided().get("top").contains(getId())) {
             setGrounded(false);
@@ -256,5 +260,6 @@ public class Player extends Entity implements ActionListener{
         super.start();
         simulateGravity();
         hitboxDetection();
+        heal();
     }
 }
