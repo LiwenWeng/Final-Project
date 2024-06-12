@@ -23,6 +23,11 @@ public class Snail extends Enemy {
 
     }
 
+    @Override
+    public void defaultMovement() {
+
+    }
+
     public void checkForPlayer() {
         Point center = Utils.getCenterPos(entityRect());
         getAttackRangeRect().setLocation((int) (center.x - getAttackRangeRect().getWidth() / 2), (int) (center.y - getAttackRangeRect().getHeight() / 2));
@@ -38,6 +43,24 @@ public class Snail extends Enemy {
             setPlayerInRange(false);
             if (!getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
             playAnimation("hide", "idle");
+        }
+    }
+
+    public void attack() {
+        if (getAttackHitbox().intersects(getPlayer().entityRect())) {
+            if (!isAttackDebounce()) {
+                playAnimation("attack", false);
+                getPlayer().takeDamage(getDamage());
+                setAttackDebounce(true);
+                Utils.delay(getAttackCD(), (t) -> {
+                    setAttackDebounce(false);
+                }, 1);
+
+                setHitboxActive(true);
+                Utils.delay(1000, (t) -> {
+                    setHitboxActive(false);
+                }, 1);
+            }
         }
     }
 

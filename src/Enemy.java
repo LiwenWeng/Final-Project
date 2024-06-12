@@ -11,6 +11,9 @@ public class Enemy extends Entity {
     private Rectangle attackRangeRect;
     private boolean playerInRange;
     private Player player;
+    private double leftLimit;
+    private double rightLimit;
+    private int direction;
 
     public Enemy(int health, int damage, double x, double y, int rangeWidth, int rangeHeight, Player player, Background background, Map<String, Animation> animations) {
         super(health, damage, x, y, true, animations);
@@ -19,6 +22,9 @@ public class Enemy extends Entity {
         this.originalY = y;
         moveAmount = 1;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
+        leftLimit = attackRangeRect.x;
+        rightLimit = attackRangeRect.x + attackRangeRect.getWidth();
+        direction = 1;
         playerInRange = false;
         this.player = player;
     }
@@ -59,6 +65,7 @@ public class Enemy extends Entity {
 
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
+            attack();
         } else {
             playerInRange = false;
         }
@@ -109,13 +116,27 @@ public class Enemy extends Entity {
     }
 
     public void defaultMovement() {
+        if (playerInRange) return;
 
+        if (direction > 0) {
+            moveRight();
+            faceLeft();
+            if (getX() + moveAmount > rightLimit) {
+                direction = -1;
+            }
+        } else {
+            moveLeft();
+            faceRight();
+            if (getX() - moveAmount < leftLimit) {
+                direction = 1;
+            }
+        }
     }
 
     public void attack() {
         if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
-                playAnimation("attack", false);
+                //playAnimation("attack", false);
                 player.takeDamage(getDamage());
                 setAttackDebounce(true);
                 Utils.delay(getAttackCD(), (t) -> {
