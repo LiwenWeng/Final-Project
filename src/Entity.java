@@ -1,12 +1,12 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Entity {
     private static int currentId = 0;
     private int id;
-    private int health;
+    private double health;
+    private double maxHealth;
     private int damage;
     private double x;
     private double y;
@@ -26,12 +26,15 @@ public class Entity {
     private boolean leftCollided;
     private int attackCD;
     private boolean dead;
+    private boolean canHeal;
+    private Thread canHealThread;
 
     public Entity(int health, int damage, double x, double y, boolean facingRight, Map<String, Animation> animations) {
         id = currentId;
         currentId++;
 
         this.health = health;
+        maxHealth = health;
         this.damage = damage;
         this.x = x;
         this.y = y;
@@ -54,13 +57,13 @@ public class Entity {
         topCollided = false;
         rightCollided = false;
         leftCollided = false;
-
+        canHeal = true;
     }
     public int getId() {
         return id;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -136,14 +139,34 @@ public class Entity {
         return attackCD;
     }
 
+    public boolean canHeal() {
+        return canHeal;
+    }
+
+    public void setCanHeal(boolean canHeal) {
+        this.canHeal = canHeal;
+    }
+
     public void setCurrentPlayingAnim(Animation anim) {
         currentPlayingAnim = anim;
+    }
+
+    public void incrementHealth() {
+        health += 0.1;
+        if (health > maxHealth) health = maxHealth;
     }
 
     public void takeDamage(int damage) {
         if (animations.get("dash") != null && animations.get("dash").isActive()) return;
 
         health -= damage;
+        canHeal = false;
+        if (canHealThread == null || !canHealThread.isAlive()) {
+            canHealThread = Utils.delay(3000, (t) -> {
+                canHeal = true;
+            }, 1);
+        }
+
         if (animations.get("hit") != null) playAnimation("hit", false);
         if (health <= 0) {
             if (animations.get("dead") != null) {
@@ -152,10 +175,6 @@ public class Entity {
             dead = true;
         };
         System.out.println(id);
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
     }
 
     public void setX(double x) {
@@ -219,7 +238,7 @@ public class Entity {
 
     public void collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            if (entityRect().intersects(collidable.collidableRectBottom())) {
+            if (entityRect().intersects(collidable.getCollidableRectBottom())) {
                 if (!airCollided) {
                     gravity = 0;
                     airCollided = true;
@@ -229,19 +248,19 @@ public class Entity {
                     Collidable.getSidesCollided().get("bottom").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectTop())) {
+            if (entityRect().intersects(collidable.getCollidableRectTop())) {
                 topCollided = true;
                 if (!Collidable.getSidesCollided().get("top").contains(id)) {
-                    Collidable.getSidesCollided().get("top").add(id);                    
+                    Collidable.getSidesCollided().get("top").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectRight())) {
+            if (entityRect().intersects(collidable.getCollidableRectRight())) {
                 rightCollided = true;
                 if (!Collidable.getSidesCollided().get("right").contains(id)) {
-                    Collidable.getSidesCollided().get("right").add(id);                    
+                    Collidable.getSidesCollided().get("right").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectLeft())) {
+            if (entityRect().intersects(collidable.getCollidableRectLeft())) {
                 leftCollided = true;
                 if (!Collidable.getSidesCollided().get("left").contains(id)) {
                     Collidable.getSidesCollided().get("left").add(id);
@@ -271,7 +290,6 @@ public class Entity {
         }
     }
 
-
     public Rectangle entityRect() {
         return hitbox;
     }
@@ -289,14 +307,26 @@ public class Entity {
     }
 
     public void playAnimation(String animationName, boolean loop) {
-        if (dead) return;
         if (currentPlayingAnim.toString().equals("hit")) {
             if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
             else return;
+        }
+
+        if (currentPlayingAnim.toString().equals("attack")) {
+            if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
+            else return;
         };
+
+        if (dead && currentPlayingAnim.toString().equals("dead")) {
+            if (currentPlayingAnim.isLooped() > 0) {
+                currentPlayingAnim.stop(false, false);
+            }
+            return;
+        }
+
         if (currentPlayingAnim.toString().equals(animationName)) {
             if (!loop && currentPlayingAnim.isLooped() > 0) {
-                currentPlayingAnim.stop(!currentPlayingAnim.toString().equals("dead"), false);
+                currentPlayingAnim.stop(true, false);
             }
             return;
         }

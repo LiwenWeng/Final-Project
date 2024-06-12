@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +12,11 @@ public class Collidable {
     private double originalY;
     private static Map<String, ArrayList<Integer>> sidesCollided;
     private Background background;
+    private Rectangle collidableRect;
+    private Rectangle collidableRectTop;
+    private Rectangle collidableRectBottom;
+    private Rectangle collidableRectLeft;
+    private Rectangle collidableRectRight;
 
     public Collidable(double x, double y, int width, int height, Background background) {
         this.x = x;
@@ -22,6 +26,13 @@ public class Collidable {
         this.background = background;
         this.width = width;
         this.height = height;
+
+        collidableRect = new Rectangle((int) x, (int) y, width, height);
+        collidableRectTop = new Rectangle((int) x + 5, (int) y - 5, width - 10, 5);
+        collidableRectBottom = new Rectangle((int) x + 5, (int) y + height, width - 10, 5);
+        collidableRectLeft = new Rectangle((int) x - 5, (int) y + 5, 5, height - 10);
+        collidableRectRight = new Rectangle((int) x + width, (int) y + 5, 5, height - 10);
+
         sidesCollided =  new HashMap<>();
         sidesCollided.put("top", new ArrayList<>());
         sidesCollided.put("bottom", new ArrayList<>());
@@ -57,25 +68,33 @@ public class Collidable {
         this.y = y;
     }
 
-    public Rectangle collidableRect() {
-        return new Rectangle((int) x, (int) y, width, height);
+    public Rectangle getCollidableRect() {
+        collidableRect.setLocation((int) x, (int) y);
+        return collidableRect;
     }
-    public Rectangle collidableRectLeft() {
-        return new Rectangle((int) x - 5, (int) y + 5, 5, height - 10);
+
+    public Rectangle getCollidableRectLeft() {
+        collidableRectLeft.setLocation((int) x - 5, (int) y + 5);
+        return collidableRectLeft;
     }
-    public Rectangle collidableRectRight() {
-        return new Rectangle((int) x + width, (int) y + 5, 5, height - 10);
+
+    public Rectangle getCollidableRectRight() {
+        collidableRectRight.setLocation((int) x + width, (int) y + 5);
+        return collidableRectRight;
     }
-    public Rectangle collidableRectTop() {
-        return new Rectangle((int) x + 5, (int) y - 5, width - 10, 5);
+
+    public Rectangle getCollidableRectTop() {
+        collidableRectTop.setLocation((int) x + 5, (int) y - 5);
+        return collidableRectTop;
     }
-    public Rectangle collidableRectBottom() {
-        return new Rectangle((int) x + 5, (int) y + height, width - 10, 5);
+
+    public Rectangle getCollidableRectBottom() {
+        collidableRectBottom.setLocation((int) x + 5, (int) y + height);
+        return collidableRectBottom;
     }
 
     public void updatePosition() {
         this.x = originalX + background.getX();
         this.y = originalY + background.getY();
     }
-
 }

@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Enemy extends Entity {
@@ -10,6 +9,9 @@ public class Enemy extends Entity {
     private Rectangle attackRangeRect;
     private boolean playerInRange;
     private Player player;
+    private double leftLimit;
+    private double rightLimit;
+    private int direction;
 
     public Enemy(int health, int damage, double x, double y, int rangeWidth, int rangeHeight, Player player, Background background, Map<String, Animation> animations) {
         super(health, damage, x, y, true, animations);
@@ -18,6 +20,9 @@ public class Enemy extends Entity {
         this.originalY = y;
         moveAmount = 1;
         attackRangeRect = new Rectangle((int) x, (int) y, rangeWidth, rangeHeight);
+        leftLimit = attackRangeRect.x;
+        rightLimit = attackRangeRect.x + attackRangeRect.getWidth();
+        direction = 1;
         playerInRange = false;
         this.player = player;
     }
@@ -46,6 +51,7 @@ public class Enemy extends Entity {
 
         if (getX() - moveAmount >= 0) {
             originalX -= moveAmount;
+            playAnimation("run", true);
         }
     }
 
@@ -57,6 +63,7 @@ public class Enemy extends Entity {
 
         if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
             originalX += moveAmount;
+            playAnimation("run", true);
         }
     }
 
@@ -66,6 +73,7 @@ public class Enemy extends Entity {
 
         if (attackRangeRect.intersects(player.entityRect())) {
             playerInRange = true;
+            attack();
         } else {
             playerInRange = false;
         }
@@ -103,11 +111,11 @@ public class Enemy extends Entity {
             setAirCollided(false);
             setGrounded(true);
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
-                if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
+                if (collidable.getCollidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     if (isDead()) {
 
                     } else {
-                        originalY = originalY + getGravity() - ((entityRect().getY() + entityRect().getHeight()) - collidable.collidableRect().y);
+                        originalY = originalY + getGravity() - ((entityRect().getY() + entityRect().getHeight()) - collidable.getCollidableRect().y);
                     }
                 }
             }
@@ -116,19 +124,32 @@ public class Enemy extends Entity {
     }
 
     public void defaultMovement() {
+        if (playerInRange) return;
 
+        if (direction > 0) {
+            moveRight();
+            faceLeft();
+            if (getX() + moveAmount > rightLimit) {
+                direction = -1;
+            }
+        } else {
+            moveLeft();
+            faceRight();
+            if (getX() - moveAmount < leftLimit) {
+                direction = 1;
+            }
+        }
     }
 
     public void attack() {
         if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
+                //playAnimation("attack", false);
                 player.takeDamage(getDamage());
-                System.out.println("player health: " + player.getHealth());
                 setAttackDebounce(true);
                 Utils.delay(getAttackCD(), (t) -> {
                     setAttackDebounce(false);
                 }, 1);
-                System.out.println("enemy attack on cd");
 
                 setHitboxActive(true);
                 Utils.delay(1000, (t) -> {

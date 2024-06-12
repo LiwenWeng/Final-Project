@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Entity implements ActionListener{
@@ -22,7 +21,7 @@ public class Player extends Entity implements ActionListener{
     private double dashPosition;
 
     public Player(Background background, Map<String, Animation> animations) {
-        super(100, 10, 250, 800, true, animations);
+        super(100, 10, Constants.SCREEN_WIDTH * 0.5, Constants.SCREEN_HEIGHT * 0.75, true, animations);
         this.name = "joe";
 
         moveAmount = Constants.SCREEN_HEIGHT * 0.004;
@@ -50,13 +49,13 @@ public class Player extends Entity implements ActionListener{
     }
 
     public String getName() {
-       return name;
+        return name;
     }
 
     public ArrayList<Integer> getAttackedEnemyIds() {
         return attackedEnemyIds;
     }
-    
+
     public boolean isDashing() {
         return isDashing;
     }
@@ -134,6 +133,10 @@ public class Player extends Entity implements ActionListener{
         playAnimation("jump", false);
     }
 
+    public void heal() {
+        if (canHeal()) incrementHealth();
+    }
+
     public void simulateGravity() {
         if (!Collidable.getSidesCollided().get("top").contains(getId())) {
             setGrounded(false);
@@ -156,11 +159,11 @@ public class Player extends Entity implements ActionListener{
             doubleJumped = false;
             canDoubleJump = false;
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
-                if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
+                if (collidable.getCollidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     if (isDead()) {
                         background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.getY()));
                     } else {
-                        background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.collidableRectTop().y));
+                        background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.getCollidableRectTop().y));
                     }
                 }
             }
@@ -198,11 +201,13 @@ public class Player extends Entity implements ActionListener{
             }, 1);
         }
     }
+
     @Override
     public void faceRight() {
         if (isDashing) return;
         super.faceRight();
     }
+
     @Override
     public void faceLeft() {
         if (isDashing) return;
@@ -242,7 +247,7 @@ public class Player extends Entity implements ActionListener{
                     if (background.canDashLeft() && background.canDashRight()) {
                         GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) (getDrawX() + (background.getX() - dashPosition)), (int) (getY()), (int) getWidth(), (int) getHeight(), true));
                     } else {
-                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(), (int) getY(), (int) getWidth(), (int) getHeight(), false));   
+                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(), (int) getY(), (int) getWidth(), (int) getHeight(), false));
                     }
                 }
             }
@@ -254,5 +259,6 @@ public class Player extends Entity implements ActionListener{
         super.start();
         simulateGravity();
         hitboxDetection();
+        heal();
     }
 }

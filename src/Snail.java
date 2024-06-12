@@ -23,14 +23,21 @@ public class Snail extends Enemy {
 
     }
 
+    @Override
+    public void defaultMovement() {
+
+    }
+
     public void checkForPlayer() {
         Point center = Utils.getCenterPos(entityRect());
         getAttackRangeRect().setLocation((int) (center.x - getAttackRangeRect().getWidth() / 2), (int) (center.y - getAttackRangeRect().getHeight() / 2));
 
         if (getAttackRangeRect().intersects(getPlayer().entityRect())) {
-            setPlayerInRange(true);
-            if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
-            playAnimation("hide", false);
+            if (!isPlayerInRange()) {
+                setPlayerInRange(true);
+                if (getAnimations().get("hide").isReverse()) getAnimations().get("hide").reverse();
+                playAnimation("hide", false);
+            }
             attack();
         } else {
             setPlayerInRange(false);
@@ -39,14 +46,31 @@ public class Snail extends Enemy {
         }
     }
 
+    public void attack() {
+        if (getAttackHitbox().intersects(getPlayer().entityRect())) {
+            if (!isAttackDebounce()) {
+                playAnimation("attack", false);
+                getPlayer().takeDamage(getDamage());
+                setAttackDebounce(true);
+                Utils.delay(getAttackCD(), (t) -> {
+                    setAttackDebounce(false);
+                }, 1);
+
+                setHitboxActive(true);
+                Utils.delay(1000, (t) -> {
+                    setHitboxActive(false);
+                }, 1);
+            }
+        }
+    }
+
     public static Map<String, Animation> loadAnimations() {
         Map<String, Animation> snailAnimations = new HashMap<>();
         snailAnimations.put("idle", new Animation("idle", Animation.loadAnimation("snail/", "idle", 2, 2),200));
-        snailAnimations.put("attack", new Animation("attack", Animation.loadAnimation("snail/", "attack", 2, 2),200));
+        snailAnimations.put("attack", new Animation("attack", Animation.loadAnimation("snail/", "attack", 2, 2),100));
         snailAnimations.put("run", new Animation("run", Animation.loadAnimation("snail/", "run", 2, 2),200));
         snailAnimations.put("hit", new Animation("hit", Animation.loadAnimation("snail/", "hit", 2, 2),100));
         snailAnimations.put("hide", new Animation("hide", Animation.loadAnimation("snail/", "hide", 2, 2),200));
         return snailAnimations;
     }
-
 }
