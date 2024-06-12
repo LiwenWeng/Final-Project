@@ -155,10 +155,6 @@ public class Entity {
         System.out.println(id);
     }
 
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
     public void setX(double x) {
         this.x = x;
     }
@@ -220,7 +216,7 @@ public class Entity {
 
     public void collided() {
         for (Collidable collidable : GraphicsPanel.getCollidables()) {
-            if (entityRect().intersects(collidable.collidableRectBottom())) {
+            if (entityRect().intersects(collidable.getCollidableRectBottom())) {
                 if (!airCollided) {
                     gravity = 0;
                     airCollided = true;
@@ -230,19 +226,19 @@ public class Entity {
                     Collidable.getSidesCollided().get("bottom").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectTop())) {
+            if (entityRect().intersects(collidable.getCollidableRectTop())) {
                 topCollided = true;
                 if (!Collidable.getSidesCollided().get("top").contains(id)) {
                     Collidable.getSidesCollided().get("top").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectRight())) {
+            if (entityRect().intersects(collidable.getCollidableRectRight())) {
                 rightCollided = true;
                 if (!Collidable.getSidesCollided().get("right").contains(id)) {
                     Collidable.getSidesCollided().get("right").add(id);
                 }
             }
-            if (entityRect().intersects(collidable.collidableRectLeft())) {
+            if (entityRect().intersects(collidable.getCollidableRectLeft())) {
                 leftCollided = true;
                 if (!Collidable.getSidesCollided().get("left").contains(id)) {
                     Collidable.getSidesCollided().get("left").add(id);
@@ -290,6 +286,11 @@ public class Entity {
 
     public void playAnimation(String animationName, boolean loop) {
         if (currentPlayingAnim.toString().equals("hit")) {
+            if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
+            else return;
+        }
+
+        if (currentPlayingAnim.toString().equals("attack")) {
             if (currentPlayingAnim.isLooped() > 0) currentPlayingAnim.stop(true, true);
             else return;
         };

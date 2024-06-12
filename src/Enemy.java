@@ -94,11 +94,11 @@ public class Enemy extends Entity {
             setAirCollided(false);
             setGrounded(true);
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
-                if (collidable.collidableRectTop().intersects(entityRect()) && getGravity() < 0) {
+                if (collidable.getCollidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     if (isDead()) {
 
                     } else {
-                        originalY = originalY + getGravity() - ((entityRect().getY() + entityRect().getHeight()) - collidable.collidableRect().y);
+                        originalY = originalY + getGravity() - ((entityRect().getY() + entityRect().getHeight()) - collidable.getCollidableRect().y);
                     }
                 }
             }
@@ -113,13 +113,12 @@ public class Enemy extends Entity {
     public void attack() {
         if (getAttackHitbox().intersects(player.entityRect())) {
             if (!isAttackDebounce()) {
+                playAnimation("attack", false);
                 player.takeDamage(getDamage());
-                System.out.println("player health: " + player.getHealth());
                 setAttackDebounce(true);
                 Utils.delay(getAttackCD(), (t) -> {
                     setAttackDebounce(false);
                 }, 1);
-                System.out.println("enemy attack on cd");
 
                 setHitboxActive(true);
                 Utils.delay(1000, (t) -> {

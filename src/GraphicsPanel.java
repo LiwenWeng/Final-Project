@@ -94,11 +94,11 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        enemies.add(new Snail(735, 500, player, background, Snail.loadAnimations()));
-        enemies.add(new Snail(1380, 600, player, background, Snail.loadAnimations()));
-//        for (int i = 0; i < 1; i++) {
-//            enemies.add(new Snail(500 + i * 400, -1000, player, background, Snail.loadAnimations()));
-//        }
+//        enemies.add(new Snail(735, 500, player, background, Snail.loadAnimations()));
+//        enemies.add(new Snail(1380, 600, player, background, Snail.loadAnimations()));
+        for (int i = 0; i < 5; i++) {
+            enemies.add(new Snail(200 + i * 250, -1000, player, background, Snail.loadAnimations()));
+        }
     }
 
     public static ArrayList<Collidable> getCollidables() {
@@ -123,15 +123,15 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
 
         for (Collidable collidable : collidables) {
             collidable.updatePosition();
-            g.drawRect((int) collidable.collidableRect().getX(), (int) collidable.collidableRect().getY(), (int) collidable.collidableRect().getWidth(), (int) collidable.collidableRect().getHeight());
+            g.drawRect((int) collidable.getCollidableRect().getX(), (int) collidable.getCollidableRect().getY(), (int) collidable.getCollidableRect().getWidth(), (int) collidable.getCollidableRect().getHeight());
         }
 
         for (Enemy enemy : enemies) {
             if (enemy.isDead()) enemies.remove(enemy);
             g.drawImage(enemy.getEntityImage(), (int) enemy.getDrawX(), (int) enemy.getY(), enemy.getWidth(), enemy.getHeight(), null);
-            g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
-            g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
-            g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
+//            g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
+//            g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
+//            g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
             enemy.start();
         }
 
@@ -154,6 +154,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 dead = true;
             }, 1);
         }
+
         if (dead) {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, 10000, 10000);
@@ -163,11 +164,13 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         }
 
         if (enemies.isEmpty()) {
-            g.setColor(Color.WHITE);
-            g.fillRect(0, 0, 10000, 10000);
-            g.setColor(Color.BLUE);
-            g.setFont(new Font("Courier New", Font.BOLD, 50));
-            g.drawString("VICTORY", 100, 100);
+            Utils.delay(1000, (t) -> {
+                g.setColor(Color.WHITE);
+                g.fillRect(0, 0, 10000, 10000);
+                g.setColor(Color.BLUE);
+                g.setFont(new Font("Courier New", Font.BOLD, 50));
+                g.drawString("VICTORY", 100, 100);
+            }, 1);
         }
     }
 
