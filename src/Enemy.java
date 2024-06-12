@@ -39,12 +39,22 @@ public class Enemy extends Entity {
     }
 
     public void moveLeft() {
+        if (Collidable.getSidesCollided().get("right").contains(getId())) {
+            direction = 1;
+            return;
+        }
+
         if (getX() - moveAmount >= 0) {
             originalX -= moveAmount;
         }
     }
 
     public void moveRight() {
+        if (Collidable.getSidesCollided().get("left").contains(getId())) {
+            direction = -1;
+            return;
+        }
+
         if (getX() + moveAmount <= Constants.SCREEN_WIDTH - getEntityImage().getWidth()) {
             originalX += moveAmount;
         }

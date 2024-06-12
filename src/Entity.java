@@ -301,7 +301,7 @@ public class Entity {
             return;
         }
 
-        currentPlayingAnim.stop(true, false);
+        currentPlayingAnim.stop(true, true);
         currentPlayingAnim = animations.get(animationName).start();
     }
 

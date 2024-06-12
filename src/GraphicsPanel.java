@@ -98,10 +98,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        //enemies.add(new Snail(2540, -780, player, background, Snail.loadAnimations()));
-        enemies.add(new Snail(1100, 2300, player, background, Snail.loadAnimations()));
-//        for (int i = 0; i < 1; i++) {
-//            enemies.add(new Snail(500 + i * 400, -1000, player, background, Snail.loadAnimations()));
+        enemies.add(new Boar(700, 500, player, background, Boar.loadAnimations()));
+        enemies.add(new Snail(200, 600, player, background, Snail.loadAnimations()));
+//        for (int i = 0; i < 5; i++) {
+//            enemies.add(new Snail(200 + i * 250, -1000, player, background, Snail.loadAnimations()));
 //        }
     }
 
@@ -139,6 +139,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             // g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
             enemy.start();
         }
+
         for (UI ui : UIList) {
             if (ui.getName().equals("healthbar")) {
                 g.drawImage(ui.getImage(), ui.getx(), ui.gety(), player.getHealth() >= 0 ? (int) (ui.getWidth() - ((orginalHealth - player.getHealth()) * (ui.getWidth() / (double) orginalHealth))) : 0, ui.getHeight(), this);
@@ -152,8 +153,9 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             ((Graphics2D) g).setComposite(ac);
             g.drawImage(dashImage.getImage(), dashImage.getX(), dashImage.getY(), dashImage.getWidth(), dashImage.getHeight(), this);
         }
+
         if (player.isDead()) {
-            Utils.delay(3000, (t) -> {
+            Utils.delay(1000, (t) -> {
                 dead = true;
             }, 1);
         }
@@ -178,8 +180,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         try {
-           pressedKeys[key] = true; 
-        }        
+           pressedKeys[key] = true;
+        }
         catch (ArrayIndexOutOfBoundsException f) {
 
         }
@@ -209,10 +211,10 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         try {
-            pressedKeys[key] = false; 
-         }        
+            pressedKeys[key] = false;
+         }
          catch (ArrayIndexOutOfBoundsException f) {
- 
+
          }
         if (tapRight && key == 68) {
             tapRightAgain = true;
