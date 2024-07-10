@@ -174,7 +174,6 @@ public class Entity {
             };
             dead = true;
         };
-        System.out.println(id);
     }
 
     public void setX(double x) {

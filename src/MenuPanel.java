@@ -7,14 +7,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class MenuPanel extends JPanel implements ActionListener, MouseListener {
-    Button startButton;
-    Background background;
-    Frame enclosingFrame;
-    BufferedImage img1;
-    BufferedImage img2;
-    BufferedImage title;
-    BufferedImage result;
-    double moveAmount;
+    private Button startButton;
+    private Background background;
+    private Frame enclosingFrame;
+    private BufferedImage img1;
+    private BufferedImage img2;
+    private BufferedImage title;
+    private BufferedImage result;
+    private double moveAmount;
+    private Timer timer;
+
     public MenuPanel(JFrame frame) {
         enclosingFrame = frame;
         startButton = new Button("buttons/play", Constants.SCREEN_WIDTH / 2 - 165, Constants.SCREEN_HEIGHT / 2);
@@ -23,6 +25,9 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
         setFocusable(true); // this line of code + one below makes this panel active for keylistener events
         requestFocusInWindow(); // see comment above
         moveAmount = 0;
+        timer = new Timer(20, this);
+        timer.start();
+        timer.addActionListener(this);
 
         try {
             img1 = ImageIO.read(new File("src/assets/animations/menu/menu1.png"));
@@ -56,19 +61,26 @@ public class MenuPanel extends JPanel implements ActionListener, MouseListener {
         g.drawImage(img1, (int) moveAmount, 0, this);
         g.drawImage(img2, (int) moveAmount + 1920, 0, this);
         g.drawImage(img1, (int) moveAmount + 1920 * 2, 0, this);
-        moveAmount -= 1;
         if (moveAmount <= -1920 * 2) {
             moveAmount = 0;
         }
         if (title != null) {
-            g.drawImage(title, Constants.SCREEN_WIDTH / 2 - title.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 360, null);
+            g.drawImage(title, Constants.SCREEN_WIDTH / 2 - title.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 360,
+                    null);
         } else {
-            g.drawImage(result, Constants.SCREEN_WIDTH / 2 - result.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 240, null);
+            g.drawImage(result, Constants.SCREEN_WIDTH / 2 - result.getWidth() / 2, Constants.SCREEN_HEIGHT / 2 - 240,
+                    null);
         }
         g.drawImage(startButton.getImage(), startButton.getx(), startButton.gety(), null);
     }
 
-    public void actionPerformed(ActionEvent e) { }
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() instanceof Timer) {
+            if (e.getSource() == timer) {
+                moveAmount -= 0.5;
+            }
+        }
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

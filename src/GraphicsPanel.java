@@ -98,8 +98,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         // beeAnimations.put("hit", new Animation("hit", Animation.loadAnimation("bee/", "hit", 2, 2),200));
         // enemies.add(new Bee(800, 800, player, background, beeAnimations));
 
-        //enemies.add(new Boar(900, 2000, player, background, Boar.loadAnimations()));
-        //enemies.add(new Snail(2400, 2000, player, background, Snail.loadAnimations()));
+        enemies.add(new Boar(900, 2000, player, background, Boar.loadAnimations()));
+        enemies.add(new Snail(2400, 2000, player, background, Snail.loadAnimations()));
         enemies.add(new Snail(2600, 0, player, background, Snail.loadAnimations()));
     }
 
@@ -135,7 +135,6 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
             // g.drawRect((int) enemy.entityRect().getX(), (int) enemy.entityRect().getY(), (int) enemy.entityRect().getWidth(), (int) enemy.entityRect().getHeight());
             // g.drawRect((int) enemy.getAttackHitbox().getX(), (int) enemy.getAttackHitbox().getY(), (int) enemy.getAttackHitbox().getWidth(), (int) enemy.getAttackHitbox().getHeight());
             // g.drawRect((int) enemy.getAttackRangeRect().getX(), (int) enemy.getAttackRangeRect().getY(), (int) enemy.getAttackRangeRect().getWidth(), (int) enemy.getAttackRangeRect().getHeight());
-            enemy.start();
         }
 
         for (UI ui : UIList) {
@@ -251,6 +250,9 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                 }
                 if (deadGravity) return;
                 player.start();
+                for (Enemy enemy : enemies) {
+                    enemy.start();
+                }
                 if (background.getY() <= background.getOriginalY() - 10) {
                     player.takeDamage(100);
                 }
@@ -289,6 +291,8 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                     }, 1);
                     dashed = false;
                 }
+                player.move(pressedKeys[65], pressedKeys[68]);
+                
             }
         }
  

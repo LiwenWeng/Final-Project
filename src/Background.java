@@ -24,31 +24,31 @@ public class Background {
         RIGHT_LIMIT = Constants.SCREEN_WIDTH - getBackgroundImage().getWidth();
     }
 
-    public boolean moveRight(boolean isWithinLeftLimit) {
-        if (x + MOVE_AMT <= LEFT_LIMIT && !isWithinLeftLimit) {
-            x += MOVE_AMT;
+    public boolean moveRight(boolean isWithinLeftLimit, double moveAmount) {
+        if (x + moveAmount <= LEFT_LIMIT && !isWithinLeftLimit) {
+            x += moveAmount;
             return true;
         }
         return false;
     }
     public boolean dashRight(boolean isWithinLeftLimit) {
-        if (x + MOVE_AMT * 5.0 <= LEFT_LIMIT && !isWithinLeftLimit) {
-            x += MOVE_AMT * 5.0;
+        if (x + MOVE_AMT * 4.0 <= LEFT_LIMIT && !isWithinLeftLimit) {
+            x += MOVE_AMT * 4.0;
             return true;
         }
         return false;
     }
 
-    public boolean moveLeft(boolean isWithinRightLimit) {
-        if (x - MOVE_AMT >= RIGHT_LIMIT && !isWithinRightLimit) {
-            x -= MOVE_AMT;
+    public boolean moveLeft(boolean isWithinRightLimit, double moveAmount) {
+        if (x + moveAmount >= RIGHT_LIMIT && !isWithinRightLimit) {
+            x += moveAmount;
             return true;
         }
         return false;
     }
     public boolean dashLeft(boolean isWithinRightLimit) {
-        if (x - MOVE_AMT * 5.0 >= RIGHT_LIMIT && !isWithinRightLimit) {
-            x -= MOVE_AMT * 5.0;
+        if (x - MOVE_AMT * 4.0 >= RIGHT_LIMIT && !isWithinRightLimit) {
+            x -= MOVE_AMT * 4.0;
             return true;
         }
         return false;

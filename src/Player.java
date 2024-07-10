@@ -3,8 +3,9 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.Map;
 
-public class Player extends Entity implements ActionListener{
+public class Player extends Entity implements ActionListener {
     private double moveAmount;
+    private double moveAmountMax;
     private String name;
     private Background background;
     private boolean isWithinScreenRight;
@@ -24,7 +25,8 @@ public class Player extends Entity implements ActionListener{
         super(100, 10, Constants.SCREEN_WIDTH * 0.25, Constants.SCREEN_HEIGHT * 0.75, true, animations);
         this.name = "joe";
 
-        moveAmount = Constants.SCREEN_HEIGHT * 0.004;
+        moveAmountMax = Constants.SCREEN_HEIGHT * 0.004;
+        moveAmount = 0;
         this.background = background;
 
         isWithinScreenRight = false;
@@ -41,7 +43,6 @@ public class Player extends Entity implements ActionListener{
         dashAnimationTimer = new Timer(50, this);
         dashRight = false;
         dashLeft = false;
-        dashTimer.start();
         dashTimer.addActionListener(this);
         dashAnimationTimer.start();
         dashAnimationTimer.addActionListener(this);
@@ -61,56 +62,107 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void moveRight() {
-        if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
-        if (!background.moveLeft(isWithinScreenLeft)) {
-            if (getX() + moveAmount < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
-                setX(getX() + moveAmount);
-                isWithinScreenRight = true;
-                if (getX() + moveAmount > Constants.SCREEN_WIDTH * 0.5) {
-                    isWithinScreenLeft = false;
+        moveAmount += moveAmountMax * 0.1;
+    }
+
+    public void moveLeft() {
+        moveAmount -= moveAmountMax * 0.1;
+    }
+
+    public void move(boolean right, boolean left) {
+        if (!isDashing) {
+            if (!right && !left) {
+                if (moveAmount > 0 && moveAmount <= moveAmountMax) {
+                    moveAmount -= moveAmountMax * 0.05;
+                }
+                if (moveAmount < 0 && moveAmount >= -moveAmountMax) {
+                    moveAmount += moveAmountMax * 0.05;
+                    if (moveAmount >= 0) {
+                        moveAmount = 0;
+                    }
+                }
+            }
+            if (!isGrounded()) {
+                if (moveAmount > 0 && moveAmount > moveAmountMax) {
+                    moveAmount -= moveAmountMax * 0.13;
+                }
+                if (moveAmount < 0 && moveAmount < -moveAmountMax) {
+                    moveAmount += moveAmountMax * 0.13;
+                }
+            } else {
+                if (moveAmount > 0 && moveAmount > moveAmountMax) {
+                    moveAmount -= moveAmountMax * 0.15;
+                }
+                if (moveAmount < 0 && moveAmount < -moveAmountMax) {
+                    moveAmount += moveAmountMax * 0.15;
+                }
+            }
+        }
+        System.out.println(moveAmount);
+
+        if (moveAmount > 0) { // right
+            if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded())) {
+                moveAmount = 0;
+                return;
+            }
+            if (!background.moveLeft(isWithinScreenLeft, -moveAmount)) {
+                if (getX() + moveAmount < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
+                    setX(getX() + moveAmount);
+                    isWithinScreenRight = true;
+                    if (getX() + moveAmount > Constants.SCREEN_WIDTH * 0.5) {
+                        isWithinScreenLeft = false;
+                    }
+                }
+            }
+        }
+        if (moveAmount < 0) { // left
+            if (Collidable.getSidesCollided().get("right").contains(getId()) || (isHitboxActive() && isGrounded())) {
+                moveAmount = 0;
+                return;
+            }
+            if (!background.moveRight(isWithinScreenRight, -moveAmount)) {
+                if (getX() + moveAmount > 0) {
+                    setX(getX() + moveAmount);
+                    isWithinScreenLeft = true;
+                    if (getX() + moveAmount < Constants.SCREEN_WIDTH * 0.5) {
+                        isWithinScreenRight = false;
+                    }
                 }
             }
         }
     }
 
-    public void moveLeft() {
-        if (Collidable.getSidesCollided().get("right").contains(getId()) || (isHitboxActive() && isGrounded()) || isDashing) return;
-        if (!background.moveRight(isWithinScreenRight)) {
-            if (getX() - moveAmount > 0) {
-                setX(getX() - moveAmount);
-                isWithinScreenLeft = true;
-                if (getX() - moveAmount < Constants.SCREEN_WIDTH * 0.5) {
-                    isWithinScreenRight = false;
-                }
-            }
-        }
-    }
     public void dashRight() {
         if (canDash) {
+            dashTimer.start();
             isDashing = true;
             canDash = false;
             dashRight = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(300, (t) -> {
+            Utils.delay(200, (t) -> {
                 isDashing = false;
                 dashRight = false;
+                dashTimer.stop();
             }, 1);
             Utils.delay(4000, (t) -> {
                 canDash = true;
             }, 1);
         }
     }
+
     public void dashLeft() {
         if (canDash) {
+            dashTimer.start();
             isDashing = true;
             canDash = false;
             dashLeft = true;
             dashPosition = background.getX();
             setGravity(0);
-            Utils.delay(300, (t) -> {
+            Utils.delay(200, (t) -> {
                 isDashing = false;
                 dashLeft = false;
+                dashTimer.stop();
             }, 1);
             Utils.delay(4000, (t) -> {
                 canDash = true;
@@ -119,14 +171,16 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void jump() {
-        if (isDashing) return;
+        if (isDashing)
+            return;
         if (canDoubleJump && !Collidable.getSidesCollided().get("bottom").contains(getId())) {
             setGravity(Constants.SCREEN_HEIGHT * 0.009);
             canDoubleJump = false;
             doubleJumped = true;
             getAnimations().get("jump").reset(true);
         }
-        if (!isGrounded()) return;
+        if (!isGrounded())
+            return;
         setGrounded(false);
         setGravity(Constants.SCREEN_HEIGHT * 0.009);
         canDoubleJump = false;
@@ -134,7 +188,8 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void heal() {
-        if (canHeal()) incrementHealth();
+        if (canHeal())
+            incrementHealth();
     }
 
     public void simulateGravity() {
@@ -142,14 +197,15 @@ public class Player extends Entity implements ActionListener{
             setGrounded(false);
         }
 
-        if (isGrounded() || isDashing) return;
+        if (isGrounded() || isDashing)
+            return;
 
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0003 );
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0003);
         if (!doubleJumped) {
             doubleJumped = true;
-            Utils.delay(200,(t) -> {
+            Utils.delay(200, (t) -> {
                 canDoubleJump = true;
-            } , 1);
+            }, 1);
         }
 
         background.setY(background.getY() + getGravity());
@@ -161,9 +217,12 @@ public class Player extends Entity implements ActionListener{
             for (Collidable collidable : GraphicsPanel.getCollidables()) {
                 if (collidable.getCollidableRectTop().intersects(entityRect()) && getGravity() < 0) {
                     if (isDead()) {
-                        background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.getY()));
+                        background.setY(background.getY() + -getGravity()
+                                + ((entityRect().getY() + entityRect().getHeight()) - collidable.getY()));
                     } else {
-                        background.setY(background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight()) - collidable.getCollidableRectTop().y));
+                        background.setY(
+                                background.getY() + -getGravity() + ((entityRect().getY() + entityRect().getHeight())
+                                        - collidable.getCollidableRectTop().y));
                     }
                 }
             }
@@ -175,12 +234,15 @@ public class Player extends Entity implements ActionListener{
     }
 
     public void hitboxDetection() {
-        if (!isHitboxActive()) return;
+        if (!isHitboxActive())
+            return;
         for (Enemy enemy : GraphicsPanel.getEnemies()) {
             if (getAttackHitbox().intersects(enemy.entityRect()) && !attackedEnemyIds.contains(enemy.getId())) {
-                if (enemy.isDead()) continue;
+                if (enemy.isDead())
+                    continue;
                 enemy.takeDamage(getDamage());
-                if (enemy.isDead()) continue;
+                if (enemy.isDead())
+                    continue;
                 attackedEnemyIds.add(enemy.getId());
             }
         }
@@ -204,13 +266,15 @@ public class Player extends Entity implements ActionListener{
 
     @Override
     public void faceRight() {
-        if (isDashing) return;
+        if (isDashing)
+            return;
         super.faceRight();
     }
 
     @Override
     public void faceLeft() {
-        if (isDashing) return;
+        if (isDashing)
+            return;
         super.faceLeft();
     }
 
@@ -218,36 +282,21 @@ public class Player extends Entity implements ActionListener{
         if (e.getSource() instanceof Timer) {
             if (e.getSource() == dashTimer) {
                 if (dashRight) {
-                    if (Collidable.getSidesCollided().get("left").contains(getId()) || isHitboxActive()) return;
-                    if (!background.dashLeft(isWithinScreenLeft)) {
-                        if (getX() + moveAmount * 5.0 < Constants.SCREEN_WIDTH - entityRect().getWidth()) {
-                            setX(getX() + moveAmount * 5.0);
-                            isWithinScreenRight = true;
-                            if (getX() + moveAmount > Constants.SCREEN_WIDTH * 0.5) {
-                                isWithinScreenLeft = false;
-                            }
-                        }
-                    }
-                }
-                else if (dashLeft) {
-                    if (Collidable.getSidesCollided().get("right").contains(getId()) || isHitboxActive()) return;
-                    if (!background.dashRight(isWithinScreenRight)) {
-                        if (getX() - moveAmount * 5.0 > 0) {
-                            setX(getX() - moveAmount * 5.0);
-                            isWithinScreenLeft = true;
-                            if (getX() - moveAmount < Constants.SCREEN_WIDTH * 0.5) {
-                                isWithinScreenRight = false;
-                            }
-                        }
-                    }
+                    moveAmount = moveAmountMax * 3.0;
+                } else if (dashLeft) {
+                    moveAmount = -(moveAmountMax * 3.0);
                 }
             }
             if (e.getSource() == dashAnimationTimer) {
                 if (isDashing) {
                     if (background.canDashLeft() && background.canDashRight()) {
-                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) (getDrawX() + (background.getX() - dashPosition)), (int) (getY()), (int) getWidth(), (int) getHeight(), true));
+                        GraphicsPanel.getDashImages()
+                                .add(new DashImage(getEntityImage(),
+                                        (int) (getDrawX() + (background.getX() - dashPosition)), (int) (getY()),
+                                        (int) getWidth(), (int) getHeight(), true));
                     } else {
-                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(), (int) getY(), (int) getWidth(), (int) getHeight(), false));
+                        GraphicsPanel.getDashImages().add(new DashImage(getEntityImage(), (int) getDrawX(),
+                                (int) getY(), (int) getWidth(), (int) getHeight(), false));
                     }
                 }
             }

@@ -105,7 +105,7 @@ public class Enemy extends Entity {
         if (!Collidable.getSidesCollided().get("top").contains(getId())) setGrounded(false);
         if (isGrounded()) return;
 
-        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0005);
+        setGravity(getGravity() - Constants.SCREEN_HEIGHT * 0.0003);
         originalY -= getGravity();
         if (Collidable.getSidesCollided().get("top").contains(getId())) {
             setAirCollided(false);
