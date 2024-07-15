@@ -292,7 +292,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                     dashed = false;
                 }
                 player.move(pressedKeys[65], pressedKeys[68]);
-                
+                System.out.println(player.getGravity());
             }
         }
  

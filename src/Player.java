@@ -40,7 +40,7 @@ public class Player extends Entity implements ActionListener {
         isDashing = false;
         canDash = true;
         dashTimer = new Timer(20, this);
-        dashAnimationTimer = new Timer(50, this);
+        dashAnimationTimer = new Timer(40, this);
         dashRight = false;
         dashLeft = false;
         dashTimer.addActionListener(this);
@@ -98,7 +98,6 @@ public class Player extends Entity implements ActionListener {
                 }
             }
         }
-        System.out.println(moveAmount);
 
         if (moveAmount > 0) { // right
             if (Collidable.getSidesCollided().get("left").contains(getId()) || (isHitboxActive() && isGrounded())) {

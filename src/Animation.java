@@ -16,10 +16,23 @@ public class Animation implements ActionListener {
     private int looped;
     private String name;
     private boolean reverse;
+    private double gravity;
 
     public Animation(String name, ArrayList<BufferedImage> frames, int delay) {
         this.name = name;
         this.frames = frames;
+        currentFrame = 0;
+        timer = new Timer(delay, this);
+        timer.start();
+        active = false;
+        looped = 0;
+        reverse = false;
+    }
+
+    public Animation(String name, ArrayList<BufferedImage> frames, int delay, double gravity) {
+        this.name = name;
+        this.frames = frames;
+        this.gravity = gravity;
         currentFrame = 0;
         timer = new Timer(delay, this);
         timer.start();
@@ -69,40 +82,75 @@ public class Animation implements ActionListener {
 
     public void stop(boolean resetFrames, boolean resetLoop) {
         active = false;
-        if (resetFrames) reset(resetLoop);
+        if (resetFrames)
+            reset(resetLoop);
     }
 
     public void reset(boolean resetLoop) {
         currentFrame = reverse ? frames.size() - 1 : 0;
-        if (resetLoop) looped = 0;
+        if (resetLoop)
+            looped = 0;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof Timer) {
-            if (!active) return;
-            if (!reverse) {
-                currentFrame = (currentFrame + 1) % frames.size();
-                looped += (currentFrame == frames.size() - 1) ? 1 : 0;
-            } else {
-                currentFrame--;
-                if (currentFrame < 0) currentFrame = frames.size() - 1;
-                looped += (currentFrame == 0) ? 1 : 0;
-            }
+            if (!active)
+                return;
+            if (name.equals("jump")) {
+                if (gravity > 9) {
+                    currentFrame = 1;
+                } else if (gravity > 8) {
+                    currentFrame = 2;
+                } else if (gravity > 6) {
+                    currentFrame = 3;
+                } else if (gravity > 4) {
+                    currentFrame = 4;
+                } else if (gravity > 1) {
+                    currentFrame = 5;
+                } else if (gravity > -1) {
+                    currentFrame = 6;
+                } else if (gravity > -2) {
+                    currentFrame = 7;
+                } else if (gravity > -4) {
+                    currentFrame = 8;
+                } else if (gravity > -6) {
+                    currentFrame = 9;
+                } else if (gravity > -8) {
+                    currentFrame = 10;
+                } else if (gravity > -10) {
+                    currentFrame = 11;
+                } else if (gravity > -12) {
+                    currentFrame = 12;
+                }
 
+            } else {
+                if (!reverse) {
+                    currentFrame = (currentFrame + 1) % frames.size();
+                    looped += (currentFrame == frames.size() - 1) ? 1 : 0;
+                } else {
+                    currentFrame--;
+                    if (currentFrame < 0)
+                        currentFrame = frames.size() - 1;
+                    looped += (currentFrame == 0) ? 1 : 0;
+                }
+            }
         }
     }
 
-    public static ArrayList<BufferedImage> loadAnimation(String type, String animationName, double scaleX, double scaleY) {
+    public static ArrayList<BufferedImage> loadAnimation(String type, String animationName, double scaleX,
+            double scaleY) {
         ArrayList<BufferedImage> result = new ArrayList<>();
         for (int i = 1; i <= 15; i++) {
             String filename = "src/assets/animations/" + type + animationName + "/" + animationName + i + ".png";
             try {
                 Image image = ImageIO.read((new File(filename)));
                 BufferedImage originalImage = ImageIO.read((new File(filename)));
-                image = image.getScaledInstance((int) (originalImage.getWidth() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleX), (int) (originalImage.getHeight() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleY), Image.SCALE_DEFAULT);
+                image = image.getScaledInstance(
+                        (int) (originalImage.getWidth() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleX),
+                        (int) (originalImage.getHeight() * (Constants.SCREEN_HEIGHT / 1080.0) * scaleY),
+                        Image.SCALE_DEFAULT);
                 result.add(Utils.toBufferedImage(image));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
