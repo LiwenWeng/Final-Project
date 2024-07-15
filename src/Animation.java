@@ -29,18 +29,6 @@ public class Animation implements ActionListener {
         reverse = false;
     }
 
-    public Animation(String name, ArrayList<BufferedImage> frames, int delay, double gravity) {
-        this.name = name;
-        this.frames = frames;
-        this.gravity = gravity;
-        currentFrame = 0;
-        timer = new Timer(delay, this);
-        timer.start();
-        active = false;
-        looped = 0;
-        reverse = false;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -90,6 +78,10 @@ public class Animation implements ActionListener {
         currentFrame = reverse ? frames.size() - 1 : 0;
         if (resetLoop)
             looped = 0;
+    }
+
+    public void setGravity(double gravity) {
+        this.gravity = gravity;
     }
 
     public void actionPerformed(ActionEvent e) {

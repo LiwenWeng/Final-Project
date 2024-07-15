@@ -29,7 +29,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
         enclosingFrame = frame;
         Map<String, Animation> playerAnimations = new HashMap<>();
         playerAnimations.put("idle", new Animation("idle", Animation.loadAnimation("player/", "idle", 2, 2),200));
-        playerAnimations.put("jump", new Animation("jump", Animation.loadAnimation("player/", "jump", 2, 2),100));
+        playerAnimations.put("jump", new Animation("jump", Animation.loadAnimation("player/", "jump", 2, 2),10));
         playerAnimations.put("run", new Animation("run", Animation.loadAnimation("player/", "run", 2, 2),100));
         playerAnimations.put("attack", new Animation("attack", Animation.loadAnimation("player/", "attack", 2, 2),100));
         playerAnimations.put("dash", new Animation("dash", Animation.loadAnimation("player/", "dash", 2, 2),100));
@@ -292,7 +292,7 @@ public class  GraphicsPanel extends JPanel implements KeyListener, MouseListener
                     dashed = false;
                 }
                 player.move(pressedKeys[65], pressedKeys[68]);
-                System.out.println(player.getGravity());
+                player.getAnimations().get("jump").setGravity(player.getGravity());
             }
         }
  
